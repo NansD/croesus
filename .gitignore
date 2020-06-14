@@ -10,7 +10,7 @@ frontend/node_modules
 /coverage
 
 # production
-./frontend/build
+frontend/build
 
 ./backend/expense-service/.serverless
 
