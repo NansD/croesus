@@ -14,13 +14,9 @@ function App() {
           </div>
         </div>
       </header>
-      <section className="columns">
-        <div className="column">
-        </div>
-        <div className="column">
+      <section className="columns is-centered">
+        <div className="column is-narrow">
           <ExpenseList></ExpenseList>
-        </div>
-        <div className="column">
         </div>
       </section>
     </>
