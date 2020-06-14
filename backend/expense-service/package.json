@@ -1,0 +1,19 @@
+{
+  "name": "expense-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "serverless-domain-manager": "^4.1.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
