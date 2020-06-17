@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { apiBaseUrl } from './../configuration.json';
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
 export const useFetch = (resource, ref, initialValue) => {
   const [data, setData] = useState(initialValue);
