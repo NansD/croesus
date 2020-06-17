@@ -1,10 +1,4 @@
-const AWS = require('aws-sdk');
-const bluebird = require('bluebird');
 const Expense = require('./expense.model');
-
-AWS.config.setPromisesDependency(bluebird);
-
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.submit = (event, context, callback) => {
   const requestBody = JSON.parse(event.body);
@@ -63,22 +57,12 @@ module.exports.list = async (event, context, callback) => {
 };
 
 module.exports.delete = (event, context, callback) => {
-  const params = {
-    TableName: process.env.EXPENSE_TABLE,
-    Key: {
-      id: event.pathParameters.id,
-    },
-  };
-
-  dynamoDb
-    .delete(params)
-    .promise()
-    .then(() => {
-      return callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 204,
-      });
+  Expense.delete(event.pathParameters.id).then(() => {
+    return callback(null, {
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+      },
+      statusCode: 204,
     });
+  });
 };

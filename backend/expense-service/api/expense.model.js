@@ -58,4 +58,16 @@ module.exports = class Expense {
     console.log('data :', response);
     return response;
   }
+
+  static async delete(id) {
+    console.log(`Deleting document with id ${id} in Expense table`);
+    const params = {
+      TableName: process.env.EXPENSE_TABLE,
+      Key: {
+        id,
+      },
+    };
+
+    return dynamoDb.delete(params).promise();
+  }
 };
