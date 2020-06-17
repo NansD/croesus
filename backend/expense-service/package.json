@@ -4,11 +4,14 @@
   "description": "",
   "main": "handler.js",
   "dependencies": {
+    "aws-sdk": "^2.698.0",
     "bluebird": "^3.7.2",
+    "serverless": "^1.73.1",
     "uuid": "^8.1.0"
   },
   "devDependencies": {
-    "serverless-domain-manager": "^4.1.1"
+    "serverless-domain-manager": "^4.1.1",
+    "serverless-offline": "^6.4.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

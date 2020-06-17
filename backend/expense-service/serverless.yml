@@ -15,7 +15,7 @@ service: expense-service
 app: croesus
 org: nansd
 # You can pin your service to only deploy with a specific Serverless version
-frameworkVersion: ">=1.1.0 <2.0.0"
+frameworkVersion: '>=1.1.0 <2.0.0'
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 provider:
@@ -25,7 +25,7 @@ provider:
   region: eu-west-3
   environment:
     EXPENSE_TABLE: ${self:service}-${opt:stage, self:provider.stage}
-    EXPENSE_EMAIL_TABLE: "expense-email-${opt:stage, self:provider.stage}"
+    EXPENSE_EMAIL_TABLE: 'expense-email-${opt:stage, self:provider.stage}'
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -34,24 +34,24 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:DeleteItem
-      Resource: "*"
+      Resource: '*'
 resources:
   Resources:
     ExpensesDynamoDbTable:
-      Type: "AWS::DynamoDB::Table"
+      Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          - AttributeName: "id"
-            AttributeType: "S"
+          - AttributeName: 'id'
+            AttributeType: 'S'
         KeySchema:
-          - AttributeName: "id"
-            KeyType: "HASH"
+          - AttributeName: 'id'
+            KeyType: 'HASH'
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         StreamSpecification:
-          StreamViewType: "NEW_AND_OLD_IMAGES"
+          StreamViewType: 'NEW_AND_OLD_IMAGES'
         TableName: ${self:provider.environment.EXPENSE_TABLE}
 # you can overwrite defaults here
 
@@ -75,9 +75,9 @@ resources:
 #    variable1: value1
 # you can add packaging information here
 package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
+  #  include:
+  #    - include-me.js
+  #    - include-me-dir/**
   exclude:
     - interface/**
 functions:
@@ -107,6 +107,7 @@ functions:
           method: get
 plugins:
   - serverless-domain-manager
+  - serverless-offline
 
 custom:
   customDomain:
