@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
-export const useFetch = (resource, ref, initialValue) => {
+export default (resource, ref, initialValue) => {
   const [data, setData] = useState(initialValue);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,8 @@ export const useFetch = (resource, ref, initialValue) => {
         }
       })();
     }
-    return () => {
+    return function cleanUp() {
+      // eslint-disable-next-line no-param-reassign
       ref.current = false;
     };
   }, [url, ref]);
