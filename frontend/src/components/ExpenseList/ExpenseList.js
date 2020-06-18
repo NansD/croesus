@@ -1,36 +1,42 @@
-import React, { useRef } from 'react';
-import useFetch from '../../hooks/useFetch';
+import React, { useRef, useState, useEffect } from 'react';
+import ExpenseItem from './ExpenseItem/ExpenseItem';
+import ExpenseService from '../../services/expense.service';
 
 function ExpenseList() {
   const isComponentMounted = useRef(true);
+  const [expenses, setExpenses] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const { data, loading, error } = useFetch('expenses', isComponentMounted, []);
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      const fetchedData = await ExpenseService.getAll();
+      setExpenses(fetchedData.expenses);
+      setLoading(false);
+    })();
+  }, [isComponentMounted]);
+
+  const deleteExpense = (id) => {
+    setExpenses(expenses.filter((e) => e.id !== id));
+  };
 
   if (loading) {
     return (
       <>
-        <div>Loading data ...</div>
-      </>
-    );
-  }
-
-  if (error) {
-    return (
-      <>
-        <div>
-          Error
-          {JSON.stringify(error)}
-        </div>
+        <div className="is-loading" />
       </>
     );
   }
 
   return (
     <>
-      {data.expenses.map((expense) => (
-        <div key={expense.id}>
-          <h3>{JSON.stringify(expense)}</h3>
-        </div>
+      <h2>Liste des dépenses</h2>
+      {expenses && expenses.map((expense) => (
+        <ExpenseItem
+          key={expense.id}
+          expense={expense}
+          deleteExpense={deleteExpense}
+        />
       ))}
     </>
   );

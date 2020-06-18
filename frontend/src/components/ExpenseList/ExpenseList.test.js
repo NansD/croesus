@@ -1,11 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitForElementToBeRemoved } from '@testing-library/react';
 import ExpenseList from './ExpenseList';
-import useFetch from '../../hooks/useFetch';
+import ExpenseService from '../../services/expense.service';
 
-jest.mock('../../hooks/useFetch');
-useFetch.mockReturnValue({
-  data: {
+jest.mock('../../services/expense.service');
+ExpenseService.getAll.mockReturnValue(
+  {
     expenses:
       [
         {
@@ -19,10 +19,29 @@ useFetch.mockReturnValue({
         },
       ],
   },
+);
+
+ExpenseService.deleteExpense.mockReturnValue();
+
+test('renders some expenses', async () => {
+  const { findByText } = render(<ExpenseList />);
+  const title = await findByText(/Dépenses/i);
+  expect(title).toBeInTheDocument();
 });
 
-test('renders some expenses', () => {
-  const { getByText } = render(<ExpenseList />);
-  const title = getByText(/Solène/i);
-  expect(title).toBeInTheDocument();
+test('deletes an expense', async () => {
+  ExpenseService.getAll.mockReturnValue(
+    {
+      expenses:
+        [
+          {
+            amount: 100, payer: 'Solène', id: 'cb0868c0-ada0-11ea-b05c-fb58d34dc57b', submittedAt: 1592071670092, label: 'test',
+          },
+        ],
+    },
+  );
+  const { findByLabelText } = render(<ExpenseList />);
+  const deleteButton = await findByLabelText('delete');
+  deleteButton.click();
+  expect(deleteButton).not.toBeInTheDocument();
 });
