@@ -1,0 +1,11 @@
+node_modules/
+
+
+# package directories
+expense-service/node_modules
+jspm_packages
+
+# Serverless directories
+expense-service/.serverless
+
+expense-service/.dynamodb

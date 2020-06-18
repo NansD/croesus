@@ -1,0 +1,29 @@
+{
+  "root": true,
+  "extends": "eslint-config-serverless",
+  "rules": {
+    "no-console": "off",
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
+        "message": "Unexpected property on console object was called"
+      }
+    ],
+    "max-lines": [
+      "error",
+      {
+        "max": 200,
+        "skipComments": true,
+        "skipBlankLines": true
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".vue"]
+      }
+    }
+  }
+}
