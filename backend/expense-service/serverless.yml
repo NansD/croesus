@@ -13,7 +13,7 @@
 service: expense-service
 # app and org for use with dashboard.serverless.com
 app: croesus
-org: nansd
+# org: nansd # prevents serverless to login on personnal not-nansd accounts
 # You can pin your service to only deploy with a specific Serverless version
 frameworkVersion: '>=1.1.0 <2.0.0'
 # Check out our docs for more details
