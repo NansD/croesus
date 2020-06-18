@@ -12,7 +12,7 @@ const ExpenseItemForm = ({ createExpense }) => {
   const [payer, setPayer] = useState('Nans');
   const [label, setLabel] = useState('');
   const [amount, setAmount] = useState(0);
-  const handlecreate = async () => {
+  async function handleCreate() {
     if (!payer || !label || !amount) {
       return toast.error('Des informations sur la dépense sont manquantes');
     }
@@ -22,8 +22,8 @@ const ExpenseItemForm = ({ createExpense }) => {
     } catch (error) {
       toast.error(`Erreur de création de la dépense: ${error}`);
     }
-    createExpense();
-  };
+    return createExpense();
+  }
 
   return (
     <tr>
@@ -51,7 +51,7 @@ const ExpenseItemForm = ({ createExpense }) => {
         </p>
       </td>
       <td>
-        <button className="button is-full-width is-success is-light" type="submit" onClick={handlecreate}>
+        <button className="button is-full-width is-success is-light" type="submit" onClick={handleCreate}>
           <i className="fa fa-send" aria-label="create" />
         </button>
       </td>

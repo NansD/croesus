@@ -1,8 +1,8 @@
 import React from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import 'bulma/css/bulma.css';
 import { ToastContainer, toast } from 'react-toastify';
 import './App.css';
-import 'bulma/css/bulma.css';
-import 'react-toastify/dist/ReactToastify.css';
 import ExpenseList from './components/ExpenseList/ExpenseList';
 
 toast.configure();

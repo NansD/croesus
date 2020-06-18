@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitForElementToBeRemoved } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import ExpenseList from './ExpenseList';
 import ExpenseService from '../../services/expense.service';
 

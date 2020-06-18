@@ -9,7 +9,7 @@ function ExpenseList() {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchExpenses = async function () {
+  async function fetchExpenses() {
     try {
       const fetchedData = await ExpenseService.getAll();
       setExpenses(fetchedData.expenses);
@@ -18,7 +18,7 @@ function ExpenseList() {
       toast.error(`Erreur d'obtention des dépenses: ${error}`);
     }
     setLoading(false);
-  };
+  }
 
   useEffect(() => {
     setLoading(true);
