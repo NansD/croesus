@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
+import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 import ExpenseService from '../../services/expense.service';
 
 function ExpenseList() {
@@ -7,17 +9,28 @@ function ExpenseList() {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setLoading(true);
-    (async () => {
+  const fetchExpenses = async function () {
+    try {
       const fetchedData = await ExpenseService.getAll();
       setExpenses(fetchedData.expenses);
-      setLoading(false);
-    })();
+    } catch (error) {
+      console.log('error :', error);
+      toast.error(`Erreur d'obtention des dépenses: ${error}`);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchExpenses();
   }, [isComponentMounted]);
 
   const deleteExpense = (id) => {
     setExpenses(expenses.filter((e) => e.id !== id));
+  };
+
+  const createExpense = () => {
+    fetchExpenses();
   };
 
   if (loading) {
@@ -31,13 +44,28 @@ function ExpenseList() {
   return (
     <>
       <h2>Liste des dépenses</h2>
-      {expenses && expenses.map((expense) => (
-        <ExpenseItem
-          key={expense.id}
-          expense={expense}
-          deleteExpense={deleteExpense}
-        />
-      ))}
+      <table className="table is-fullwidth is-striped">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Date</th>
+            <th>Label</th>
+            <th>Montant</th>
+            <th label="actions" />
+          </tr>
+        </thead>
+        <tbody>
+          <ExpenseItemForm createExpense={createExpense} />
+          {expenses && expenses.map((expense) => (
+            <ExpenseItem
+              key={expense.id}
+              expense={expense}
+              deleteExpense={deleteExpense}
+            />
+          ))}
+        </tbody>
+      </table>
+
     </>
   );
 }

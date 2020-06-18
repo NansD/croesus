@@ -9,7 +9,8 @@
     "bulma": "^0.9.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "react-toastify": "^6.0.5"
   },
   "scripts": {
     "start": "react-scripts start",

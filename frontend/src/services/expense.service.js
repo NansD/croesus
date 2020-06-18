@@ -4,14 +4,22 @@ class ExpenseService {
   }
 
   async getAll() {
-    const result = await fetch(`${this.apiEndpoint}`);
-    return result.json(); // { expenses: [...]}
+    const data = await fetch(`${this.apiEndpoint}`);
+    return data.json();
   }
 
   deleteExpense(id) {
     return fetch(`${this.apiEndpoint}/${id}`, {
       method: 'DELETE',
     });
+  }
+
+  async createExpense(expense) {
+    const data = await fetch(this.apiEndpoint, {
+      method: 'POST',
+      body: JSON.stringify(expense),
+    });
+    return data.json();
   }
 }
 

@@ -8,36 +8,32 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
   };
 
   return (
-    <div className="box">
-      <div className="media-content">
-        <div className="content columns">
-          <div className="column">
-            <strong>
-              {expense.payer}
-            </strong>
-            ,
-            <small>
+    <tr>
+      <td>
+        <strong>
+          {expense.payer}
+        </strong>
+      </td>
+      <td>
+        <small>
             &nbsp;
-              {new Date(expense.submittedAt).toLocaleDateString()}
-            </small>
-          </div>
-          <div className="column">
-            <p>{expense.label}</p>
-          </div>
-          <div className="column">
-            <p>
-              {expense.amount}
-            &nbsp; €
-            </p>
-          </div>
-          <div className="column">
-            <button className="button is-full-width is-danger is-light" type="button" onClick={handleDelete}>
-              <i className="fa fa-trash" aria-label="delete" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+          {new Date(expense.submittedAt).toLocaleDateString()}
+        </small>
+      </td>
+      <td>
+        {expense.label}
+      </td>
+      <td>
+        {expense.amount}
+        &nbsp;
+        €
+      </td>
+      <td>
+        <button className="button is-full-width is-danger is-light" type="button" onClick={handleDelete}>
+          <i className="fa fa-trash" aria-label="delete" />
+        </button>
+      </td>
+    </tr>
   );
 };
 
