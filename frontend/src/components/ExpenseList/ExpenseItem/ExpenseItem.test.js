@@ -4,17 +4,22 @@ import ExpenseItem from './ExpenseItem';
 import ExpenseService from '../../../services/expense.service';
 
 jest.mock('../../../services/expense.service');
-ExpenseService.deleteExpense.mockReturnValue();
+ExpenseService.deleteExpense.mockReturnValue(Promise.resolve());
 
 const deleteExpense = () => {};
 
 const goodExpense = (
-  <ExpenseItem
-    expense={{
-      amount: 100, payer: 'Solène', id: 'cb0868c0-ada0-11ea-b05c-fb58d34dc57b', submittedAt: 1592071670092, label: 'test',
-    }}
-    deleteExpense={deleteExpense}
-  />
+  <table>
+    <tbody>
+      <ExpenseItem
+        expense={{
+          amount: 100, payer: 'Solène', id: 'cb0868c0-ada0-11ea-b05c-fb58d34dc57b', submittedAt: 1592071670092, label: 'test',
+        }}
+        deleteExpense={deleteExpense}
+      />
+    </tbody>
+  </table>
+
 );
 
 test('renders an expense', () => {

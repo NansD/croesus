@@ -1,10 +1,17 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 import ExpenseService from '../../../services/expense.service';
 
 const ExpenseItem = ({ expense, deleteExpense }) => {
   const handleDelete = () => {
-    ExpenseService.deleteExpense(expense.id);
-    deleteExpense(expense.id);
+    ExpenseService.deleteExpense(expense.id)
+      .then(() => {
+        deleteExpense(expense.id);
+        toast.success('Dépense supprimée');
+      })
+      .catch((error) => {
+        toast.error(`Erreur lors de la suppression : ${error}`);
+      });
   };
 
   return (

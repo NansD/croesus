@@ -12,24 +12,24 @@ const ExpenseItemForm = ({ createExpense }) => {
   const [payer, setPayer] = useState('Nans');
   const [label, setLabel] = useState('');
   const [amount, setAmount] = useState(0);
-  async function handleCreate() {
+  function handleCreate() {
     if (!payer || !label || !amount) {
-      return toast.error('Des informations sur la dépense sont manquantes');
+      return toast.error(`Des informations sur la dépense sont manquantes payeur: ${payer}, motif: ${label}, montant: ${amount}`);
     }
-    try {
-      await ExpenseService.createExpense({ payer, label, amount });
-      toast.success(`Dépense pour ${label} créée !`);
-    } catch (error) {
-      toast.error(`Erreur de création de la dépense: ${error}`);
-    }
-    return createExpense();
+    return ExpenseService.createExpense({ payer, label, amount })
+      .then(() => {
+        toast.success(`Dépense pour ${label} créée !`);
+        createExpense();
+      }).catch((error) => {
+        toast.error(`Erreur de création de la dépense: ${error}`);
+      });
   }
 
   return (
     <tr>
       <td>
         <div className="select is-rounded">
-          <select onChange={(e) => setPayer(e.target.value)} value={payer} required>
+          <select aria-label="payer" onChange={(e) => setPayer(e.target.value)} value={payer} required>
             {
               AVAILABLE_PAYERS.map((p) => <option key={p}>{p}</option>)
             }

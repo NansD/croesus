@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import ExpenseList from './ExpenseList';
 import ExpenseService from '../../services/expense.service';
 
@@ -21,7 +21,7 @@ ExpenseService.getAll.mockReturnValue(
   },
 );
 
-ExpenseService.deleteExpense.mockReturnValue();
+ExpenseService.deleteExpense.mockReturnValue(Promise.resolve());
 
 test('renders some expenses', async () => {
   const { findByText } = render(<ExpenseList />);
@@ -43,5 +43,7 @@ test('deletes an expense', async () => {
   const { findByLabelText } = render(<ExpenseList />);
   const deleteButton = await findByLabelText('delete');
   deleteButton.click();
-  expect(deleteButton).not.toBeInTheDocument();
+  wait(() => {
+    expect(deleteButton).not.toBeInTheDocument();
+  });
 });
