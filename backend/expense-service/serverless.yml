@@ -106,16 +106,16 @@ functions:
           path: expenses
           method: get
 plugins:
-  - serverless-domain-manager
+  # - serverless-domain-manager
   - serverless-offline
 
-custom:
-  customDomain:
-    domainName: croesus.nans-dumortier.com
-    basePath: 'api'
-    stage: ${self:provider.stage}
-    certificateName: '*.nans-dumortier.com'
-    createRoute53Record: true
-    endpointType: 'regional'
-    securityPolicy: tls_1_2
-    apiType: rest
+# custom:
+#   customDomain:
+#     domainName: croesus.nans-dumortier.com
+#     basePath: 'api'
+#     stage: ${self:provider.stage}
+#     certificateName: '*.nans-dumortier.com'
+#     createRoute53Record: true
+#     endpointType: 'regional'
+#     securityPolicy: tls_1_2
+#     apiType: rest
