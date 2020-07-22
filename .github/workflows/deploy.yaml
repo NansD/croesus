@@ -35,9 +35,12 @@ jobs:
     - name: serverless install
       run: npm ci --only-production
       working-directory: backend
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+      working-directory: backend
+    - name: Serverless AWS authentication
+      run: sls config credentials --provider aws --key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      working-directory: backend
     - name: serverless deploy
       run: npm run deploy
       working-directory: backend
-      env: 
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
