@@ -14,8 +14,8 @@ function ExpenseList() {
       const fetchedData = await ExpenseService.getAll();
       setExpenses(fetchedData.expenses);
     } catch (error) {
-      console.log('error :', error);
       toast.error(`Erreur d'obtention des dépenses: ${error}`);
+      console.log('error :', error);
     }
     setLoading(false);
   }
@@ -42,31 +42,17 @@ function ExpenseList() {
   }
 
   return (
-    <>
-      <h2>Liste des dépenses</h2>
-      <table className="table is-fullwidth is-striped">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Date</th>
-            <th>Label</th>
-            <th>Montant</th>
-            <th label="actions" />
-          </tr>
-        </thead>
-        <tbody>
-          <ExpenseItemForm createExpense={createExpense} />
-          {expenses && expenses.map((expense) => (
-            <ExpenseItem
-              key={expense.id}
-              expense={expense}
-              deleteExpense={deleteExpense}
-            />
-          ))}
-        </tbody>
-      </table>
+    <div>
+      <ExpenseItemForm createExpense={createExpense} />
+      {expenses && expenses.map((expense) => (
+        <ExpenseItem
+          key={expense.id}
+          expense={expense}
+          deleteExpense={deleteExpense}
+        />
+      ))}
 
-    </>
+    </div>
   );
 }
 

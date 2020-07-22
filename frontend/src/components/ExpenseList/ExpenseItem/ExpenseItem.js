@@ -15,32 +15,35 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
   };
 
   return (
-    <tr>
-      <td>
+    <div className="card mb-5">
+      <header className="card-header-title" style={{ justifyContent: 'space-between' }}>
+        <div>
+          {expense.label}
+        </div>
+        <div>
+          {expense.amount}
+          &nbsp;
+          €
+        </div>
+      </header>
+      <div className="card-content">
         <strong>
           {expense.payer}
         </strong>
-      </td>
-      <td>
-        <small>
-            &nbsp;
-          {new Date(expense.submittedAt).toLocaleDateString()}
-        </small>
-      </td>
-      <td>
-        {expense.label}
-      </td>
-      <td>
-        {expense.amount}
-        &nbsp;
-        €
-      </td>
-      <td>
-        <button className="button is-full-width is-danger is-light" type="button" onClick={handleDelete}>
-          <i className="fa fa-trash" aria-label="delete" />
-        </button>
-      </td>
-    </tr>
+        <div>
+          <small>
+              &nbsp;
+            {new Date(expense.submittedAt).toLocaleDateString()}
+          </small>
+        </div>
+
+        <footer className="card-footer" style={{ justifyContent: 'flex-end', borderTop: '0' }}>
+          <button className="button is-full-width is-danger is-light" type="button" onClick={handleDelete}>
+            <i className="fa fa-trash" aria-label="delete" />
+          </button>
+        </footer>
+      </div>
+    </div>
   );
 };
 

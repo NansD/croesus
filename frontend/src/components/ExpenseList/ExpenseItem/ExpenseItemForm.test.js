@@ -13,17 +13,13 @@ ExpenseService.createExpense.mockReturnValue(Promise.resolve());
 
 const createExpense = jest.fn();
 const goodExpenseItemForm = (
-  <table>
-    <tbody>
-      <ExpenseItemForm createExpense={createExpense} />
-    </tbody>
-  </table>
+  <ExpenseItemForm createExpense={createExpense} />
 );
 
 test('it renders', () => {
-  const { getByPlaceholderText } = render(goodExpenseItemForm);
-  const labelInput = getByPlaceholderText('Motif');
-  expect(labelInput).toBeInTheDocument();
+  const { getByText } = render(goodExpenseItemForm);
+  const createExpenseButton = getByText('Créer une dépense');
+  expect(createExpenseButton).toBeInTheDocument();
 });
 
 test('it enables to submit an expense', () => {
@@ -33,6 +29,8 @@ test('it enables to submit an expense', () => {
   const {
     getByPlaceholderText, getByLabelText, getByText,
   } = render(goodExpenseItemForm);
+
+  getByText('Créer une dépense').click();
 
   // add a payer
   const payerInput = getByLabelText('payer');
@@ -47,13 +45,12 @@ test('it enables to submit an expense', () => {
   const amountInput = getByPlaceholderText('Montant');
   userEvent.type(amountInput, amount);
 
-  const submitButton = getByLabelText('create');
+  const submitButton = getByText('Sauvegarder');
   submitButton.click();
 
   expect(toast.error).not.toHaveBeenCalled();
   wait(() => {
     expect(toast.success).toHaveBeenCalled();
     expect(createExpense).toHaveBeenCalled();
-  })
-
+  });
 });
