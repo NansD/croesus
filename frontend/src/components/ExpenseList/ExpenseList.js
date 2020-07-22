@@ -1,23 +1,58 @@
-import React, {useRef} from "react";
-import { useFetch } from "../../hooks/useFetch";
+import React, { useRef, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import ExpenseItem from './ExpenseItem/ExpenseItem';
+import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
+import ExpenseService from '../../services/expense.service';
 
 function ExpenseList() {
   const isComponentMounted = useRef(true);
+  const [expenses, setExpenses] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const { data, loading, error } = useFetch("expenses", isComponentMounted, []);
-  console.log('data :', data);
+  async function fetchExpenses() {
+    try {
+      const fetchedData = await ExpenseService.getAll();
+      setExpenses(fetchedData.expenses);
+    } catch (error) {
+      toast.error(`Erreur d'obtention des dépenses: ${error}`);
+      console.log('error :', error);
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    fetchExpenses();
+  }, [isComponentMounted]);
+
+  const deleteExpense = (id) => {
+    setExpenses(expenses.filter((e) => e.id !== id));
+  };
+
+  const createExpense = () => {
+    fetchExpenses();
+  };
+
+  if (loading) {
+    return (
+      <>
+        <div className="is-loading" />
+      </>
+    );
+  }
+
   return (
-    <>
-      {loading ? (
-        <div>Loading data...</div>
-      ) : (
-        data.expenses.map((expense) => (
-          <div key={expense.id}>
-            <h3>{JSON.stringify((expense))}</h3>
-          </div>
-        ))
-      )}
-    </>
+    <div>
+      <ExpenseItemForm createExpense={createExpense} />
+      {expenses && expenses.map((expense) => (
+        <ExpenseItem
+          key={expense.id}
+          expense={expense}
+          deleteExpense={deleteExpense}
+        />
+      ))}
+
+    </div>
   );
 }
 

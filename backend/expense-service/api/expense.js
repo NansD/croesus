@@ -41,13 +41,14 @@ module.exports.submit = (event, context, callback) => {
 module.exports.list = async (event, context, callback) => {
   try {
     const expenses = await Expense.getAll();
+    const sortedExpenses = expenses.Items.sort((a, b) => b.submittedAt - a.submittedAt);
     return callback(null, {
       headers: {
         'Access-Control-Allow-Origin': '*', // Required for CORS support to work
       },
       statusCode: 200,
       body: JSON.stringify({
-        expenses: expenses.Items,
+        expenses: sortedExpenses,
       }),
     });
   } catch (err) {

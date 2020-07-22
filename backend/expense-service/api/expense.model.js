@@ -9,7 +9,7 @@ module.exports = class Expense {
   constructor(label, amount, payer) {
     this.id = uuid.v1();
     this.label = label;
-    this.amount = amount;
+    this.amount = parseFloat(amount);
     this.payer = payer;
     this.submittedAt = new Date().getTime();
     this.updatedAt = new Date().getTime();
