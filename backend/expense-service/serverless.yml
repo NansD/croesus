@@ -89,6 +89,7 @@ functions:
       - http:
           path: expenses
           method: post
+          cors: true
   expenseDeletion:
     handler: api/expense.delete
     memorySize: 128
@@ -97,6 +98,7 @@ functions:
       - http:
           path: expenses/{id}
           method: delete
+          cors: true
   listExpenses:
     handler: api/expense.list
     memorySize: 128
@@ -105,6 +107,7 @@ functions:
       - http:
           path: expenses
           method: get
+          cors: true
 plugins:
   # - serverless-domain-manager
   - serverless-offline
