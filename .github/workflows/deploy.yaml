@@ -42,5 +42,5 @@ jobs:
       run: sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       working-directory: backend
     - name: serverless deploy
-      run: npm run deploy  --MONGODB_CONNECTION_STRING ${{ secrets.MONGODB_CONNECTION_STRING}}
+      run: npm run deploy --  --MONGODB_CONNECTION_STRING ${{ secrets.MONGODB_CONNECTION_STRING}}
       working-directory: backend
