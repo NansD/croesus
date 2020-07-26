@@ -83,11 +83,11 @@ functions:
 plugins:
   # - serverless-domain-manager
   - serverless-offline
-  - serverless-package-external
+  - serverless-webpack
+
 custom:
-  packageExternal:
-    external:
-      - '../common/'
+  webpack:
+    includeModules: true # enable auto-packing of external modules
 
 # custom:
 #   customDomain:
