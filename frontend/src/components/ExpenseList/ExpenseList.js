@@ -12,7 +12,7 @@ function ExpenseList() {
   async function fetchExpenses() {
     try {
       const fetchedData = await ExpenseService.getAll();
-      setExpenses(fetchedData.expenses);
+      setExpenses(fetchedData.documents);
     } catch (error) {
       toast.error(`Erreur d'obtention des dépenses: ${error}`);
       console.log('error :', error);
@@ -26,7 +26,7 @@ function ExpenseList() {
   }, [isComponentMounted]);
 
   const deleteExpense = (id) => {
-    setExpenses(expenses.filter((e) => e.id !== id));
+    setExpenses(expenses.filter((e) => e._id !== id));
   };
 
   const createExpense = () => {
@@ -46,7 +46,7 @@ function ExpenseList() {
       <ExpenseItemForm createExpense={createExpense} />
       {expenses && expenses.map((expense) => (
         <ExpenseItem
-          key={expense.id}
+          key={expense._id}
           expense={expense}
           deleteExpense={deleteExpense}
         />

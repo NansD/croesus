@@ -23,5 +23,7 @@
     "git-list-updated": "^1.2.1",
     "prettier": "^2.0.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "mongoose": "^5.9.25"
+  }
 }
