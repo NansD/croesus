@@ -87,8 +87,7 @@ plugins:
 custom:
   packageExternal:
     external:
-      - '../common'
-      - '../node_modules'
+      - '../common/'
 
 # custom:
 #   customDomain:
