@@ -24,35 +24,7 @@ provider:
   stage: dev
   region: eu-west-3
   environment:
-    EXPENSE_TABLE: ${self:service}-${opt:stage, self:provider.stage}
-    EXPENSE_EMAIL_TABLE: 'expense-email-${opt:stage, self:provider.stage}'
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:DeleteItem
-      Resource: '*'
-resources:
-  Resources:
-    ExpensesDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: 'id'
-            AttributeType: 'S'
-        KeySchema:
-          - AttributeName: 'id'
-            KeyType: 'HASH'
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        StreamSpecification:
-          StreamViewType: 'NEW_AND_OLD_IMAGES'
-        TableName: ${self:provider.environment.EXPENSE_TABLE}
+    MONGODB_CONNECTION_STRING: ${opt:MONGODB_CONNECTION_STRING}
 # you can overwrite defaults here
 
 # you can add statements to the Lambda function's IAM Role here
@@ -82,7 +54,7 @@ package:
     - interface/**
 functions:
   expenseSubmission:
-    handler: api/expense.submit
+    handler: api/handler.submit
     memorySize: 128
     description: Submit expense information and starts interview process.
     events:
@@ -91,7 +63,7 @@ functions:
           method: post
           # cors: true
   expenseDeletion:
-    handler: api/expense.delete
+    handler: api/handler.delete
     memorySize: 128
     description: Delete expense based on its id.
     events:
@@ -100,7 +72,7 @@ functions:
           method: delete
           # cors: true
   listExpenses:
-    handler: api/expense.list
+    handler: api/handler.list
     memorySize: 128
     description: Get all expenses
     events:

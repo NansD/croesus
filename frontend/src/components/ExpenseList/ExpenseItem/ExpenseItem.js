@@ -4,9 +4,9 @@ import ExpenseService from '../../../services/expense.service';
 
 const ExpenseItem = ({ expense, deleteExpense }) => {
   const handleDelete = () => {
-    ExpenseService.deleteExpense(expense.id)
+    ExpenseService.deleteExpense(expense._id)
       .then(() => {
-        deleteExpense(expense.id);
+        deleteExpense(expense._id);
         toast.success('Dépense supprimée');
       })
       .catch((error) => {

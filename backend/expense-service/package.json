@@ -4,9 +4,7 @@
   "description": "",
   "main": "handler.js",
   "dependencies": {
-    "aws-sdk": "^2.698.0",
-    "bluebird": "^3.7.2",
-    "uuid": "^8.1.0"
+    "mongoose": "^5.9.25"
   },
   "devDependencies": {
     "serverless-domain-manager": "^4.1.1",
