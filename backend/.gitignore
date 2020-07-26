@@ -8,4 +8,4 @@ jspm_packages
 # Serverless directories
 expense-service/.serverless
 
-expense-service/.dynamodb
+expense-service/.webpack
