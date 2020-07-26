@@ -83,6 +83,11 @@ functions:
 plugins:
   # - serverless-domain-manager
   - serverless-offline
+  - serverless-package-external
+custom:
+  packageExternal:
+    external:
+      - '../common/'
 
 # custom:
 #   customDomain:

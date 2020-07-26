@@ -8,7 +8,8 @@
   },
   "devDependencies": {
     "serverless-domain-manager": "^4.1.1",
-    "serverless-offline": "^6.4.0"
+    "serverless-offline": "^6.4.0",
+    "serverless-package-external": "^1.3.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
