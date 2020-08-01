@@ -17,4 +17,22 @@ module.exports = new Schema({
     type: Date,
     default: () => Date.now(),
   },
+  usersFor: {
+    type: [
+      {
+        name: String,
+        checked: Boolean,
+      },
+    ],
+    validate: (v) => Array.isArray(v) && v.length > 0,
+  },
+  generatedDebt: {
+    type: [
+      {
+        name: String,
+        amount: Number,
+        to: String,
+      },
+    ],
+  },
 });
