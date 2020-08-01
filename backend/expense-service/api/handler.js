@@ -13,3 +13,7 @@ module.exports.list = (...args) => {
 module.exports.delete = (...args) => {
   Database.performDatabaseAction(ExpenseController.delete.bind(ExpenseController, ...args));
 };
+
+module.exports.computeDebts = (...args) => {
+  Database.performDatabaseAction(ExpenseController.computeDebts.bind(ExpenseController, ...args));
+};

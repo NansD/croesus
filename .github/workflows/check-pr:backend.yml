@@ -22,3 +22,6 @@ jobs:
     - name: "backend: npm run lint"
       run: npm run lint
       working-directory: backend
+    - name: "backend: npm run prettier-check"
+      run: npm run prettier-check
+      working-directory: backend

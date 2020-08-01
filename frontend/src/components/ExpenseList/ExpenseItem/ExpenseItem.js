@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import ExpenseService from '../../../services/expense.service';
+import UsersSelector from './UsersSelector/UsersSelector';
 
 const ExpenseItem = ({ expense, deleteExpense }) => {
+  const [showDetail, setShowDetail] = useState(false);
+
   const handleDelete = () => {
     ExpenseService.deleteExpense(expense._id)
       .then(() => {
@@ -13,6 +16,10 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
         toast.error(`Erreur lors de la suppression : ${error}`);
       });
   };
+
+  function toggleShowDetail() {
+    setShowDetail(!showDetail);
+  }
 
   return (
     <div className="card mb-5">
@@ -36,6 +43,25 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
             {new Date(expense.submittedAt).toLocaleDateString()}
           </small>
         </div>
+
+        { showDetail
+          ? (
+            <div>
+              { expense.usersFor && <UsersSelector users={expense.usersFor} disabled />}
+              <button type="button" className="button is-full-width is-info is-light" onClick={toggleShowDetail}>
+                <i className="fa fa-caret-square-o-up" />
+            &nbsp; Afficher moins
+              </button>
+            </div>
+          )
+          : (
+            <div>
+              <button type="button" className="button is-full-width is-info is-light" onClick={toggleShowDetail}>
+                <i className="fa fa-caret-square-o-down" />
+            &nbsp; Afficher plus
+              </button>
+            </div>
+          )}
 
         <footer className="card-footer" style={{ justifyContent: 'flex-end', borderTop: '0' }}>
           <button className="button is-full-width is-danger is-light" type="button" onClick={handleDelete}>

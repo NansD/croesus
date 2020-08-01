@@ -7,7 +7,7 @@ module.exports = class Controller {
   }
 
   async create(event, context, callback) {
-    const requestBody = JSON.parse(event.body);
+    const requestBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
     const instance = new this.Model(requestBody);
 
     await this.validate(instance, callback);
@@ -50,7 +50,7 @@ module.exports = class Controller {
         },
         statusCode: 400,
         body: JSON.stringify({
-          message: `Incorrect request, ${instance.toJSON()} didn't pass ${this.Model.name} validation`,
+          message: `Incorrect request, ${instance.toObject()} didn't pass ${this.Model.name} validation`,
         }),
       });
     }
