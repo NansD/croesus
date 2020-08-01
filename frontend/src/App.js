@@ -39,9 +39,9 @@ function App() {
             </div>
           </div>
           <nav
-            className={`${
-              isMobile && 'is-fixed-bottom'
-            } navbar tabs is-centered is-large navbar has-shadow`}
+            className={isMobile
+              ? 'is-fixed-bottom tabs is-fullwidth navbar has-background-white has-shadow'
+              : 'tabs is-fullwidth navbar has-background-white has-shadow'}
           >
             <ul>
               <LiLinkRoute to={NAVIGATION.EXPENSES} fontAwesomeClassName="fa-credit-card" label="Dépenses" />
