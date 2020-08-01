@@ -79,7 +79,7 @@ class ExpenseController extends Controller {
     for (const key of keys) {
       const debts = grouped[key];
       const totalDebt = debts.reduce((accumulator, debt) => {
-        // eslint-disable-next-line no-return-assign
+        // eslint-disable-next-line
         return (accumulator += debt.amount);
       }, 0);
       grouped[key] = { ...grouped[key], totalDebt };

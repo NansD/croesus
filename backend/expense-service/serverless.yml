@@ -99,7 +99,6 @@ custom:
     includeModules: true # enable auto-packing of external modules
   serverless-offline:
     useChildProcesses: true
-
 # custom:
 #   customDomain:
 #     domainName: croesus.nans-dumortier.com
