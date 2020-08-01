@@ -1,13 +1,15 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useStateIfMounted } from 'use-state-if-mounted';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 import ExpenseService from '../../services/expense.service';
+import useIsComponentMounted from '../../hooks/useIsComponentMounted';
 
 function ExpenseList() {
-  const isComponentMounted = useRef(true);
-  const [expenses, setExpenses] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const isComponentMounted = useIsComponentMounted();
+  const [expenses, setExpenses] = useStateIfMounted([]);
+  const [loading, setLoading] = useStateIfMounted(false);
 
   async function fetchExpenses() {
     try {

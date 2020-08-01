@@ -8,6 +8,11 @@ class ExpenseService {
     return data.json();
   }
 
+  async getComputedDebts() {
+    const data = await fetch(`${this.apiEndpoint}/computeDebts`);
+    return data.json();
+  }
+
   deleteExpense(id) {
     return fetch(`${this.apiEndpoint}/${id}`, {
       method: 'DELETE',

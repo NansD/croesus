@@ -23,9 +23,9 @@ test('it renders', () => {
 });
 
 test('it enables to submit an expense', () => {
-  const payer = 'Nans';
+  const payer = 'Solène';
   const label = 'Boulangerie';
-  const amount = '130';
+  const amount = '130.50';
   const {
     getByPlaceholderText, getByLabelText, getByText,
   } = render(goodExpenseItemForm);
@@ -35,7 +35,6 @@ test('it enables to submit an expense', () => {
   // add a payer
   const payerInput = getByLabelText('payer');
   userEvent.selectOptions(payerInput, payer);
-  expect(getByText(payer)).toBeInTheDocument();
 
   // add a label
   const labelInput = getByPlaceholderText('Motif');
