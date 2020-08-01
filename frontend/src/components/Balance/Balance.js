@@ -10,21 +10,20 @@ function Balance() {
   const [debtsToPool, setDebtsToPool] = useStateIfMounted([]);
   const [loading, setLoading] = useStateIfMounted(false);
 
-  async function fetchBalance() {
-    setLoading(true);
-    try {
-      const fetchedData = await ExpenseService.getComputedDebts();
-      setDebtsToPool(fetchedData.debtsToPool);
-    } catch (error) {
-      toast.error(`Erreur d'obtention des équilibres: ${error}`);
-      console.error('error :', error);
-    }
-    setLoading(false);
-  }
-
   useEffect(() => {
+    async function fetchBalance() {
+      setLoading(true);
+      try {
+        const fetchedData = await ExpenseService.getComputedDebts();
+        setDebtsToPool(fetchedData.debtsToPool);
+      } catch (error) {
+        toast.error(`Erreur d'obtention des équilibres: ${error}`);
+        console.error('error :', error);
+      }
+      setLoading(false);
+    }
     fetchBalance();
-  }, [isComponentMounted, fetchBalance]);
+  }, [isComponentMounted]);
 
   if (loading) {
     return (
