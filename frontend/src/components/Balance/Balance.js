@@ -11,6 +11,7 @@ function Balance() {
   const [loading, setLoading] = useStateIfMounted(false);
 
   async function fetchBalance() {
+    setLoading(true);
     try {
       const fetchedData = await ExpenseService.getComputedDebts();
       setDebtsToPool(fetchedData.debtsToPool);
@@ -22,9 +23,8 @@ function Balance() {
   }
 
   useEffect(() => {
-    setLoading(true);
     fetchBalance();
-  }, [isComponentMounted]);
+  }, [isComponentMounted, fetchBalance]);
 
   if (loading) {
     return (

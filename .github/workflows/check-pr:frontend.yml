@@ -24,3 +24,6 @@ jobs:
     - name: "frontend: npm run test"
       run: npm run test
       working-directory: frontend
+    - name: "frontend: npm run build"
+    run: npm run build
+    working-directory: frontend
