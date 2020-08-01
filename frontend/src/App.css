@@ -8,9 +8,26 @@
 }
 
 #root {
-  height: 94vh;
+  height: 100vh;
 }
 
 .is-full-height {
   height: 100%;
+}
+
+.tabs.is-fixed-bottom li a {
+  border-bottom: 0;
+}
+
+.tabs.is-fixed-bottom li.is-active a {
+  border-bottom: 0;
+  border-top: 1px solid hsl(217, 71%, 53%);
+}
+
+.has-overflow-scroll {
+  overflow: scroll;
+}
+
+.navbar.is-fixed-bottom.has-shadow {
+  box-shadow: 0 -1px 3px 1px lightgrey;
 }

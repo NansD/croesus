@@ -25,7 +25,7 @@ function App() {
 
   return (
     <Router>
-      <div className="has-background-white-ter is-full-height">
+      <div className="has-background-white-ter is-full-height has-overflow-scroll">
         <header className="hero" style={{ backgroundColor: '#FFFFFF' }}>
           <div className="px-5 py-2">
             <div className="container">
@@ -39,9 +39,9 @@ function App() {
             </div>
           </div>
           <nav
-            className={`${
-              isMobile && 'is-fixed-bottom'
-            } navbar tabs is-centered is-large navbar has-shadow`}
+            className={isMobile
+              ? 'is-fixed-bottom tabs is-fullwidth navbar has-background-white has-shadow'
+              : 'tabs is-fullwidth navbar has-background-white has-shadow'}
           >
             <ul>
               <LiLinkRoute to={NAVIGATION.EXPENSES} fontAwesomeClassName="fa-credit-card" label="Dépenses" />

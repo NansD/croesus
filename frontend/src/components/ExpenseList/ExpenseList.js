@@ -7,32 +7,35 @@ import ExpenseService from '../../services/expense.service';
 import useIsComponentMounted from '../../hooks/useIsComponentMounted';
 
 function ExpenseList() {
+  console.log('render :');
   const isComponentMounted = useIsComponentMounted();
   const [expenses, setExpenses] = useStateIfMounted([]);
   const [loading, setLoading] = useStateIfMounted(false);
-
-  async function fetchExpenses() {
-    setLoading(true);
-    try {
-      const fetchedData = await ExpenseService.getAll();
-      setExpenses(fetchedData.documents);
-    } catch (error) {
-      toast.error(`Erreur d'obtention des dépenses: ${error}`);
-      console.log('error :', error);
-    }
-    setLoading(false);
-  }
+  let refetchExpenses = false;
 
   useEffect(() => {
+    async function fetchExpenses() {
+      setLoading(true);
+      try {
+        const fetchedData = await ExpenseService.getAll();
+        setExpenses(fetchedData.documents);
+      } catch (error) {
+        toast.error(`Erreur d'obtention des dépenses: ${error}`);
+        console.log('error :', error);
+      }
+      setLoading(false);
+    }
+
     fetchExpenses();
-  }, [isComponentMounted, fetchExpenses]);
+  }, [isComponentMounted, refetchExpenses]);
 
   const deleteExpense = (id) => {
     setExpenses(expenses.filter((e) => e._id !== id));
   };
 
   const createExpense = () => {
-    fetchExpenses();
+    // flip boolean to trigger useEffect
+    refetchExpenses = !refetchExpenses;
   };
 
   if (loading) {
