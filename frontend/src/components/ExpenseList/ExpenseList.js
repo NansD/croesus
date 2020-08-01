@@ -12,6 +12,7 @@ function ExpenseList() {
   const [loading, setLoading] = useStateIfMounted(false);
 
   async function fetchExpenses() {
+    setLoading(true);
     try {
       const fetchedData = await ExpenseService.getAll();
       setExpenses(fetchedData.documents);
@@ -23,9 +24,8 @@ function ExpenseList() {
   }
 
   useEffect(() => {
-    setLoading(true);
     fetchExpenses();
-  }, [isComponentMounted]);
+  }, [isComponentMounted, fetchExpenses]);
 
   const deleteExpense = (id) => {
     setExpenses(expenses.filter((e) => e._id !== id));
