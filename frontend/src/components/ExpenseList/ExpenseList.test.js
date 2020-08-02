@@ -21,7 +21,7 @@ ExpenseService.getAll.mockReturnValue(
   },
 );
 
-ExpenseService.deleteExpense.mockReturnValue(Promise.resolve());
+ExpenseService.delete.mockReturnValue(Promise.resolve());
 
 test('renders some expenses', async () => {
   const { findByText } = render(<ExpenseList />);

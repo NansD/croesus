@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useAsync } from 'react-async';
 import ExpenseService from '../../../services/expense.service';
 import UsersSelector from './UsersSelector/UsersSelector';
 
 const ExpenseItem = ({ expense, deleteExpense }) => {
   const [showDetail, setShowDetail] = useState(false);
 
-  const handleDelete = () => {
-    ExpenseService.deleteExpense(expense._id)
-      .then(() => {
-        deleteExpense(expense._id);
-        toast.success('Dépense supprimée');
-      })
-      .catch((error) => {
-        toast.error(`Erreur lors de la suppression : ${error}`);
-      });
-  };
+  function notifyDeleteSuccess() {
+    deleteExpense(expense._id);
+    toast.success('Dépense supprimée');
+  }
+
+  function notifyDeleFailure(error) {
+    toast.error(`Erreur lors de la suppression : ${error}`);
+  }
+
+  const { run } = useAsync({ deferFn: ExpenseService.delete, onResolve: notifyDeleteSuccess, onReject: notifyDeleFailure });
+
+  function handleDelete() {
+    run(expense._id);
+  }
 
   function toggleShowDetail() {
     setShowDetail(!showDetail);

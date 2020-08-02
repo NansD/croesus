@@ -1,41 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { toast } from 'react-toastify';
-import { useStateIfMounted } from 'use-state-if-mounted';
+import { useAsync } from 'react-async';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 import ExpenseService from '../../services/expense.service';
-import useIsComponentMounted from '../../hooks/useIsComponentMounted';
 
 function ExpenseList() {
-  console.log('render :');
-  const isComponentMounted = useIsComponentMounted();
-  const [expenses, setExpenses] = useStateIfMounted([]);
-  const [loading, setLoading] = useStateIfMounted(false);
-  let refetchExpenses = false;
+  function notifyGetAllError(error) {
+    toast.error(`Erreur d'obtention des dépenses: ${error}`);
+    console.log('error :', error);
+  }
 
-  useEffect(() => {
-    async function fetchExpenses() {
-      setLoading(true);
-      try {
-        const fetchedData = await ExpenseService.getAll();
-        setExpenses(fetchedData.documents);
-      } catch (error) {
-        toast.error(`Erreur d'obtention des dépenses: ${error}`);
-        console.log('error :', error);
-      }
-      setLoading(false);
-    }
-
-    fetchExpenses();
-  }, [isComponentMounted, refetchExpenses]);
+  const { data: expenses, pending: loading, setData: setExpenses } = useAsync({
+    promiseFn: ExpenseService.getAll,
+    onReject: notifyGetAllError,
+  });
 
   const deleteExpense = (id) => {
     setExpenses(expenses.filter((e) => e._id !== id));
   };
 
-  const createExpense = () => {
-    // flip boolean to trigger useEffect
-    refetchExpenses = !refetchExpenses;
+  const createExpense = (e) => {
+    setExpenses([e, ...expenses]);
   };
 
   if (loading) {
@@ -49,14 +35,14 @@ function ExpenseList() {
   return (
     <div>
       <ExpenseItemForm createExpense={createExpense} />
-      {expenses && expenses.map((expense) => (
-        <ExpenseItem
-          key={expense._id}
-          expense={expense}
-          deleteExpense={deleteExpense}
-        />
-      ))}
-
+      {expenses
+        && expenses.map((expense) => (
+          <ExpenseItem
+            key={expense._id}
+            expense={expense}
+            deleteExpense={deleteExpense}
+          />
+        ))}
     </div>
   );
 }

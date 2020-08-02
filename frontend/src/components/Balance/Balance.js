@@ -1,34 +1,25 @@
-import React, { useEffect } from 'react';
-import { useStateIfMounted } from 'use-state-if-mounted';
+import React from 'react';
 import { toast } from 'react-toastify';
+import { useAsync } from 'react-async';
 import ExpenseService from '../../services/expense.service';
 
-import useIsComponentMounted from '../../hooks/useIsComponentMounted';
-
 function Balance() {
-  const isComponentMounted = useIsComponentMounted();
-  const [debtsToPool, setDebtsToPool] = useStateIfMounted([]);
-  const [loading, setLoading] = useStateIfMounted(false);
+  function notifyGetAllError(error) {
+    toast.error(`Erreur d'obtention des dettes: ${error}`);
+    console.log('error :', error);
+  }
 
-  useEffect(() => {
-    async function fetchBalance() {
-      setLoading(true);
-      try {
-        const fetchedData = await ExpenseService.getComputedDebts();
-        setDebtsToPool(fetchedData.debtsToPool);
-      } catch (error) {
-        toast.error(`Erreur d'obtention des équilibres: ${error}`);
-        console.error('error :', error);
-      }
-      setLoading(false);
-    }
-    fetchBalance();
-  }, [isComponentMounted]);
+  const { data, pending: loading } = useAsync({
+    promiseFn: ExpenseService.getComputedDebts,
+    onReject: notifyGetAllError,
+  });
 
-  if (loading) {
+  const debtsToPool = data && data.debtsToPool;
+
+  if (loading || !debtsToPool) {
     return (
       <>
-        <div className="is-loading" />
+        <div className="is-loading"> Chargement... </div>
       </>
     );
   }
