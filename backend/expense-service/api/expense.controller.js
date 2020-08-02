@@ -18,14 +18,14 @@ class ExpenseController extends Controller {
   create(event, context, callback) {
     const requestBody = JSON.parse(event.body);
     if (!requestBody.usersFor || !Array.isArray(requestBody.usersFor)) {
-      return callback({
+      return callback(null, {
         headers: {
           'Access-Control-Allow-Origin': '*', // Required for CORS support to work
         },
         statusCode: 400,
-        body: {
+        body: JSON.stringify({
           message: 'Expense must include users for which it has been paid',
-        },
+        }),
       });
     }
     const generatedDebt = requestBody.usersFor.map((user) => {
