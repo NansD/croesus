@@ -25,7 +25,7 @@ function App() {
 
   return (
     <Router>
-      <div className="has-background-white-ter is-full-height has-overflow-scroll">
+      <div className="has-navbar-fixed-bottom has-background-white-ter is-full-height has-overflow-scroll">
         <header className="hero" style={{ backgroundColor: '#FFFFFF' }}>
           <div className="px-5 py-2">
             <div className="container">

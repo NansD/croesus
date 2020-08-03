@@ -31,3 +31,7 @@
 .navbar.is-fixed-bottom.has-shadow {
   box-shadow: 0 -1px 3px 1px lightgrey;
 }
+
+.has-navbar-fixed-bottom {
+  padding-bottom: 7vh;
+}

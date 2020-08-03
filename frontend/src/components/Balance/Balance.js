@@ -53,7 +53,7 @@ function Balance() {
   });
 
   return (
-    <table className="table is-fullwidth">
+    <table className="table is-fullwidth card">
       <tbody>
         {lines.map((l) => l)}
       </tbody>
