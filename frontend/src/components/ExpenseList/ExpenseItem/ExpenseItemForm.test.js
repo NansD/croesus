@@ -9,7 +9,7 @@ import ExpenseService from '../../../services/expense.service';
 jest.mock('../../../services/expense.service');
 jest.mock('react-toastify');
 
-ExpenseService.createExpense.mockReturnValue(Promise.resolve());
+ExpenseService.create.mockReturnValue(Promise.resolve());
 
 const createExpense = jest.fn();
 const goodExpenseItemForm = (

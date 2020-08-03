@@ -89,6 +89,7 @@ module.exports = class Controller {
           'Access-Control-Allow-Origin': '*', // Required for CORS support to work
         },
         statusCode: 500,
+        message: 'Error while deleting document',
       });
     }
     return callback(null, {

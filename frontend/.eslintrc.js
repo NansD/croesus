@@ -1,4 +1,5 @@
 module.exports = {
+    "parser": "babel-eslint",
     "extends": ["airbnb"],
     "plugins": ["testing-library", "jest-dom", "react", "react-hooks", "import"],
     "ignorePatterns": ["build/**"],

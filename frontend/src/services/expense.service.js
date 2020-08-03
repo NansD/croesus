@@ -1,31 +1,12 @@
-class ExpenseService {
+import Service from './service';
+import { customFetch } from './service-helpers';
+
+class ExpenseService extends Service {
   constructor() {
-    this.apiEndpoint = `${process.env.REACT_APP_API_BASE_URL}/expenses`;
+    super('expenses');
   }
 
-  async getAll() {
-    const data = await fetch(`${this.apiEndpoint}`);
-    return data.json();
-  }
-
-  async getComputedDebts() {
-    const data = await fetch(`${this.apiEndpoint}/computeDebts`);
-    return data.json();
-  }
-
-  deleteExpense(id) {
-    return fetch(`${this.apiEndpoint}/${id}`, {
-      method: 'DELETE',
-    });
-  }
-
-  async createExpense(expense) {
-    const data = await fetch(this.apiEndpoint, {
-      method: 'POST',
-      body: JSON.stringify(expense),
-    });
-    return data.json();
-  }
+  getComputedDebts = (args, { signal }) => customFetch(`${this.apiEndPoint}/computeDebts`, { signal })
 }
 
 export default new ExpenseService();

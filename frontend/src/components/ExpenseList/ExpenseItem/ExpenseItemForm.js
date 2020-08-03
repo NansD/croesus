@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useAsync } from 'react-async';
 import ExpenseService from '../../../services/expense.service';
 
 import AVAILABLE_PAYERS from './AvailablePayers.json';
@@ -9,6 +10,7 @@ const ExpenseItemForm = ({ createExpense }) => {
   const [payer, setPayer] = useState(AVAILABLE_PAYERS[1]);
   const [label, setLabel] = useState('');
   const [amount, setAmount] = useState(0);
+  const [submittedAt, setDate] = useState(new Date());
   const [showForm, setShowForm] = useState(false);
   const [usersFor, setUsersFor] = useState([]);
 
@@ -20,24 +22,38 @@ const ExpenseItemForm = ({ createExpense }) => {
     setUsersFor([]);
   }
 
+  function currentExpense() {
+    return {
+      payer,
+      label,
+      amount,
+      usersFor,
+    };
+  }
+
+  function notifyCreationSuccess(res) {
+    toast.success(`Dépense pour ${label} créée !`);
+    createExpense(res.document);
+    resetFields();
+  }
+
+  function notifyCreationFailure(error) {
+    toast.error(`Erreur de création de la dépense: ${error}`);
+  }
+
+  const { run } = useAsync({
+    deferFn: ExpenseService.create,
+    onResolve: notifyCreationSuccess,
+    onReject: notifyCreationFailure,
+  });
+
   function handleCreate() {
     if (!payer || !label || !amount) {
       return toast.error(
         `Des informations sur la dépense sont manquantes payeur: ${payer}, motif: ${label}, montant: ${amount}`,
       );
     }
-
-    return ExpenseService.createExpense({
-      payer, label, amount, usersFor,
-    })
-      .then(() => {
-        toast.success(`Dépense pour ${label} créée !`);
-        createExpense();
-        resetFields();
-      })
-      .catch((error) => {
-        toast.error(`Erreur de création de la dépense: ${error}`);
-      });
+    return run(currentExpense());
   }
 
   function toggleShowForm() {
@@ -96,7 +112,8 @@ const ExpenseItemForm = ({ createExpense }) => {
               className="input"
               type="text"
               disabled
-              value={new Date().toLocaleDateString()}
+              onChange={(e) => setDate(e.target.value)}
+              value={submittedAt.toLocaleDateString()}
             />
           </div>
           <UsersSelector
@@ -107,8 +124,18 @@ const ExpenseItemForm = ({ createExpense }) => {
 
         <footer
           className="card-footer"
-          style={{ justifyContent: 'flex-end', borderTop: '0' }}
+          style={{ justifyContent: 'space-between', borderTop: '0' }}
         >
+          <button
+            type="button"
+            className="button is-warning"
+            onClick={toggleShowForm}
+          >
+            <span className="icon is-small">
+              <i className="fa fa-times" />
+            </span>
+            <span> Annuler </span>
+          </button>
           <button
             className="button is-success"
             type="submit"
@@ -125,7 +152,7 @@ const ExpenseItemForm = ({ createExpense }) => {
   ) : (
     <button
       type="button"
-      className="button is-success my-5"
+      className="button card is-success my-5"
       onClick={toggleShowForm}
     >
       <span className="icon is-small">
