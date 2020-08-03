@@ -1,4 +1,4 @@
-const Database = require('./../../common/database');
+const Database = require('../../../common/database');
 const ExpenseController = require('./expense.controller.js');
 
 // TODO I really need to find a more elegant way to handle that database connection !

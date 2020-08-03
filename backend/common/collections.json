@@ -1,3 +1,5 @@
 {
-  "EXPENSES": "expenses"
+  "EXPENSES": "expenses",
+  "GROUPS": "groups",
+  "USERS": "users",
 }

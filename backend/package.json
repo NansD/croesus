@@ -2,15 +2,15 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "expense-service/api/expense.js",
+  "main": "croesus-service/api/expense.js",
   "scripts": {
-    "start": "cd expense-service && sls offline start --httpPort 3001",
+    "start": "cd croesus-service && sls offline start --httpPort 3001",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "cd expense-service && sls deploy",
+    "deploy": "cd croesus-service && sls deploy",
     "lint": "eslint --format codeframe .",
     "prettier-check": "prettier -c --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
     "prettify": "prettier --write --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
-    "postinstall": "cd expense-service && npm i"
+    "postinstall": "cd croesus-service && npm i"
   },
   "keywords": [],
   "author": "NansD",

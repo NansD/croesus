@@ -10,7 +10,7 @@
 #    docs.serverless.com
 #
 # Happy Coding!
-service: expense-service
+service: croesus-service
 # app and org for use with dashboard.serverless.com
 app: croesus
 # org: nansd # prevents serverless to login on personnal not-nansd accounts
@@ -50,11 +50,36 @@ package:
   #  include:
   #    - include-me.js
   #    - include-me-dir/**
-  exclude:
-    - interface/**
 functions:
+  groupSubmission:
+    handler: api/group/handler.submit
+    memorySize: 128
+    description: Submit group information and starts interview process.
+    events:
+      - http:
+          path: groups
+          method: post
+          # cors: true
+  groupDeletion:
+    handler: api/group/handler.delete
+    memorySize: 128
+    description: Delete group based on its id.
+    events:
+      - http:
+          path: groups/{id}
+          method: delete
+          # cors: true
+  listGroups:
+    handler: api/group/handler.list
+    memorySize: 128
+    description: Get all groups
+    events:
+      - http:
+          path: groups
+          method: get
+          # cors: true
   expenseSubmission:
-    handler: api/handler.submit
+    handler: api/expense/handler.submit
     memorySize: 128
     description: Submit expense information and starts interview process.
     events:
@@ -63,7 +88,7 @@ functions:
           method: post
           # cors: true
   expenseDeletion:
-    handler: api/handler.delete
+    handler: api/expense/handler.delete
     memorySize: 128
     description: Delete expense based on its id.
     events:
@@ -72,7 +97,7 @@ functions:
           method: delete
           # cors: true
   listExpenses:
-    handler: api/handler.list
+    handler: api/expense/handler.list
     memorySize: 128
     description: Get all expenses
     events:
@@ -81,7 +106,7 @@ functions:
           method: get
           # cors: true
   computeDebts:
-    handler: api/handler.computeDebts
+    handler: api/expense/handler.computeDebts
     memorySize: 128
     description: Compute expenses
     events:

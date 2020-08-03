@@ -1,5 +1,5 @@
-const Controller = require('./../../common/controller');
-const collections = require('./../../common/collections.json');
+const Controller = require('../../../common/controller');
+const collections = require('../../../common/collections.json');
 
 const model = require('./expense.model');
 
