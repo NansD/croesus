@@ -23,18 +23,22 @@ module.exports = class Controller {
         },
         statusCode: 500,
         body: JSON.stringify({
-          message: `Error while submitting in collection ${this.Model.name} ${JSON.stringify(instance)}`,
+          message: `Error while submitting in collection ${this.Model.modelname} ${JSON.stringify(instance)}`,
         }),
       });
     }
-    callback(null, {
+    return this.respondWithCreationSuccess(document, callback);
+  }
+
+  respondWithCreationSuccess(document, callback) {
+    return callback(null, {
       headers: {
         'Access-Control-Allow-Origin': '*', // Required for CORS support to work
       },
       statusCode: 200,
 
       body: JSON.stringify({
-        message: `Successfully submitted in collection ${this.Model.name}`,
+        message: `Successfully submitted in collection ${this.Model.modelName}`,
         document: document.toObject(),
       }),
     });

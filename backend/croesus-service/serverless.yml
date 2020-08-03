@@ -51,6 +51,35 @@ package:
   #    - include-me.js
   #    - include-me-dir/**
 functions:
+  # user
+  userSubmission:
+    handler: api/user/handler.submit
+    memorySize: 128
+    description: Submit user information and starts interview process.
+    events:
+      - http:
+          path: users
+          method: post
+          # cors: true
+  userDeletion:
+    handler: api/user/handler.delete
+    memorySize: 128
+    description: Delete user based on its id.
+    events:
+      - http:
+          path: users/{id}
+          method: delete
+          # cors: true
+  listUsers:
+    handler: api/user/handler.list
+    memorySize: 128
+    description: Get all users
+    events:
+      - http:
+          path: users
+          method: get
+          # cors: true
+  # group
   groupSubmission:
     handler: api/group/handler.submit
     memorySize: 128
@@ -78,6 +107,7 @@ functions:
           path: groups
           method: get
           # cors: true
+  # expense
   expenseSubmission:
     handler: api/expense/handler.submit
     memorySize: 128

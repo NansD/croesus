@@ -4,6 +4,7 @@
   "description": "",
   "main": "handler.js",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "mongoose": "^5.9.25"
   },
   "devDependencies": {
