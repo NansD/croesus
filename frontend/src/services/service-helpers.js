@@ -4,8 +4,8 @@ function failIfNotOK(data, response) {
   }
 }
 
-async function customFetch(url, options, signal) {
-  const data = await fetch(url, options, signal);
+async function customFetch(url, options) {
+  const data = await fetch(url, options);
 
   if (options && options.method === 'DELETE' && data.ok) {
     return {};

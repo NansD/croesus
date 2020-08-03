@@ -6,9 +6,7 @@ class ExpenseService extends Service {
     super('expenses');
   }
 
-  getComputedDebts = (args, { signal }) => {
-    return customFetch(`${this.apiEndPoint}/computeDebts`, {}, signal);
-  }
+  getComputedDebts = (args, { signal }) => customFetch(`${this.apiEndPoint}/computeDebts`, { signal })
 }
 
 export default new ExpenseService();

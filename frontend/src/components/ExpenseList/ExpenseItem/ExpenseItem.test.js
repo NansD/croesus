@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, wait } from '@testing-library/react';
 import ExpenseItem from './ExpenseItem';
 import ExpenseService from '../../../services/expense.service';
 
@@ -34,7 +34,9 @@ test('enables to delete an expense', () => {
   const { getByLabelText } = render(goodExpense);
   const deleteButton = getByLabelText('delete');
   deleteButton.click();
-  expect(ExpenseService.delete).toBeCalledWith('cb0868c0-ada0-11ea-b05c-fb58d34dc57b');
+  wait(() => {
+    expect(ExpenseService.delete).toBeCalled();
+  });
 });
 
 export default goodExpense;

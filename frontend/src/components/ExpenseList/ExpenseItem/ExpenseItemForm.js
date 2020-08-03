@@ -32,7 +32,6 @@ const ExpenseItemForm = ({ createExpense }) => {
   }
 
   function notifyCreationSuccess(res) {
-    console.log('res :', res);
     toast.success(`Dépense pour ${label} créée !`);
     createExpense(res.document);
     resetFields();
@@ -42,7 +41,11 @@ const ExpenseItemForm = ({ createExpense }) => {
     toast.error(`Erreur de création de la dépense: ${error}`);
   }
 
-  const { run } = useAsync({ deferFn: ExpenseService.create, onResolve: notifyCreationSuccess, onReject: notifyCreationFailure });
+  const { run } = useAsync({
+    deferFn: ExpenseService.create,
+    onResolve: notifyCreationSuccess,
+    onReject: notifyCreationFailure,
+  });
 
   function handleCreate() {
     if (!payer || !label || !amount) {
@@ -149,7 +152,7 @@ const ExpenseItemForm = ({ createExpense }) => {
   ) : (
     <button
       type="button"
-      className="button is-success my-5"
+      className="button card is-success my-5"
       onClick={toggleShowForm}
     >
       <span className="icon is-small">
