@@ -1,3 +1,7 @@
+const bcrypt = require('bcryptjs');
+const { sign } = require('jsonwebtoken');
+const jwtConfiguration = require('./../../../common/jwt-configuration.json');
+
 const Controller = require('../../../common/controller');
 const collections = require('../../../common/collections.json');
 
@@ -43,6 +47,34 @@ class UserController extends Controller {
       console.error(err);
       return this.respond.with.error.create.db(newUser, callback);
     }
+  }
+
+  async login(event, context, callback) {
+    const requestBody = JSON.parse(event.body);
+    const { email, password } = requestBody;
+
+    if (!email || !password) {
+      return this.respond.with.error.common.invalidData(callback);
+    }
+
+    const userInCollection = await this.checkIfDocumentExistsInDb('email', email.toLowerCase(), callback);
+
+    if (!bcrypt.compareSync(password, userInCollection.password)) {
+      return this.respond.with.error.common.invalidData(callback);
+    }
+
+    const token = sign(
+      {
+        _id: userInCollection._id,
+        email: userInCollection.email,
+      },
+      process.env.MONGODB_CONNECTION_STRING, // kind of stupid but hey, it works
+      {
+        expiresIn: jwtConfiguration.EXPIRES_IN,
+        issuer: jwtConfiguration.ISSUER,
+      }
+    );
+    return this.respond.with.success({ jwt: token }, callback);
   }
 }
 

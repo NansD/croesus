@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { default: functionAndObject } = require('./functionAndObject');
 
 module.exports = class Controller {
   constructor(collectionName, model) {
@@ -64,42 +65,64 @@ module.exports = class Controller {
                 }),
               });
             },
+            notFound: (key, callback) => {
+              return callback(null, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                },
+                statusCode: 404,
+                body: JSON.stringify({
+                  message: `Couldn't find any document matching ${key} in collection ${this.Model.name}`,
+                }),
+              });
+            },
           },
         },
-        success: {
-          creation: (document, callback) => {
+        success: functionAndObject(
+          (body, callback) => {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
               },
               statusCode: 200,
-              body: JSON.stringify({
-                message: `Successfully submitted in collection ${this.Model.modelName}`,
-                document: document.toObject(),
-              }),
+              body: JSON.stringify(body),
             });
           },
-          update: (document, callback) => {
-            return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-              },
-              statusCode: 200,
-              body: JSON.stringify({
-                message: `Successfully updated document in collection ${this.Model.modelName}`,
-                document: document.toObject(),
-              }),
-            });
-          },
-          deletion: (callback) => {
-            return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-              },
-              statusCode: 204,
-            });
-          },
-        },
+          {
+            creation: (document, callback) => {
+              return callback(null, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                },
+                statusCode: 200,
+                body: JSON.stringify({
+                  message: `Successfully submitted in collection ${this.Model.modelName}`,
+                  document: document.toObject(),
+                }),
+              });
+            },
+            update: (document, callback) => {
+              return callback(null, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                },
+                statusCode: 200,
+                body: JSON.stringify({
+                  message: `Successfully updated document in collection ${this.Model.modelName}`,
+                  document: document.toObject(),
+                }),
+              });
+            },
+            deletion: (callback) => {
+              return callback(null, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                },
+                statusCode: 204,
+              });
+            },
+          }
+        ),
       },
     };
   }
@@ -170,5 +193,19 @@ module.exports = class Controller {
       return this.respond.with.error.common.db(callback);
     }
     return this.respond.with.success.deletion(callback);
+  }
+
+  async findDocumentInDb(key, value) {
+    const query = { [key]: value };
+    const document = this.Model.findOne(query);
+    return document;
+  }
+
+  async checkIfDocumentExistsInDb(key, value, callback) {
+    const document = this.findDocumentInDb(key, value);
+    if (!document) {
+      return this.respond.with.error.common.notFound(value, callback);
+    }
+    return document;
   }
 };

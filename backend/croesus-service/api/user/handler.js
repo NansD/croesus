@@ -13,3 +13,7 @@ module.exports.list = (...args) => {
 module.exports.delete = (...args) => {
   Database.performDatabaseAction(UserController.delete.bind(UserController, ...args));
 };
+
+module.exports.login = (...args) => {
+  Database.performDatabaseAction(UserController.login.bind(UserController, ...args));
+};

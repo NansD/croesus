@@ -79,6 +79,15 @@ functions:
           path: users
           method: get
           # cors: true
+  loginUser:
+    handler: api/user/handler.login
+    memorySize: 128
+    description: Authenticate user
+    events:
+      - http:
+          path: users/login
+          method: post
+          # cors: true
   # group
   groupSubmission:
     handler: api/group/handler.submit
