@@ -10,7 +10,7 @@ const cloneInObject = (action, object) => {
   });
   return action;
 };
-export default function functionAndObject(fn, object) {
+module.exports = function functionAndObject(fn, object) {
   const action = fn;
   return cloneInObject(action, object);
-}
+};
