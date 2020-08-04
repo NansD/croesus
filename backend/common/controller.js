@@ -4,6 +4,104 @@ module.exports = class Controller {
   constructor(collectionName, model) {
     this.collectionName = collectionName;
     this.Model = mongoose.model(this.collectionName, model);
+    this.respond = {
+      with: {
+        error: {
+          creation: {
+            db: (document, callback) => {
+              return callback(null, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                },
+                statusCode: 500,
+                body: JSON.stringify({
+                  message: `Error while submitting in collection ${this.Model.modelName} ${JSON.stringify(document)}`,
+                }),
+              });
+            },
+          },
+          update: {
+            db: (document, callback) => {
+              return callback(null, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                },
+                statusCode: 500,
+                body: JSON.stringify({
+                  message: `Error while updating document ${JSON.stringify(document)} in collection ${
+                    this.Model.modelName
+                  }`,
+                }),
+              });
+            },
+          },
+          common: {
+            db: (callback) => {
+              return callback(null, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                },
+                statusCode: 500,
+                body: JSON.stringify({
+                  message: `Error while performing action in collection ${this.Model.modelName}`,
+                }),
+              });
+            },
+            invalidData: (document, callback) => {
+              let documentToPrint;
+              if (document instanceof this.Model) {
+                documentToPrint = document.toObject();
+              } else {
+                documentToPrint = JSON.stringify(document);
+              }
+              return callback(null, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                },
+                statusCode: 400,
+                body: JSON.stringify({
+                  message: `Incorrect request, ${documentToPrint} didn't pass ${this.Model.name} validation`,
+                }),
+              });
+            },
+          },
+        },
+        success: {
+          creation: (document, callback) => {
+            return callback(null, {
+              headers: {
+                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+              },
+              statusCode: 200,
+              body: JSON.stringify({
+                message: `Successfully submitted in collection ${this.Model.modelName}`,
+                document: document.toObject(),
+              }),
+            });
+          },
+          update: (document, callback) => {
+            return callback(null, {
+              headers: {
+                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+              },
+              statusCode: 200,
+              body: JSON.stringify({
+                message: `Successfully updated document in collection ${this.Model.modelName}`,
+                document: document.toObject(),
+              }),
+            });
+          },
+          deletion: (callback) => {
+            return callback(null, {
+              headers: {
+                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+              },
+              statusCode: 204,
+            });
+          },
+        },
+      },
+    };
   }
 
   async create(event, context, callback) {
@@ -17,46 +115,32 @@ module.exports = class Controller {
       document = await instance.save();
     } catch (error) {
       console.error(error);
-      callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 500,
-        body: JSON.stringify({
-          message: `Error while submitting in collection ${this.Model.modelname} ${JSON.stringify(instance)}`,
-        }),
-      });
+      return this.respond.with.error.creation.db(document, callback);
     }
-    return this.respondWithCreationSuccess(document, callback);
+    return this.respond.with.success.creation(document, callback);
   }
 
-  respondWithCreationSuccess(document, callback) {
-    return callback(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-      },
-      statusCode: 200,
+  async update(event, context, callback) {
+    const requestBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+    const instance = new this.Model(requestBody);
 
-      body: JSON.stringify({
-        message: `Successfully submitted in collection ${this.Model.modelName}`,
-        document: document.toObject(),
-      }),
-    });
+    await this.validate(instance, callback);
+
+    let document;
+    try {
+      document = this.Model.findByIdAndUpdate(instance._id, instance);
+    } catch (error) {
+      console.error(error);
+      return this.respond.with.error.update.db(document, callback);
+    }
+    return this.respond.with.success.create(document, callback);
   }
 
   async validate(instance, callback) {
     try {
       await instance.validate();
     } catch (error) {
-      callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 400,
-        body: JSON.stringify({
-          message: `Incorrect request, ${instance.toObject()} didn't pass ${this.Model.name} validation`,
-        }),
-      });
+      this.respond.with.error.common.invalidData(instance, callback);
     }
   }
 
@@ -74,12 +158,7 @@ module.exports = class Controller {
       });
     } catch (err) {
       console.error('Error while getting mongodb data:', JSON.stringify(err, null, 2));
-      return callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 500,
-      });
+      return this.respond.with.error.common.db(callback);
     }
   }
 
@@ -88,19 +167,8 @@ module.exports = class Controller {
       await this.Model.deleteOne({ _id: event.pathParameters.id });
     } catch (error) {
       console.error('Error while deleting document', JSON.stringify(error));
-      return callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 500,
-        message: 'Error while deleting document',
-      });
+      return this.respond.with.error.common.db(callback);
     }
-    return callback(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-      },
-      statusCode: 204,
-    });
+    return this.respond.with.success.deletion(callback);
   }
 };

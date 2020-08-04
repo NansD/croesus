@@ -24,29 +24,25 @@ class UserController extends Controller {
     return true;
   }
 
+  checkRequiredData(requestBody, callback) {
+    if (!requestBody.email || !requestBody.password || !requestBody.name) {
+      this.respond.with.error.common.invalidData(requestBody, callback);
+    }
+  }
+
   async create(event, context, callback) {
     const requestBody = JSON.parse(event.body);
-    if (requestBody.email && requestBody.password && requestBody.name) {
-      await this.checkForUniqueness(requestBody, callback);
-      const newUser = new this.Model(requestBody);
-      try {
-        await newUser.save();
-        await this.validate(newUser, callback);
-        return this.respondWithCreationSuccess(newUser, callback);
-      } catch (err) {
-        console.error(err);
-        // return res.status(500).json({ error: err });
-      }
+    this.checkRequiredData(requestBody, callback);
+    await this.checkForUniqueness(requestBody, callback);
+    const newUser = new this.Model(requestBody);
+    try {
+      await this.validate(newUser, callback);
+      await newUser.save();
+      return this.respond.with.success.creation(newUser, callback);
+    } catch (err) {
+      console.error(err);
+      return this.respond.with.error.create.db(newUser, callback);
     }
-    return callback(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-      },
-      statusCode: 400,
-      body: JSON.stringify({
-        message: `Missing information`,
-      }),
-    });
   }
 }
 
