@@ -77,6 +77,17 @@ module.exports = class Controller {
               });
             },
           },
+          unauthorized: (callback) => {
+            return callback(null, {
+              headers: {
+                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+              },
+              statusCode: 401,
+              body: JSON.stringify({
+                message: `Unauthorized. Are you logged in ?`,
+              }),
+            });
+          },
         },
         success: functionAndObject(
           (body, callback) => {
@@ -169,7 +180,7 @@ module.exports = class Controller {
 
   async list(event, context, callback) {
     try {
-      const documents = await this.Model.find().sort({ submittedAt: 'desc' });
+      const documents = await this.Model.find().sort({ createdAt: 'desc' });
       return callback(null, {
         headers: {
           'Access-Control-Allow-Origin': '*', // Required for CORS support to work

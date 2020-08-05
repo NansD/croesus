@@ -1,11 +1,42 @@
 const bcrypt = require('bcryptjs');
-const { sign } = require('jsonwebtoken');
+const { sign, verify } = require('jsonwebtoken');
 const jwtConfiguration = require('./../../../common/jwt-configuration.json');
 
 const Controller = require('../../../common/controller');
 const collections = require('../../../common/collections.json');
 
 const model = require('./user.model');
+
+function validateHeaderFormat(header) {
+  return !!(
+    header &&
+    header.Authorization &&
+    header.Authorization.length &&
+    header.Authorization[0] &&
+    header.Authorization[0].split
+  );
+}
+
+function enrichBody(event, userFound) {
+  const body = JSON.parse(event.body) || {};
+
+  const method = event.httpMethod;
+
+  if (method === 'POST') {
+    body.createdBy = String(userFound._id);
+  }
+
+  if (method === 'DELETE') {
+    body.deletedBy = String(userFound._id);
+  }
+
+  body.lastUpdatedBy = String(userFound._id);
+
+  body.user = userFound.toObject();
+
+  // eslint-disable-next-line no-param-reassign
+  event.body = body;
+}
 
 class UserController extends Controller {
   constructor() {
@@ -75,6 +106,29 @@ class UserController extends Controller {
       }
     );
     return this.respond.with.success({ jwt: token }, callback);
+  }
+
+  getJWT(header, callback) {
+    if (validateHeaderFormat(header)) {
+      return header.Authorization[0].split(' ')[1];
+    }
+    this.respond.with.error.unauthorized(callback);
+    throw new Error("Couldn't get jwt");
+  }
+
+  async authenticateJWT(event, context, callback) {
+    try {
+      const header = event.multiValueHeaders;
+      const jwt = this.getJWT(header, callback);
+      const verifiedToken = verify(jwt, process.env.MONGODB_CONNECTION_STRING, {
+        expiresIn: jwtConfiguration.EXPIRES_IN,
+        issuer: jwtConfiguration.ISSUER,
+      });
+      const userFound = await this.checkIfDocumentExistsInDb('_id', verifiedToken._id, callback);
+      enrichBody(event, userFound);
+    } catch (error) {
+      this.respond.with.error.unauthorized(callback);
+    }
   }
 }
 

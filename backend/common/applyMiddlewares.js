@@ -1,10 +1,10 @@
 const Database = require('./database');
 
 module.exports.applyMiddlewares = async function applyMiddlewares(parameters, ...middlewares) {
-  const promises = middlewares.map((m) => {
-    return m(...parameters);
-  });
-  return Promise.all(promises);
+  for (const m of middlewares) {
+    // eslint-disable-next-line no-await-in-loop
+    await m(...parameters);
+  }
 };
 
 function applyMiddlewaresClosure(parameters, ...middlewares) {
