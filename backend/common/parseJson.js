@@ -1,4 +1,4 @@
-module.exports = function parseJsonClosure(event, context, callback) {
+module.exports = function parseJsonClosure(event) {
   return function parseJson() {
     const body = JSON.parse(event.body) || {};
     // eslint-disable-next-line no-param-reassign

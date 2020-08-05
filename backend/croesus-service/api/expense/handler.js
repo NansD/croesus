@@ -1,4 +1,3 @@
-const Database = require('../../../common/database');
 const ExpenseController = require('./expense.controller.js');
 const { applyMiddlewaresWithDatabase } = require('../../../common/applyMiddlewares');
 const UserController = require('../user/user.controller');
