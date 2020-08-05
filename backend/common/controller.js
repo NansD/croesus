@@ -197,8 +197,9 @@ module.exports = class Controller {
   }
 
   async delete(event, context, callback) {
+    const document = await this.checkIfDocumentExistsInDb('_id', event.pathParameters.id, callback);
     try {
-      await this.Model.deleteOne({ _id: event.pathParameters.id });
+      await document.delete();
     } catch (error) {
       console.error('Error while deleting document', JSON.stringify(error));
       return this.respond.with.error.common.db(callback);
@@ -213,7 +214,7 @@ module.exports = class Controller {
   }
 
   async checkIfDocumentExistsInDb(key, value, callback) {
-    const document = this.findDocumentInDb(key, value);
+    const document = await this.findDocumentInDb(key, value);
     if (!document) {
       return this.respond.with.error.common.notFound(value, callback);
     }
