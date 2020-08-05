@@ -32,7 +32,8 @@ function enrichBody(event, userFound) {
 
   body.lastUpdatedBy = String(userFound._id);
 
-  body.user = userFound.toObject();
+  // eslint-disable-next-line no-param-reassign
+  event.user = userFound.toObject();
 
   // eslint-disable-next-line no-param-reassign
   event.body = body;
