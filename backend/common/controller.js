@@ -139,7 +139,7 @@ module.exports = class Controller {
   }
 
   async create(event, context, callback) {
-    const requestBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+    const requestBody = event.body;
     const instance = new this.Model(requestBody);
 
     await this.validate(instance, callback);
@@ -155,7 +155,8 @@ module.exports = class Controller {
   }
 
   async update(event, context, callback) {
-    const requestBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+    const requestBody = event.body;
+
     const instance = new this.Model(requestBody);
 
     await this.validate(instance, callback);

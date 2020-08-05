@@ -16,7 +16,8 @@ class ExpenseController extends Controller {
   }
 
   create(event, context, callback) {
-    const requestBody = JSON.parse(event.body);
+    const requestBody = event.body;
+
     if (!requestBody.usersFor || !Array.isArray(requestBody.usersFor)) {
       return callback(null, {
         headers: {

@@ -18,7 +18,7 @@ function validateHeaderFormat(header) {
 }
 
 function enrichBody(event, userFound) {
-  const body = JSON.parse(event.body) || {};
+  const { body } = event;
 
   const method = event.httpMethod;
 
@@ -66,7 +66,8 @@ class UserController extends Controller {
   }
 
   async create(event, context, callback) {
-    const requestBody = JSON.parse(event.body);
+    const requestBody = event.body;
+
     this.checkRequiredData(requestBody, callback);
     await this.checkForUniqueness(requestBody, callback);
     const newUser = new this.Model(requestBody);
@@ -81,7 +82,8 @@ class UserController extends Controller {
   }
 
   async login(event, context, callback) {
-    const requestBody = JSON.parse(event.body);
+    const requestBody = event.body;
+
     const { email, password } = requestBody;
 
     if (!email || !password) {
