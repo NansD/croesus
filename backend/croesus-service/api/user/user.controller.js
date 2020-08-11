@@ -78,7 +78,7 @@ class UserController extends Controller {
       return this.respond.with.success.creation(newUser, callback);
     } catch (err) {
       console.error(err);
-      return this.respond.with.error.create.db(newUser, callback);
+      return this.respond.with.error.creation.db(newUser, callback);
     }
   }
 
@@ -130,7 +130,9 @@ class UserController extends Controller {
       const userFound = await this.checkIfDocumentExistsInDb('_id', verifiedToken._id, callback);
       enrichBody(event, userFound);
     } catch (error) {
+      console.error('Authenticate error :', error);
       this.respond.with.error.unauthorized(callback);
+      throw new Error('Authentication failed');
     }
   }
 }

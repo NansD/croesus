@@ -2,8 +2,13 @@ const Database = require('./database');
 
 module.exports.applyMiddlewares = async function applyMiddlewares(parameters, ...middlewares) {
   for (const m of middlewares) {
-    // eslint-disable-next-line no-await-in-loop
-    await m(...parameters);
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      await m(...parameters);
+    } catch (error) {
+      console.error(error);
+      break;
+    }
   }
 };
 
