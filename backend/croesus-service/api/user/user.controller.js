@@ -32,10 +32,8 @@ function enrichBody(event, userFound) {
 
   body.lastUpdatedBy = String(userFound._id);
 
-  // eslint-disable-next-line no-param-reassign
   event.user = userFound.toObject();
 
-  // eslint-disable-next-line no-param-reassign
   event.body = body;
 }
 
@@ -82,6 +80,21 @@ class UserController extends Controller {
     }
   }
 
+  update(event, context, callback) {
+    const pathParameterId = String(event.pathParameters.id);
+    const bodyId = String(event.body._id);
+    const userId = String(event.user._id);
+    console.log(
+      'pathParameterId !== bodyId || pathParameterId !== userId :',
+      pathParameterId !== bodyId || pathParameterId !== userId
+    );
+    if (pathParameterId !== bodyId || pathParameterId !== userId) {
+      return this.respond.with.error.common.invalidData(event.body, callback);
+    }
+    delete event.body.password;
+    return super.update(event, context, callback);
+  }
+
   async login(event, context, callback) {
     const requestBody = event.body;
 
@@ -108,7 +121,7 @@ class UserController extends Controller {
         issuer: jwtConfiguration.ISSUER,
       }
     );
-    return this.respond.with.success({ jwt: token }, callback);
+    return this.respond.with.success({ jwt: token, user: userInCollection }, callback);
   }
 
   getJWT(header, callback) {

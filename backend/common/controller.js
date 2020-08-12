@@ -31,14 +31,13 @@ module.exports = class Controller {
 
     await this.validate(instance, callback);
 
-    let document;
     try {
-      document = this.Model.findByIdAndUpdate(instance._id, instance);
+      const document = await this.Model.findByIdAndUpdate(instance._id, instance, { new: true });
+      return this.respond.with.success.update(document, callback);
     } catch (error) {
       console.error(error);
-      return this.respond.with.error.update.db(document, callback);
+      return this.respond.with.error.update.db(instance, callback);
     }
-    return this.respond.with.success.create(document, callback);
   }
 
   async validate(instance, callback) {
@@ -67,6 +66,17 @@ module.exports = class Controller {
     }
   }
 
+  async getOne(event, context, callback) {
+    let document;
+    try {
+      document = await this.checkIfDocumentExistsInDb('_id', event.pathParameters.id, callback);
+    } catch (error) {
+      console.error('Error while getting document', JSON.stringify(error));
+      return this.respond.with.error.common.db(callback);
+    }
+    return this.respond.with.success.getOne(document, callback);
+  }
+
   async delete(event, context, callback) {
     const document = await this.checkIfDocumentExistsInDb('_id', event.pathParameters.id, callback);
     try {
@@ -90,5 +100,18 @@ module.exports = class Controller {
       return this.respond.with.error.common.notFound(value, callback);
     }
     return document;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  enrichEventWithDocumentClosure(key, value, eventKey) {
+    return async function enrichEventWithDocument(event, context, callback) {
+      try {
+        const document = await this.checkIfDocumentExistsInDb(key, value, callback);
+        event[eventKey] = document.toObject();
+      } catch (error) {
+        this.respond.with.error.common.notFound(value, callback);
+        throw new Error('Document not found');
+      }
+    };
   }
 };

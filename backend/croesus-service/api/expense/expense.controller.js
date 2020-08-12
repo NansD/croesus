@@ -1,7 +1,7 @@
-const Controller = require('../../../common/controller');
 const collections = require('../../../common/collections.json');
-
-const model = require('./expense.model');
+const relationships = require('./../../../common/relationships.json');
+const GroupController = require('../group/group.controller');
+const NestedController = require('../../../common/nestedController');
 
 function groupBy(arrayToGroup, key) {
   return arrayToGroup.reduce((accumulator, item) => {
@@ -10,24 +10,42 @@ function groupBy(arrayToGroup, key) {
   }, {});
 }
 
-class ExpenseController extends Controller {
+/**
+ *
+ * fetches all expenses in database, and returns an object
+ * each key is someone that owes to the central pool
+ * the value of the key is an object that has a key "totalDebt"
+ * @returns {payer: {0: {...debt0}, n: {...debtN}, totalDebt: sum(nDebtsValues)}}
+ * @memberof ExpenseController
+ */
+async function computeDebtToCentralPool(expenses) {
+  const generatedDebts = expenses
+    .map((e) => e.generatedDebt.length > 0 && [...e.generatedDebt])
+    .filter(Boolean)
+    .flat(Infinity);
+  const grouped = groupBy(generatedDebts, 'name');
+  const keys = Object.keys(grouped);
+  for (const key of keys) {
+    const debts = grouped[key];
+    const totalDebt = debts.reduce((accumulator, debt) => {
+      // eslint-disable-next-line
+      return (accumulator += debt.amount);
+    }, 0);
+    grouped[key] = { ...grouped[key], totalDebt };
+  }
+  return grouped;
+}
+
+class ExpenseController extends NestedController {
   constructor() {
-    super(collections.EXPENSES, model);
+    super(collections.EXPENSES, GroupController.Model, relationships.ONE_TO_MANY, 'expenses');
   }
 
-  create(event, context, callback) {
+  async create(event, context, callback) {
     const requestBody = event.body;
 
     if (!requestBody.usersFor || !Array.isArray(requestBody.usersFor)) {
-      return callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 400,
-        body: JSON.stringify({
-          message: 'Expense must include users for which it has been paid',
-        }),
-      });
+      this.respond.with.error.common.invalidData(event.body, callback);
     }
     const generatedDebt = requestBody.usersFor.map((user) => {
       // if I paid, I generated negative debt towards me
@@ -42,12 +60,20 @@ class ExpenseController extends Controller {
         to: requestBody.payer,
       };
     });
-    const newRequest = { body: { ...requestBody, generatedDebt } };
-    return super.create(newRequest, context, callback);
+    const newRequest = { ...event, body: { ...requestBody, generatedDebt } };
+    await super.create(newRequest, context, callback, GroupController.Model, event.group, 'expenses');
   }
 
+  list(event, context, callback) {
+    if (!event.group || !event.group.expenses) {
+      return this.respond.with.error.common.notFound(event.pathParameters.groupId, callback);
+    }
+    return this.respond.with.success(event.group.expenses, callback);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   async computeDebts(event, context, callback) {
-    const grouped = await this.computeDebtToCentralPool();
+    const grouped = await computeDebtToCentralPool(event.group.expenses);
     callback(null, {
       headers: {
         'Access-Control-Allow-Origin': '*', // Required for CORS support to work
@@ -60,32 +86,14 @@ class ExpenseController extends Controller {
     });
   }
 
-  /**
-   *
-   * fetches all expenses in database, and returns an object
-   * each key is someone that owes to the central pool
-   * the value of the key is an object that has a key "totalDebt"
-   * @returns {payer: {0: {...debt0}, n: {...debtN}, totalDebt: sum(nDebtsValues)}}
-   * @memberof ExpenseController
-   */
-  async computeDebtToCentralPool() {
-    let expenses = await this.Model.find();
-    expenses = expenses.map((e) => e.toObject());
-    const generatedDebts = expenses
-      .map((e) => e.generatedDebt.length > 0 && [...e.generatedDebt])
-      .filter(Boolean)
-      .flat(Infinity);
-    const grouped = groupBy(generatedDebts, 'name');
-    const keys = Object.keys(grouped);
-    for (const key of keys) {
-      const debts = grouped[key];
-      const totalDebt = debts.reduce((accumulator, debt) => {
-        // eslint-disable-next-line
-        return (accumulator += debt.amount);
-      }, 0);
-      grouped[key] = { ...grouped[key], totalDebt };
-    }
-    return grouped;
+  async delete(event, context, callback) {
+    const parent = event.group;
+    await super.delete(event, context, callback, parent);
+  }
+
+  async update(event, context, callback) {
+    const parent = event.group;
+    await super.update(event, context, callback, parent);
   }
 }
 

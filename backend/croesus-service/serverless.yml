@@ -55,11 +55,20 @@ functions:
   userSubmission:
     handler: api/user/handler.submit
     memorySize: 128
-    description: Submit user information and starts interview process.
+    description: Submit user information.
     events:
       - http:
           path: users
           method: post
+          # cors: true
+  userUpdate:
+    handler: api/user/handler.update
+    memorySize: 128
+    description: Update user information.
+    events:
+      - http:
+          path: users/{id}
+          method: put
           # cors: true
   userDeletion:
     handler: api/user/handler.delete
@@ -92,11 +101,20 @@ functions:
   groupSubmission:
     handler: api/group/handler.submit
     memorySize: 128
-    description: Submit group information and starts interview process.
+    description: Submit group information.
     events:
       - http:
           path: groups
           method: post
+          # cors: true
+  groupUpdate:
+    handler: api/group/handler.update
+    memorySize: 128
+    description: Update group information.
+    events:
+      - http:
+          path: groups/{id}
+          method: put
           # cors: true
   groupDeletion:
     handler: api/group/handler.delete
@@ -116,15 +134,33 @@ functions:
           path: groups
           method: get
           # cors: true
+  computeDebts:
+    handler: api/group/handler.computeDebts
+    memorySize: 128
+    description: Compute expenses
+    events:
+      - http:
+          path: groups/{groupId}/computeDebts
+          method: get
+          # cors: true
   # expense
   expenseSubmission:
     handler: api/expense/handler.submit
     memorySize: 128
-    description: Submit expense information and starts interview process.
+    description: Submit expense information.
     events:
       - http:
-          path: expenses
+          path: /groups/{groupId}/expenses
           method: post
+          # cors: true
+  expenseUpdate:
+    handler: api/expense/handler.update
+    memorySize: 128
+    description: Update expense information.
+    events:
+      - http:
+          path: /groups/{groupId}/expenses/{id}
+          method: put
           # cors: true
   expenseDeletion:
     handler: api/expense/handler.delete
@@ -132,7 +168,7 @@ functions:
     description: Delete expense based on its id.
     events:
       - http:
-          path: expenses/{id}
+          path: /groups/{groupId}/expenses/{id}
           method: delete
           # cors: true
   listExpenses:
@@ -141,16 +177,7 @@ functions:
     description: Get all expenses
     events:
       - http:
-          path: expenses
-          method: get
-          # cors: true
-  computeDebts:
-    handler: api/expense/handler.computeDebts
-    memorySize: 128
-    description: Compute expenses
-    events:
-      - http:
-          path: expenses/computeDebts
+          path: /groups/{groupId}/expenses
           method: get
           # cors: true
 plugins:

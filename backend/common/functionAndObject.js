@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 const cloneInObject = (action, object) => {
   const keys = Object.keys(object);
   keys.forEach((k) => {

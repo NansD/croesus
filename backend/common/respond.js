@@ -12,7 +12,7 @@ module.exports = function respond() {
               },
               statusCode: 500,
               body: JSON.stringify({
-                message: `Error while submitting in collection ${this.Model.modelName} ${JSON.stringify(document)}`,
+                message: `Error while submitting in collection ${this.collectionName} ${JSON.stringify(document)}`,
               }),
             });
           },
@@ -26,7 +26,7 @@ module.exports = function respond() {
               statusCode: 500,
               body: JSON.stringify({
                 message: `Error while updating document ${JSON.stringify(document)} in collection ${
-                  this.Model.modelName
+                  this.collectionName
                 }`,
               }),
             });
@@ -40,7 +40,7 @@ module.exports = function respond() {
               },
               statusCode: 500,
               body: JSON.stringify({
-                message: `Error while performing action in collection ${this.Model.modelName}`,
+                message: `Error while performing action in collection ${this.collectionName}`,
               }),
             });
           },
@@ -57,7 +57,7 @@ module.exports = function respond() {
               },
               statusCode: 400,
               body: JSON.stringify({
-                message: `Incorrect request, ${documentToPrint} didn't pass ${this.Model.name} validation`,
+                message: `Incorrect request, ${documentToPrint} didn't pass ${this.collectionName} validation`,
               }),
             });
           },
@@ -68,7 +68,7 @@ module.exports = function respond() {
               },
               statusCode: 404,
               body: JSON.stringify({
-                message: `Couldn't find any document matching ${key} in collection ${this.Model.name}`,
+                message: `Couldn't find any document matching ${key} in collection ${this.collectionName}`,
               }),
             });
           },
@@ -103,7 +103,7 @@ module.exports = function respond() {
               },
               statusCode: 200,
               body: JSON.stringify({
-                message: `Successfully submitted in collection ${this.Model.modelName}`,
+                message: `Successfully submitted in collection ${this.collectionName}`,
                 document: document.toObject(),
               }),
             });
@@ -115,7 +115,19 @@ module.exports = function respond() {
               },
               statusCode: 200,
               body: JSON.stringify({
-                message: `Successfully updated document in collection ${this.Model.modelName}`,
+                message: `Successfully updated document in collection ${this.collectionName}`,
+                document: document && document.toObject && document.toObject(),
+              }),
+            });
+          },
+          getOne: (document, callback) => {
+            return callback(null, {
+              headers: {
+                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+              },
+              statusCode: 200,
+              body: JSON.stringify({
+                message: `Successfully fetched document in collection ${this.collectionName}`,
                 document: document.toObject(),
               }),
             });
