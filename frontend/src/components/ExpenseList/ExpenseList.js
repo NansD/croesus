@@ -1,9 +1,10 @@
 import React from 'react';
-import { toast } from 'react-toastify';
 import { useAsync } from 'react-async';
+import { toast } from 'react-toastify';
+import { useAuth } from '../../contexts/authentication';
+import ExpenseService from '../../services/expense.service';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
-import ExpenseService from '../../services/expense.service';
 
 function ExpenseList() {
   function notifyGetAllError(error) {
@@ -15,6 +16,10 @@ function ExpenseList() {
     promiseFn: ExpenseService.getAll,
     onReject: notifyGetAllError,
   });
+
+  const { user, authToken } = useAuth();
+  console.log('user :', user);
+  console.log('authToken :', authToken);
 
   const deleteExpense = (id) => {
     setExpenses(expenses.filter((e) => e._id !== id));

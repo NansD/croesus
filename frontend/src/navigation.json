@@ -1,0 +1,6 @@
+{
+  "LOGIN": "/login",
+  "EXPENSES": "/",
+  "BALANCE": "/balance",
+  "SIGNUP": "/signup"
+}

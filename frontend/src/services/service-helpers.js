@@ -4,8 +4,16 @@ function failIfNotOK(data, response) {
   }
 }
 
-async function customFetch(url, options) {
-  const data = await fetch(url, options);
+async function customFetch(url, options, useToken = true) {
+  const newOptions = useToken
+  ? {
+      headers: new Headers({
+      'authorization': 'Bearer ' + JSON.parse(localStorage.getItem('croesus-token')),
+    }),
+    ...options
+  }
+  : options;
+  const data = await fetch(url, newOptions);
 
   if (options && options.method === 'DELETE' && data.ok) {
     return {};
