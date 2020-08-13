@@ -5,9 +5,10 @@ class UserService extends Service {
   constructor() {
     super('users');
   }
+
   login = async ([email, password], { signal }) => customFetch(`${this.apiEndPoint}/login`, {
     method: 'POST',
-    body: JSON.stringify({email, password}),
+    body: JSON.stringify({ email, password }),
     signal,
   }, false)
 }

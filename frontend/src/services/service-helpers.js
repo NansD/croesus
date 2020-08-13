@@ -1,3 +1,5 @@
+import LOCAL_STORAGE_KEYS from '../localStorageKeys.json';
+
 function failIfNotOK(data, response) {
   if (!data.ok) {
     throw new Error(response.message);
@@ -6,13 +8,13 @@ function failIfNotOK(data, response) {
 
 async function customFetch(url, options, useToken = true) {
   const newOptions = useToken
-  ? {
+    ? {
       headers: new Headers({
-      'authorization': 'Bearer ' + JSON.parse(localStorage.getItem('croesus-token')),
-    }),
-    ...options
-  }
-  : options;
+        authorization: `Bearer ${JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.token))}`,
+      }),
+      ...options,
+    }
+    : options;
   const data = await fetch(url, newOptions);
 
   if (options && options.method === 'DELETE' && data.ok) {

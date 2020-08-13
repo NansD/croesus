@@ -1,10 +1,6 @@
 import 'bulma/css/bulma.css';
-import React, { useState } from 'react';
-import {
-  BrowserRouter as Router, Route,
-
-  Switch
-} from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -15,36 +11,38 @@ import Login from './components/Login/Login';
 import NavBar from './components/NavBar/NavBar';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import SignUp from './components/SignUp/SignUp';
-import { AuthContext } from "./contexts/authentication";
+import { AuthContext } from './contexts/authentication';
 import useIsMobile from './hooks/useIsMobile';
+import useLocalStorage from './hooks/useLocalStorage';
+import LOCAL_STORAGE_KEYS from './localStorageKeys.json';
 import NAVIGATION from './navigation.json';
 
 toast.configure();
 
 function App() {
   const isMobile = useIsMobile();
-  const existingToken = JSON.parse(localStorage.getItem("croesus-token"));
-  const [authToken, setAuthToken] = useState(existingToken);
-  const existingUser = JSON.parse(localStorage.getItem("croesus-user"));
-  const [user, setUser] = useState(existingUser);
+  const [authToken, setAuthToken] = useLocalStorage(LOCAL_STORAGE_KEYS.token);
+  const [user, setUser] = useLocalStorage(LOCAL_STORAGE_KEYS.user);
 
   const setToken = (token, newUser) => {
-    localStorage.setItem("croesus-token", JSON.stringify(token));
     setAuthToken(token);
-    setUser(newUser)
-  }
+    setUser(newUser);
+  };
 
   const logOut = () => {
-    localStorage.removeItem("croesus-token");
     setAuthToken();
-  }
+    setUser();
+  };
 
   return (
-    <AuthContext.Provider value={{ authToken, setAuthToken: setToken, logOut, user }}>
+    <AuthContext.Provider value={{
+      authToken, setAuthToken: setToken, logOut, user,
+    }}
+    >
       <Router>
         <div className="has-navbar-fixed-bottom has-background-white-ter is-full-height has-overflow-scroll">
           <header className="hero" style={{ backgroundColor: '#FFFFFF' }}>
-            <NavBar isAuthenticated={!!authToken}/>
+            <NavBar isAuthenticated={!!authToken} />
             {authToken && (
             <nav
               className={isMobile
@@ -55,7 +53,8 @@ function App() {
                 <LiLinkRoute to={NAVIGATION.EXPENSES} fontAwesomeClassName="fa-credit-card" label="Dépenses" />
                 <LiLinkRoute to={NAVIGATION.BALANCE} fontAwesomeClassName="fa-balance-scale" label="Équilibres" />
               </ul>
-            </nav>)}
+            </nav>
+            )}
           </header>
           <ToastContainer />
           <Switch>
@@ -63,10 +62,10 @@ function App() {
               <section className="mx-5 my-3 columns is-centered is-narrow">
                 <div className="column">
                   <Route exact path={NAVIGATION.LOGIN}>
-                    <Login></Login>
+                    <Login />
                   </Route>
                   <Route exact path={NAVIGATION.SIGNUP}>
-                    <SignUp></SignUp>
+                    <SignUp />
                   </Route>
                   <PrivateRoute exact path={NAVIGATION.EXPENSES}>
                     <ExpenseList />
