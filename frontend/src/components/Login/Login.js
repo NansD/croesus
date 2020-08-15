@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAsync } from 'react-async';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/authentication';
 import useValidateEmail from '../../hooks/useValidateEmail';
@@ -11,6 +11,7 @@ export default function Login() {
   const [email, setEmail, isEmailValid] = useValidateEmail('');
   const [password, setPassword] = useState('');
   const { setAuthToken } = useAuth();
+  const history = useHistory();
 
   function checkEmailValidity(e) {
     const mail = e.target.value;
@@ -20,7 +21,7 @@ export default function Login() {
   function notifyLoginSuccess(res) {
     setAuthToken(res.jwt, res.user);
     toast.success(`Bienvenue ${res.user.name}`);
-    window.location.href = NAVIGATION.EXPENSES;
+    history.push(NAVIGATION.EXPENSES);
   }
 
   function notifyLoginFailure(error) {
@@ -46,7 +47,7 @@ export default function Login() {
     );
 
   return (
-    <div>
+    <div className="container">
       <div className="card mb-5">
         <div className="card-content">
           <div className="field">

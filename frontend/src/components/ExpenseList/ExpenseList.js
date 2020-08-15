@@ -12,14 +12,13 @@ function ExpenseList() {
     console.log('error :', error);
   }
 
-  const { data: expenses, pending: loading, setData: setExpenses } = useAsync({
+  const { data: expenses, isPending: loading, setData: setExpenses } = useAsync({
     promiseFn: ExpenseService.getAll,
     onReject: notifyGetAllError,
   });
 
-  const { user, authToken } = useAuth();
+  const { user } = useAuth();
   console.log('user :', user);
-  console.log('authToken :', authToken);
 
   const deleteExpense = (id) => {
     setExpenses(expenses.filter((e) => e._id !== id));
