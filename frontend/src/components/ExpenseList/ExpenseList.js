@@ -1,31 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAsync } from 'react-async';
 import { toast } from 'react-toastify';
 import useUserState from '../../hooks/useUserState';
 import ExpenseService from '../../services/expense.service';
+import GroupService from '../../services/group.service';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 
 function ExpenseList() {
   const [user] = useUserState();
-  console.log('user && user.favoriteGroup :', user && user.favoriteGroup);
+  const [group, setGroup] = useState();
   ExpenseService.setGroup(user && user.favoriteGroup);
   function notifyGetAllError(error) {
     toast.error(`Erreur d'obtention des dépenses: ${error}`);
     console.log('error :', error);
   }
 
-  const { data: expenses, isPending: loading, setData: setExpenses } = useAsync({
-    promiseFn: ExpenseService.getAll,
+  const { isPending: loading, setData: setExpenses } = useAsync({
+    promiseFn: GroupService.getOne,
+    _id: user && user.favoriteGroup,
     onReject: notifyGetAllError,
+    onResolve: (r) => setGroup(r.document),
   });
 
   const deleteExpense = (id) => {
-    setExpenses(expenses.filter((e) => e._id !== id));
+    setExpenses(group.expenses.filter((e) => e._id !== id));
   };
 
   const createExpense = (e) => {
-    setExpenses([e, ...expenses]);
+    setExpenses([e, ...group.expenses]);
   };
 
   if (loading) {
@@ -38,9 +41,12 @@ function ExpenseList() {
 
   return (
     <div>
+      <h2 className="title is-4">
+        { group && group.name }
+      </h2>
       <ExpenseItemForm createExpense={createExpense} />
-      {expenses
-        && expenses.map((expense) => (
+      {group && group.expenses
+        && group.expenses.map((expense) => (
           <ExpenseItem
             key={expense._id}
             expense={expense}

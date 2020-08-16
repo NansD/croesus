@@ -27,9 +27,12 @@ export default function Group({
   return (
     <div className="card mb-5 animated">
       <div className="card-content">
-        {group.name}
-        {group._id}
-
+        <h2 className="title is-5">
+          {group.name}
+        </h2>
+        <div>
+          {group && group.participants && group.participants.map((p) => p.name)}
+        </div>
       </div>
       <footer className="card-footer" style={{ justifyContent: 'space-between', borderTop: '0' }}>
         <button type="button" className="button is-light" onClick={setActiveGroup}>

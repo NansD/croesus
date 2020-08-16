@@ -38,6 +38,15 @@ module.exports.list = (...args) => {
   );
 };
 
+module.exports.getOne = (...args) => {
+  applyMiddlewaresWithDatabase(
+    [...args],
+    parseJson(...args),
+    UserController.authenticateJWT.bind(UserController, ...args),
+    GroupController.getOne.bind(GroupController, ...args)
+  );
+};
+
 module.exports.delete = (...args) => {
   applyMiddlewaresWithDatabase(
     [...args],

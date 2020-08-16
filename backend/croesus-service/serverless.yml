@@ -143,6 +143,15 @@ functions:
           path: groups
           method: get
           # cors: true
+  getOneGroup:
+    handler: api/group/handler.getOne
+    memorySize: 128
+    description: Get group based on its id.
+    events:
+      - http:
+          path: groups/{id}
+          method: get
+          # cors: true
   computeDebts:
     handler: api/group/handler.computeDebts
     memorySize: 128

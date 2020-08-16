@@ -12,7 +12,6 @@ export default function GroupForm({ onChange }) {
   }
 
   function notifyChange(g) {
-    console.log('g :', g);
     onChange(g);
   }
 

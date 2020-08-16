@@ -17,6 +17,12 @@ export default class Service {
     return data.documents;
   }
 
+  getOne = ({ _id }, { signal }) => customFetch(`${this.apiEndPoint}/${_id}`,
+    {
+      method: 'GET',
+      signal,
+    })
+
   delete = ([id], { signal }) => customFetch(`${this.apiEndPoint}/${id}`,
     {
       method: 'DELETE',
