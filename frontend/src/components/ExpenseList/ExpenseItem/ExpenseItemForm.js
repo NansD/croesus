@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import { useAsync } from 'react-async';
+import { toast } from 'react-toastify';
 import ExpenseService from '../../../services/expense.service';
-
 import AVAILABLE_PAYERS from './AvailablePayers.json';
 import UsersSelector from './UsersSelector/UsersSelector';
 
@@ -31,9 +30,13 @@ const ExpenseItemForm = ({ createExpense }) => {
     };
   }
 
+  function orderByDateDesc(a, b) {
+    return new Date(b.submittedAt) - new Date(a.submittedAt);
+  }
+
   function notifyCreationSuccess(res) {
     toast.success(`Dépense pour ${label} créée !`);
-    createExpense(res.document);
+    createExpense(res.document.expenses.sort(orderByDateDesc)[0]);
     resetFields();
   }
 

@@ -1,12 +1,18 @@
+import LOCAL_STORAGE_KEYS from '../localStorageKeys.json';
 import Service from './service';
-import { customFetch } from './service-helpers';
 
 class ExpenseService extends Service {
   constructor() {
     super('expenses');
+    this.setGroup();
   }
 
-  getComputedDebts = (args, { signal }) => customFetch(`${this.apiEndPoint}/computeDebts`, { signal })
+  setGroup(groupId) {
+    const id = groupId
+      || (JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.user))
+      && JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.user)).favoriteGroup);
+    this.apiEndPoint = `${this.baseUrl}/groups/${id}/expenses`;
+  }
 }
 
 export default new ExpenseService();

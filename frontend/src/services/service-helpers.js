@@ -9,9 +9,9 @@ function failIfNotOK(data, response) {
 async function customFetch(url, options, useToken = true) {
   const newOptions = useToken
     ? {
-      headers: new Headers({
-        authorization: `Bearer ${JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.token))}`,
-      }),
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.token))}`,
+      },
       ...options,
     }
     : options;

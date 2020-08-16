@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Balance from './components/Balance/Balance';
 import ExpenseList from './components/ExpenseList/ExpenseList';
+import Groups from './components/Groups/Groups';
 import LiLinkRoute from './components/LiLinkRoute/LiLinkRoute';
 import Login from './components/Login/Login';
 import NavBar from './components/NavBar/NavBar';
@@ -14,6 +15,7 @@ import SignUp from './components/SignUp/SignUp';
 import { AuthContext } from './contexts/authentication';
 import useIsMobile from './hooks/useIsMobile';
 import useLocalStorage from './hooks/useLocalStorage';
+import useUserState from './hooks/useUserState';
 import LOCAL_STORAGE_KEYS from './localStorageKeys.json';
 import NAVIGATION from './navigation.json';
 
@@ -22,7 +24,7 @@ toast.configure();
 function App() {
   const isMobile = useIsMobile();
   const [authToken, setAuthToken] = useLocalStorage(LOCAL_STORAGE_KEYS.token);
-  const [user, setUser] = useLocalStorage(LOCAL_STORAGE_KEYS.user);
+  const [user, setUser] = useUserState();
 
   const setToken = (token, newUser) => {
     setAuthToken(token);
@@ -72,6 +74,9 @@ function App() {
                   </PrivateRoute>
                   <PrivateRoute exact path={NAVIGATION.BALANCE}>
                     <Balance />
+                  </PrivateRoute>
+                  <PrivateRoute exact path={NAVIGATION.GROUPS}>
+                    <Groups />
                   </PrivateRoute>
                 </div>
               </section>

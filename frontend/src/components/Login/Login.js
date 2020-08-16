@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/authentication';
 import useValidateEmail from '../../hooks/useValidateEmail';
 import NAVIGATION from '../../navigation.json';
+import ExpenseService from '../../services/expense.service';
 import UserService from '../../services/user.service';
 
 export default function Login() {
@@ -19,8 +20,10 @@ export default function Login() {
   }
 
   function notifyLoginSuccess(res) {
+    console.log('res :', res);
     setAuthToken(res.jwt, res.user);
     toast.success(`Bienvenue ${res.user.name}`);
+    ExpenseService.setGroup(res.user.favoriteGroup);
     history.push(NAVIGATION.EXPENSES);
   }
 

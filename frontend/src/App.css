@@ -44,6 +44,10 @@
   animation: navAnim .2s ease-in-out;
 }
 
+.animated {
+  animation: navAnim .3s ease-in;
+}
+
 @keyframes navAnim {
   0% {
     display: none;

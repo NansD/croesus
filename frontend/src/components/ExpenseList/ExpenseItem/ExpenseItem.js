@@ -12,14 +12,14 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
     toast.success('Dépense supprimée');
   }
 
-  function notifyDeleFailure(error) {
+  function notifyDeleteFailure(error) {
     toast.error(`Erreur lors de la suppression : ${error}`);
   }
 
   const { run } = useAsync({
     deferFn: ExpenseService.delete,
     onResolve: notifyDeleteSuccess,
-    onReject: notifyDeleFailure,
+    onReject: notifyDeleteFailure,
   });
 
   function handleDelete() {

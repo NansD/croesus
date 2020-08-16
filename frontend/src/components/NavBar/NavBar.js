@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/authentication';
 import NAVIGATION from '../../navigation.json';
+import UnauthenticatedNavBar from './UnauthenticatedNavBar';
+import AuthenticatedNavBar from './AuthenticatedNavBar';
 
 export default function NavBar({ isAuthenticated }) {
   const [showMenu, setShowMenu] = useState(false);
@@ -33,27 +35,13 @@ export default function NavBar({ isAuthenticated }) {
       )}
 
       <div id="navbar-menu" className={`${showMenu ? 'is-active' : ''} navbar-menu`}>
-        <div className="navbar-end">
-          <div className="navbar-item">
-            {!isAuthenticated && (
-            <div className="buttons">
-              <Link to={NAVIGATION.SIGNUP} onClick={() => setShowMenu(false)} className="button is-primary">
-                <strong>Sign up</strong>
-              </Link>
-              <Link to={NAVIGATION.LOGIN} onClick={() => setShowMenu(false)} className="button is-light">
-                Log in
-              </Link>
-            </div>
-            )}
-            {isAuthenticated && (
-            <div className="buttons">
-              <Link to={NAVIGATION.LOGIN} onClick={disconnect} className="button is-primary">
-                <strong>Se déconnecter</strong>
-              </Link>
-            </div>
-            )}
-          </div>
-        </div>
+
+        {!isAuthenticated && (
+        <UnauthenticatedNavBar setShowMenu={setShowMenu} />
+        )}
+        {isAuthenticated && (
+        <AuthenticatedNavBar setShowMenu={setShowMenu} disconnect={disconnect} />
+        )}
       </div>
     </nav>
   );

@@ -10,7 +10,12 @@ class UserService extends Service {
     method: 'POST',
     body: JSON.stringify({ email, password }),
     signal,
-  }, false)
+  }, false);
+
+  getSelf = async (args, { signal }) => customFetch(`${this.apiEndPoint}/getSelf`, {
+    method: 'GET',
+    signal,
+  }, true);
 }
 
 export default new UserService();
