@@ -30,9 +30,13 @@ export default function Group({
         <h2 className="title is-5">
           {group.name}
         </h2>
-        <div>
-          {group && group.participants && group.participants.map((p) => p.name)}
-        </div>
+        <ul>
+          { group && group.participants && group.participants.map((p) => (
+            <li key={p._id}>
+              { p.name }
+            </li>
+          ))}
+        </ul>
       </div>
       <footer className="card-footer" style={{ justifyContent: 'space-between', borderTop: '0' }}>
         <button type="button" className="button is-light" onClick={setActiveGroup}>

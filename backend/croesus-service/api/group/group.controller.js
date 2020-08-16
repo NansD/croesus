@@ -28,10 +28,14 @@ class GroupController extends Controller {
   async create(event, context, callback) {
     const group = await this.createGroup(event, context, callback);
     try {
-      await UserController.Model.findByIdAndUpdate(event.user._id, {
-        ...event.user,
-        groups: [...event.user.groups, group._id],
-      });
+      await UserController.Model.findByIdAndUpdate(
+        event.user._id,
+        {
+          ...event.user,
+          groups: [...event.user.groups, group._id],
+        },
+        { new: true }
+      );
       this.respond.with.success.creation(group, callback);
     } catch (error) {
       console.error('error :', error);

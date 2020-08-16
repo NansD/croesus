@@ -148,6 +148,9 @@ class UserController extends Controller {
   async getSelf(event, context, callback) {
     const { user } = event;
     const populatedUser = await this.Model.findById(user._id).populate('groups', { model: GroupController.Model });
+    populatedUser.groups = populatedUser.groups.sort((a, b) => {
+      return b.submittedAt - a.submittedAt;
+    });
     this.respond.with.success({ document: populatedUser.toObject() }, callback);
   }
 }

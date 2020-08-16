@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useAsync } from 'react-async';
 import GroupService from '../../services/group.service';
+import ParticipantForm from './ParticipantForm';
 
 export default function GroupForm({ onChange }) {
   const [name, setName] = useState('');
+  const [participants, setParticipants] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
   function resetFields() {
@@ -31,11 +33,29 @@ export default function GroupForm({ onChange }) {
   });
 
   function handleCreate() {
-    return run({ name });
+    return run({
+      name,
+      participants: participants.map((p) => ({ name: p.name, customRate: p.customRate })),
+    });
   }
 
   function toggleShowForm() {
     setShowForm(!showForm);
+  }
+
+  function addParticipant(p) {
+    setParticipants([p, ...participants]);
+  }
+
+  function updateParticipant(p) {
+    const newParticipants = participants.map((participant) => (participant._id === p._id
+      ? p
+      : participant));
+    setParticipants(newParticipants);
+  }
+
+  function removeParticipant(_id) {
+    setParticipants(participants.filter((p) => p._id !== _id));
   }
 
   return showForm ? (
@@ -51,15 +71,20 @@ export default function GroupForm({ onChange }) {
             <input
               className="input"
               type="text"
-              placeholder="Name"
+              placeholder="Nom du groupe"
               onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
+          <div className="field">
+            <h2 className="title is-5"> Participants : </h2>
+            <ParticipantForm addParticipant={addParticipant} />
+            {participants.map((p) => <ParticipantForm addParticipant={updateParticipant} key={p._id} participant={p} removeParticipant={removeParticipant} />)}
+          </div>
 
           <footer
-            className="card-footer"
-            style={{ justifyContent: 'space-between', borderTop: '0' }}
+            className="card-footer pt-2"
+            style={{ justifyContent: 'space-between' }}
           >
             <button
               type="button"

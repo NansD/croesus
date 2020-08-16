@@ -44,6 +44,13 @@ function ExpenseList() {
       <h2 className="title is-4">
         { group && group.name }
       </h2>
+      <ul>
+        { group && group.participants && group.participants.map((p) => (
+          <li key={p._id}>
+            { p.name }
+          </li>
+        ))}
+      </ul>
       <ExpenseItemForm createExpense={createExpense} />
       {group && group.expenses
         && group.expenses.map((expense) => (
