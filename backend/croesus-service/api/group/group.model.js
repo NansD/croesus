@@ -1,15 +1,6 @@
 const { Schema } = require('mongoose');
 const ExpenseModel = require('../expense/expense.model');
-
-const ParticipantSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  customRate: {
-    type: Number,
-  },
-});
+const ParticipantSchema = require('../../../common/models/participant.schema');
 
 module.exports = new Schema({
   name: {

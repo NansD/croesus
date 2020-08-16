@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAsync } from 'react-async';
 import { toast } from 'react-toastify';
 import ExpenseService from '../../../services/expense.service';
-import AVAILABLE_PAYERS from './AvailablePayers.json';
 import UsersSelector from './UsersSelector/UsersSelector';
 
-const ExpenseItemForm = ({ createExpense }) => {
-  const [payer, setPayer] = useState(AVAILABLE_PAYERS[1]);
+const ExpenseItemForm = ({ createExpense, participants }) => {
+  const [payer, setPayer] = useState();
   const [label, setLabel] = useState('');
   const [amount, setAmount] = useState(0);
   const [submittedAt, setDate] = useState(new Date());
   const [showForm, setShowForm] = useState(false);
   const [usersFor, setUsersFor] = useState([]);
 
+  useEffect(() => setPayer(participants && participants[0]), [participants]);
+
   function resetFields() {
-    setPayer(AVAILABLE_PAYERS[1]);
+    setPayer(participants[0]);
     setLabel('');
     setAmount(0);
     setShowForm(false);
@@ -105,8 +106,8 @@ const ExpenseItemForm = ({ createExpense }) => {
               value={payer}
               required
             >
-              {AVAILABLE_PAYERS.map((p) => (
-                <option key={p}>{p}</option>
+              {participants.map((p) => (
+                <option key={p._id}>{p.name}</option>
               ))}
             </select>
           </div>
@@ -120,7 +121,7 @@ const ExpenseItemForm = ({ createExpense }) => {
             />
           </div>
           <UsersSelector
-            users={AVAILABLE_PAYERS.map((u) => ({ name: u, checked: true }))}
+            users={participants.map((u) => ({ name: u.name, checked: true }))}
             notifyChange={notifyChange}
           />
         </div>

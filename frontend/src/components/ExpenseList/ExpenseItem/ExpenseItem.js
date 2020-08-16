@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import { useAsync } from 'react-async';
+import { toast } from 'react-toastify';
 import ExpenseService from '../../../services/expense.service';
 import UsersSelector from './UsersSelector/UsersSelector';
 
@@ -44,7 +44,7 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
       </header>
       <div className="card-content">
         <strong>
-          {expense.payer}
+          {expense.payer.name}
         </strong>
         <div>
           <small>

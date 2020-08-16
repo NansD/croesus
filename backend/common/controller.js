@@ -32,7 +32,7 @@ module.exports = class Controller {
     await this.validate(instance, callback);
 
     try {
-      const document = await this.Model.findByIdAndUpdate(instance._id, instance, { new: true });
+      const document = await this.Model.findByIdAndUpdate(instance._id, { $set: event.body }, { new: true });
       return this.respond.with.success.update(document, callback);
     } catch (error) {
       console.error(error);

@@ -10,6 +10,7 @@ import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 function ExpenseList() {
   const [user] = useUserState();
   const [group, setGroup] = useState();
+  const participants = (group && group.participants) || [];
 
   const setExpenses = (expenses) => {
     setGroup({ ...group, expenses });
@@ -52,7 +53,7 @@ function ExpenseList() {
       <div>
         { group && group.participants && group.participants.map((p) => p.name).join(', ')}
       </div>
-      <ExpenseItemForm createExpense={createExpense} />
+      <ExpenseItemForm createExpense={createExpense} participants={participants} />
       {group && group.expenses
         && group.expenses.map((expense) => (
           <ExpenseItem
