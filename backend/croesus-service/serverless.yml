@@ -88,6 +88,15 @@ functions:
           path: users
           method: get
           # cors: true
+  getSelfUsers:
+    handler: api/user/handler.getSelf
+    memorySize: 128
+    description: Get self
+    events:
+      - http:
+          path: users/getSelf
+          method: get
+          # cors: true
   loginUser:
     handler: api/user/handler.login
     memorySize: 128

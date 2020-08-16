@@ -25,6 +25,10 @@ const UserSchema = new Schema(
         ref: collections.GROUPS,
       },
     ],
+    favoriteGroup: {
+      type: Schema.Types.ObjectId,
+      ref: collections.GROUPS,
+    },
   },
   { timestamps: true }
 );

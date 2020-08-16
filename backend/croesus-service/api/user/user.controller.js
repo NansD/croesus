@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { sign, verify } = require('jsonwebtoken');
 const jwtConfiguration = require('./../../../common/jwt-configuration.json');
-
+const GroupController = require('./../group/group.controller');
 const Controller = require('../../../common/controller');
 const collections = require('../../../common/collections.json');
 
@@ -84,10 +84,6 @@ class UserController extends Controller {
     const pathParameterId = String(event.pathParameters.id);
     const bodyId = String(event.body._id);
     const userId = String(event.user._id);
-    console.log(
-      'pathParameterId !== bodyId || pathParameterId !== userId :',
-      pathParameterId !== bodyId || pathParameterId !== userId
-    );
     if (pathParameterId !== bodyId || pathParameterId !== userId) {
       return this.respond.with.error.common.invalidData(event.body, callback);
     }
@@ -147,6 +143,12 @@ class UserController extends Controller {
       this.respond.with.error.unauthorized(callback);
       throw new Error('Authentication failed');
     }
+  }
+
+  async getSelf(event, context, callback) {
+    const { user } = event;
+    const populatedUser = await this.Model.findById(user._id).populate('groups', { model: GroupController.Model });
+    this.respond.with.success({ document: populatedUser.toObject() }, callback);
   }
 }
 

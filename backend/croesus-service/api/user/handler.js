@@ -36,3 +36,12 @@ module.exports.delete = (...args) => {
 module.exports.login = (...args) => {
   applyMiddlewaresWithDatabase([...args], parseJson(...args), UserController.login.bind(UserController, ...args));
 };
+
+module.exports.getSelf = (...args) => {
+  applyMiddlewaresWithDatabase(
+    [...args],
+    parseJson(...args),
+    UserController.authenticateJWT.bind(UserController, ...args),
+    UserController.getSelf.bind(UserController, ...args)
+  );
+};

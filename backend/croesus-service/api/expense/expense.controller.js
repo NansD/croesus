@@ -68,7 +68,7 @@ class ExpenseController extends NestedController {
     if (!event.group || !event.group.expenses) {
       return this.respond.with.error.common.notFound(event.pathParameters.groupId, callback);
     }
-    return this.respond.with.success(event.group.expenses, callback);
+    return this.respond.with.success({ documents: event.group.expenses }, callback);
   }
 
   // eslint-disable-next-line class-methods-use-this
