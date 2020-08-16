@@ -10,13 +10,18 @@ import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 function ExpenseList() {
   const [user] = useUserState();
   const [group, setGroup] = useState();
+
+  const setExpenses = (expenses) => {
+    setGroup({ ...group, expenses });
+  };
+
   ExpenseService.setGroup(user && user.favoriteGroup);
   function notifyGetAllError(error) {
     toast.error(`Erreur d'obtention des dépenses: ${error}`);
     console.log('error :', error);
   }
 
-  const { isPending: loading, setData: setExpenses } = useAsync({
+  const { isPending: loading } = useAsync({
     promiseFn: GroupService.getOne,
     _id: user && user.favoriteGroup,
     onReject: notifyGetAllError,
@@ -44,13 +49,9 @@ function ExpenseList() {
       <h2 className="title is-4">
         { group && group.name }
       </h2>
-      <ul>
-        { group && group.participants && group.participants.map((p) => (
-          <li key={p._id}>
-            { p.name }
-          </li>
-        ))}
-      </ul>
+      <div>
+        { group && group.participants && group.participants.map((p) => p.name).join(', ')}
+      </div>
       <ExpenseItemForm createExpense={createExpense} />
       {group && group.expenses
         && group.expenses.map((expense) => (

@@ -42,6 +42,20 @@ class GroupController extends Controller {
       this.respond.with.error.update.db(event.user, callback);
     }
   }
+
+  async getOne(event, context, callback) {
+    let document;
+    try {
+      document = await this.checkIfDocumentExistsInDb('_id', event.pathParameters.id, callback);
+      document.expenses = document.expenses.sort((a, b) => {
+        return b.submittedAt - a.submittedAt;
+      });
+      return this.respond.with.success.getOne(document, callback);
+    } catch (error) {
+      console.error('Error while getting document', JSON.stringify(error));
+      return this.respond.with.error.common.db(callback);
+    }
+  }
 }
 
 module.exports = new GroupController();
