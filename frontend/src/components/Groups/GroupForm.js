@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useAsync } from 'react-async';
+import { toast } from 'react-toastify';
+import useInput from '../../hooks/useInput';
 import GroupService from '../../services/group.service';
 import ParticipantForm from './ParticipantForm';
 
-export default function GroupForm({ onChange }) {
-  const [name, setName] = useState('');
-  const [participants, setParticipants] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+export default function GroupForm({ onChange, group, toggle }) {
+  const [name, setName, resetName, bindName] = useInput((group && group.name) || '');
+  const [participants, setParticipants] = useState((group && group.participants) || []);
+  const [showForm, setShowForm] = useState(!!group);
 
   function resetFields() {
-    setName('');
+    resetName('');
     setShowForm(false);
   }
 
@@ -26,21 +28,42 @@ export default function GroupForm({ onChange }) {
     notifyChange();
   }
 
+  function notifyUpdateSuccess(g) {
+    notifyChange(g.document);
+  }
+
+  function notifyUpdateFailure() {
+    toast.error('Erreur lors de la modification du groupe');
+  }
+
   const { run } = useAsync({
     deferFn: GroupService.create,
     onResolve: notifyCreationSuccess,
     onReject: notifyCreationFailure,
   });
 
+  const { run: updateGroup } = useAsync({
+    deferFn: GroupService.update,
+    onResolve: notifyUpdateSuccess,
+    onReject: notifyUpdateFailure,
+  });
+
   function handleCreate() {
-    return run({
+    const groupToSend = {
       name,
       participants: participants.map((p) => ({ name: p.name, customRate: p.customRate })),
-    });
+    };
+    if (!group) {
+      return run(groupToSend);
+    }
+    return updateGroup({ ...groupToSend, _id: group._id });
   }
 
   function toggleShowForm() {
-    setShowForm(!showForm);
+    if (group) {
+      return toggle();
+    }
+    return setShowForm(!showForm);
   }
 
   function addParticipant(p) {
@@ -72,14 +95,21 @@ export default function GroupForm({ onChange }) {
               className="input"
               type="text"
               placeholder="Nom du groupe"
-              onChange={(e) => setName(e.target.value)}
+              {...bindName}
               required
             />
           </div>
           <div className="field">
             <h2 className="title is-5"> Participants : </h2>
             <ParticipantForm addParticipant={addParticipant} />
-            {participants.map((p) => <ParticipantForm addParticipant={updateParticipant} key={p._id} participant={p} removeParticipant={removeParticipant} />)}
+            {participants.map((p) => (
+              <ParticipantForm
+                addParticipant={updateParticipant}
+                key={p._id}
+                participant={p}
+                removeParticipant={removeParticipant}
+              />
+            ))}
           </div>
 
           <footer

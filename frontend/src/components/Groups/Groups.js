@@ -33,7 +33,7 @@ export default function Groups() {
     setGroups(groups.filter((group) => group._id !== deletedGroup._id));
   }
 
-  const { isPending: loading } = useAsync({
+  const { isPending: loading, reload } = useAsync({
     promiseFn: UserService.getSelf,
     _id: localUser && localUser._id,
     onReject: notifyError,
@@ -70,6 +70,7 @@ export default function Groups() {
           key={g._id}
           deleteGroup={deleteGroup}
           setActiveGroup={() => updateActiveGroup(g)}
+          reload={() => reload()}
         />
       ))}
     </>

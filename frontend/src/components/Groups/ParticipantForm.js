@@ -1,21 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
-const useInput = (initialValue) => {
-  const [value, setValue] = useState(initialValue);
-
-  return [
-    value,
-    setValue,
-    () => setValue(''),
-    {
-      value,
-      onChange: (event) => {
-        setValue(event.target.value);
-      },
-    },
-  ];
-};
+import useInput from '../../hooks/useInput';
 
 export default function ParticipantForm({ participant, addParticipant, removeParticipant }) {
   const [name, setName, resetName, bindName] = useInput('');
@@ -33,8 +18,12 @@ export default function ParticipantForm({ participant, addParticipant, removePar
     resetCustomRate();
   }
   function notifyAddParticipant() {
-    addParticipant({ _id: uuidv4(), name, customRate });
-    if (!participant) resetFields();
+    addParticipant({
+      _id: uuidv4(), ...participant, name, customRate,
+    });
+    if (!participant) {
+      resetFields();
+    }
   }
   function notifyRemoveParticipant() {
     removeParticipant(participant._id);
