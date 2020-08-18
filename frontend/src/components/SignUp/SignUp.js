@@ -33,7 +33,7 @@ export default function SignUp() {
   });
 
   function submitSignUp() {
-    if (!email || !isEmailValid(email) || !name || !password) {
+    if (!email || !isEmailValid || !name || !password) {
       return toast.warning('Les informations de votre inscription sont incorrectes');
     }
     return signup({ email, password, name });
