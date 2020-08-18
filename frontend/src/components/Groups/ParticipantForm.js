@@ -1,17 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import useInput from '../../hooks/useInput';
 
 export default function ParticipantForm({ participant, addParticipant, removeParticipant }) {
-  const [name, setName, resetName, bindName] = useInput('');
-  const [customRate, setCustomRate, resetCustomRate, bindCustomRate] = useInput('');
-
-  useEffect(() => {
-    if (participant) {
-      setName(participant.name);
-      setCustomRate(participant.customRate);
-    }
-  }, [participant]);
+  const [name, , resetName, bindName] = useInput(participant
+    && participant.name);
+  const [customRate, , resetCustomRate, bindCustomRate] = useInput(participant
+    && participant.customRate);
 
   function resetFields() {
     resetName();

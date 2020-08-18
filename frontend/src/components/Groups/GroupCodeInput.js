@@ -26,13 +26,16 @@ export default function GroupCodeInput({ reload }) {
   });
 
   function submit() {
+    if (!code) {
+      return toast.warning('Veuillez spécifier un code');
+    }
     if (user.groups.map((g) => g._id).includes(code)) {
       return toast.warning('Vous appartenez déjà à ce groupe');
     }
     return run({ ...user, groups: [...user.groups, code] });
   }
   return (
-    <div className="card">
+    <div className="card mb-6">
       <div className="card-content">
         <label className="label" htmlFor="groupCode">
           Code de partage
