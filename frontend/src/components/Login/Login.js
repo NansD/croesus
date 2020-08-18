@@ -20,7 +20,6 @@ export default function Login() {
   }
 
   function notifyLoginSuccess(res) {
-    console.log('res :', res);
     setAuthToken(res.jwt, res.user);
     toast.success(`Bienvenue ${res.user.name}`);
     ExpenseService.setGroup(res.user.favoriteGroup);

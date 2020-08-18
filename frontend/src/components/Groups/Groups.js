@@ -4,13 +4,16 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/authentication';
 import useUserState from '../../hooks/useUserState';
 import UserService from '../../services/user.service';
+import Loading from '../Loading/Loading';
 import Group from './Group';
+import GroupCodeInput from './GroupCodeInput';
 import GroupForm from './GroupForm';
 
 export default function Groups() {
   const { user: authenticatedUser } = useAuth();
   const [localUser, setLocalUser] = useUserState(authenticatedUser);
   const [groups, setGroups] = useState([]);
+  const [user, setUser] = useUserState();
   const [favoriteGroup, setFavoriteGroup] = useState(localUser.favoriteGroup);
 
   function notifyError(error) {
@@ -31,6 +34,8 @@ export default function Groups() {
 
   function deleteGroup(deletedGroup) {
     setGroups(groups.filter((group) => group._id !== deletedGroup._id));
+    const newGroups = groups.filter((group) => group._id !== deletedGroup._id);
+    setUser({ ...user, groups: newGroups });
   }
 
   const { isPending: loading, reload } = useAsync({
@@ -53,14 +58,13 @@ export default function Groups() {
 
   if (loading) {
     return (
-      <>
-        <div className="is-loading" />
-      </>
+      <Loading />
     );
   }
 
   return (
     <>
+      <GroupCodeInput reload={() => reload()} />
       <GroupForm onChange={(g) => setGroups([g, ...groups])} />
       { groups
       && groups.map((g) => (

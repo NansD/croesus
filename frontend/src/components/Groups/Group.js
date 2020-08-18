@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useAsync } from 'react-async';
 import { toast } from 'react-toastify';
 import GroupService from '../../services/group.service';
+import CopyGroupIdButton from './CopyGroupIdButton';
 import GroupForm from './GroupForm';
 
 export default function Group({
   group, deleteGroup, active, setActiveGroup, reload,
 }) {
   const [edit, setEdit] = useState(false);
+
   function notifyDeleteSuccess() {
     deleteGroup(group);
     toast.success('Groupe supprimé');
@@ -53,11 +55,15 @@ export default function Group({
         </ul>
       </div>
       <footer className="card-footer" style={{ justifyContent: 'space-between', borderTop: '0' }}>
-        <button type="button" className="button is-light" onClick={setActiveGroup}>
-          {active ? <i className="icon fa fa-star" aria-hidden="true" />
-            : <i className="icon fa fa-star-o" aria-hidden="true" />}
-        </button>
-        <div>
+        <div style={{ display: 'flex' }}>
+          <button type="button" className="button is-light" onClick={setActiveGroup}>
+            {active ? <i className="icon fa fa-star" aria-hidden="true" aria-label="Add to favorites" />
+              : <i className="icon fa fa-star-o" aria-hidden="true" aria-label="Remove from favorites" />}
+          </button>
+
+          <CopyGroupIdButton groupId={group._id} />
+        </div>
+        <div style={{ display: 'flex' }}>
           <button className="button is-full-width is-danger is-light" type="button" onClick={handleDelete}>
             <i className="fa fa-trash" aria-label="delete" />
           </button>

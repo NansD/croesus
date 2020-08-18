@@ -6,7 +6,6 @@ import NAVIGATION from '../../navigation.json';
 function PrivateRoute({ children, ...rest }) {
   const { authToken } = useAuth();
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
     <Route {...rest}>
       {authToken
         ? (children)
