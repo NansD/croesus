@@ -1,6 +1,12 @@
 import LOCAL_STORAGE_KEYS from '../localStorageKeys.json';
 import Service from './service';
 
+function getValueFromLocalStorage(key) {
+  const localStorageString = localStorage.getItem(key);
+  const value = localStorageString && localStorageString !== 'undefined' ? JSON.parse(localStorageString) : '';
+  return value;
+}
+
 class ExpenseService extends Service {
   constructor() {
     super('expenses');
@@ -8,9 +14,9 @@ class ExpenseService extends Service {
   }
 
   setGroup(groupId) {
+    const value = getValueFromLocalStorage(LOCAL_STORAGE_KEYS.user);
     const id = groupId
-      || (JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.user))
-      && JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.user)).favoriteGroup);
+      || (value && value.favoriteGroup);
     this.apiEndPoint = `${this.baseUrl}/groups/${id}/expenses`;
   }
 }
