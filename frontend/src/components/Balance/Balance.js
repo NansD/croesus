@@ -3,6 +3,7 @@ import { useAsync } from 'react-async';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/authentication';
 import GroupService from '../../services/group.service';
+import Loading from '../Loading/Loading';
 
 function Balance() {
   function notifyGetAllError(error) {
@@ -22,9 +23,7 @@ function Balance() {
 
   if (loading || !debtsToPool) {
     return (
-      <>
-        <div className="is-loading"> Chargement... </div>
-      </>
+      <Loading />
     );
   }
 

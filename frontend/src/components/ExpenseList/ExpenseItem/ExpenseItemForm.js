@@ -51,8 +51,12 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
     onReject: notifyCreationFailure,
   });
 
+  function canSubmit() {
+    return (!payer || !label || !amount);
+  }
+
   function handleCreate() {
-    if (!payer || !label || !amount) {
+    if (canSubmit()) {
       return toast.error(
         `Des informations sur la dépense sont manquantes payeur: ${payer}, motif: ${label}, montant: ${amount}`,
       );
@@ -97,20 +101,6 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
               </p>
             </div>
           </div>
-          <div className="select field" style={{ width: '100%' }}>
-            <select
-              style={{ width: '100%' }}
-              aria-label="payer"
-              placeholder="payer"
-              onChange={(e) => setPayer(e.target.value)}
-              value={payer}
-              required
-            >
-              {participants.map((p) => (
-                <option key={p._id}>{p.name}</option>
-              ))}
-            </select>
-          </div>
           <div className="field">
             <input
               className="input"
@@ -121,14 +111,16 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
             />
           </div>
           <UsersSelector
-            users={participants.map((u) => ({ name: u.name, checked: true }))}
+            users={participants}
             notifyChange={notifyChange}
+            payer={payer}
+            setPayer={setPayer}
           />
         </div>
 
         <footer
           className="card-footer"
-          style={{ justifyContent: 'space-between', borderTop: '0' }}
+          style={{ justifyContent: 'space-between', borderTop: '0', flexWrap: 'wrap' }}
         >
           <button
             type="button"
@@ -143,6 +135,7 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
           <button
             className="button is-success"
             type="submit"
+            disabled={canSubmit()}
             onClick={handleCreate}
           >
             <span className="icon is-small">

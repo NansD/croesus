@@ -32,8 +32,8 @@ function App() {
   };
 
   const logOut = () => {
-    setAuthToken();
-    setUser();
+    setUser('');
+    setAuthToken('');
   };
 
   return (
@@ -66,7 +66,7 @@ function App() {
                   <Route exact path={NAVIGATION.LOGIN}>
                     <Login />
                   </Route>
-                  <Route exact path={NAVIGATION.SIGNUP}>
+                  <Route path={NAVIGATION.SIGNUP}>
                     <SignUp />
                   </Route>
                   <PrivateRoute exact path={NAVIGATION.EXPENSES}>

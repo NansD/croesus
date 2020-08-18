@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import useUserState from '../../hooks/useUserState';
 import ExpenseService from '../../services/expense.service';
 import GroupService from '../../services/group.service';
+import Loading from '../Loading/Loading';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 
@@ -39,9 +40,7 @@ function ExpenseList() {
 
   if (loading) {
     return (
-      <>
-        <div className="is-loading" />
-      </>
+      <Loading />
     );
   }
 
