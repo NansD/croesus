@@ -1,5 +1,15 @@
 const functionAndObject = require('./functionAndObject');
 
+function getDocumentToPrint(document) {
+  if (!document) {
+    return '';
+  }
+  if (document && document.toObject) {
+    return document.toObject();
+  }
+  return JSON.stringify(document);
+}
+
 module.exports = function respond() {
   return {
     with: {
@@ -45,19 +55,15 @@ module.exports = function respond() {
             });
           },
           invalidData: (document, callback) => {
-            let documentToPrint;
-            if (document && document.toObject) {
-              documentToPrint = document.toObject();
-            } else {
-              documentToPrint = JSON.stringify(document);
-            }
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
               },
               statusCode: 400,
               body: JSON.stringify({
-                message: `Incorrect request, ${documentToPrint} didn't pass ${this.collectionName} validation`,
+                message: `Incorrect request, ${getDocumentToPrint(document)} didn't pass ${
+                  this.collectionName
+                } validation`,
               }),
             });
           },
@@ -104,7 +110,7 @@ module.exports = function respond() {
               statusCode: 200,
               body: JSON.stringify({
                 message: `Successfully submitted in collection ${this.collectionName}`,
-                document: document.toObject(),
+                document: getDocumentToPrint(document),
               }),
             });
           },
@@ -116,7 +122,7 @@ module.exports = function respond() {
               statusCode: 200,
               body: JSON.stringify({
                 message: `Successfully updated document in collection ${this.collectionName}`,
-                document: document && document.toObject && document.toObject(),
+                document: getDocumentToPrint(document),
               }),
             });
           },
@@ -128,7 +134,7 @@ module.exports = function respond() {
               statusCode: 200,
               body: JSON.stringify({
                 message: `Successfully fetched document in collection ${this.collectionName}`,
-                document: document.toObject(),
+                document: getDocumentToPrint(document),
               }),
             });
           },
