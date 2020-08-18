@@ -2,10 +2,10 @@ node_modules/
 
 
 # package directories
-expense-service/node_modules
+croesus-service/node_modules
 jspm_packages
 
 # Serverless directories
-expense-service/.serverless
+croesus-service/.serverless
 
-expense-service/.webpack
+croesus-service/.webpack

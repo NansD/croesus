@@ -8,7 +8,10 @@ const dbExecute = (db, performLogic, handleError) => {
 
 class Database {
   constructor() {
-    this.connectionInfo = [process.env.MONGODB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true }];
+    this.connectionInfo = [
+      process.env.MONGODB_CONNECTION_STRING,
+      { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+    ];
   }
 
   dbConnectAndExecute(performLogic, handleError) {

@@ -1,9 +1,11 @@
 {
-  "name": "expense-service",
+  "name": "croesus-service",
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.25"
   },
   "devDependencies": {

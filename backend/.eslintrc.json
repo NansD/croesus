@@ -18,7 +18,9 @@
         "skipBlankLines": true
       }
     ],
-    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }],
+    "no-param-reassign": "off",
+    "max-params": [2, 4]
   },
   "settings": {
     "import/resolver": {

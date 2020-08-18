@@ -1,14 +1,12 @@
 const { Schema } = require('mongoose');
+const ParticipantSchema = require('../../../common/models/participant.schema');
 
 module.exports = new Schema({
   label: {
     type: String,
     required: true,
   },
-  payer: {
-    type: String,
-    required: true,
-  },
+  payer: ParticipantSchema,
   amount: {
     type: Number,
     required: true,

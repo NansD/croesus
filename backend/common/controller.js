@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
+const respond = require('./respond');
 
 module.exports = class Controller {
   constructor(collectionName, model) {
     this.collectionName = collectionName;
     this.Model = mongoose.model(this.collectionName, model);
+    this.respond = respond.apply(this);
   }
 
   async create(event, context, callback) {
-    const requestBody = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+    const requestBody = event.body;
     const instance = new this.Model(requestBody);
 
     await this.validate(instance, callback);
@@ -17,48 +19,38 @@ module.exports = class Controller {
       document = await instance.save();
     } catch (error) {
       console.error(error);
-      callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 500,
-        body: JSON.stringify({
-          message: `Error while submitting in collection ${this.Model.name} ${JSON.stringify(instance)}`,
-        }),
-      });
+      return this.respond.with.error.creation.db(document, callback);
     }
-    callback(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-      },
-      statusCode: 200,
+    return this.respond.with.success.creation(document, callback);
+  }
 
-      body: JSON.stringify({
-        message: `Successfully submitted in collection ${this.Model.name}`,
-        document: document.toObject(),
-      }),
-    });
+  async update(event, context, callback) {
+    const requestBody = event.body;
+
+    const instance = new this.Model(requestBody);
+
+    await this.validate(instance, callback);
+
+    try {
+      const document = await this.Model.findByIdAndUpdate(instance._id, { $set: event.body }, { new: true });
+      return this.respond.with.success.update(document, callback);
+    } catch (error) {
+      console.error(error);
+      return this.respond.with.error.update.db(instance, callback);
+    }
   }
 
   async validate(instance, callback) {
     try {
       await instance.validate();
     } catch (error) {
-      callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 400,
-        body: JSON.stringify({
-          message: `Incorrect request, ${instance.toObject()} didn't pass ${this.Model.name} validation`,
-        }),
-      });
+      this.respond.with.error.common.invalidData(instance, callback);
     }
   }
 
   async list(event, context, callback) {
     try {
-      const documents = await this.Model.find().sort({ submittedAt: 'desc' });
+      const documents = await this.Model.find().sort({ createdAt: 'desc' });
       return callback(null, {
         headers: {
           'Access-Control-Allow-Origin': '*', // Required for CORS support to work
@@ -70,33 +62,56 @@ module.exports = class Controller {
       });
     } catch (err) {
       console.error('Error while getting mongodb data:', JSON.stringify(err, null, 2));
-      return callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 500,
-      });
+      return this.respond.with.error.common.db(callback);
     }
   }
 
-  async delete(event, context, callback) {
+  async getOne(event, context, callback) {
+    let document;
     try {
-      await this.Model.deleteOne({ _id: event.pathParameters.id });
+      document = await this.checkIfDocumentExistsInDb('_id', event.pathParameters.id, callback);
+    } catch (error) {
+      console.error('Error while getting document', JSON.stringify(error));
+      return this.respond.with.error.common.db(callback);
+    }
+    return this.respond.with.success.getOne(document, callback);
+  }
+
+  async delete(event, context, callback) {
+    const document = await this.checkIfDocumentExistsInDb('_id', event.pathParameters.id, callback);
+    try {
+      await document.delete();
     } catch (error) {
       console.error('Error while deleting document', JSON.stringify(error));
-      return callback(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        },
-        statusCode: 500,
-        message: 'Error while deleting document',
-      });
+      return this.respond.with.error.common.db(callback);
     }
-    return callback(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-      },
-      statusCode: 204,
-    });
+    return this.respond.with.success.deletion(callback);
+  }
+
+  async findDocumentInDb(key, value) {
+    const query = { [key]: value };
+    const document = this.Model.findOne(query);
+    return document;
+  }
+
+  async checkIfDocumentExistsInDb(key, value, callback) {
+    const document = await this.findDocumentInDb(key, value);
+    if (!document) {
+      return this.respond.with.error.common.notFound(value, callback);
+    }
+    return document;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  enrichEventWithDocumentClosure(key, value, eventKey) {
+    return async function enrichEventWithDocument(event, context, callback) {
+      try {
+        const document = await this.checkIfDocumentExistsInDb(key, value, callback);
+        event[eventKey] = document.toObject();
+      } catch (error) {
+        this.respond.with.error.common.notFound(value, callback);
+        throw new Error('Document not found');
+      }
+    };
   }
 };

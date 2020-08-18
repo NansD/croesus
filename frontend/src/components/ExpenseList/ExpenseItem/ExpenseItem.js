@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import { useAsync } from 'react-async';
+import { toast } from 'react-toastify';
 import ExpenseService from '../../../services/expense.service';
 import UsersSelector from './UsersSelector/UsersSelector';
 
@@ -12,14 +12,14 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
     toast.success('Dépense supprimée');
   }
 
-  function notifyDeleFailure(error) {
+  function notifyDeleteFailure(error) {
     toast.error(`Erreur lors de la suppression : ${error}`);
   }
 
   const { run } = useAsync({
     deferFn: ExpenseService.delete,
     onResolve: notifyDeleteSuccess,
-    onReject: notifyDeleFailure,
+    onReject: notifyDeleteFailure,
   });
 
   function handleDelete() {
@@ -44,7 +44,7 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
       </header>
       <div className="card-content">
         <strong>
-          {expense.payer}
+          {expense.payer.name}
         </strong>
         <div>
           <small>

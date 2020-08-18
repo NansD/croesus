@@ -6,6 +6,7 @@ module.exports = {
     "rules": {
         "react/prop-types": 0, // let's see if we can do without it for now
         "no-console": "off",
+        "react/jsx-props-no-spreading": "off",
         "no-restricted-syntax": [
             "error",
             {

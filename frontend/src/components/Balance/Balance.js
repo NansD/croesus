@@ -1,7 +1,9 @@
 import React from 'react';
-import { toast } from 'react-toastify';
 import { useAsync } from 'react-async';
-import ExpenseService from '../../services/expense.service';
+import { toast } from 'react-toastify';
+import { useAuth } from '../../contexts/authentication';
+import GroupService from '../../services/group.service';
+import Loading from '../Loading/Loading';
 
 function Balance() {
   function notifyGetAllError(error) {
@@ -9,8 +11,11 @@ function Balance() {
     console.log('error :', error);
   }
 
+  const { user } = useAuth();
+
   const { data, pending: loading } = useAsync({
-    promiseFn: ExpenseService.getComputedDebts,
+    promiseFn: GroupService.getComputedDebts,
+    _id: user.favoriteGroup,
     onReject: notifyGetAllError,
   });
 
@@ -18,9 +23,7 @@ function Balance() {
 
   if (loading || !debtsToPool) {
     return (
-      <>
-        <div className="is-loading"> Chargement... </div>
-      </>
+      <Loading />
     );
   }
 

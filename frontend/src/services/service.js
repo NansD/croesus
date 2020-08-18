@@ -2,7 +2,8 @@ import { customFetch } from './service-helpers';
 
 export default class Service {
   constructor(endpoint) {
-    this.apiEndPoint = `${process.env.REACT_APP_API_BASE_URL}/${endpoint}`;
+    this.baseUrl = `${process.env.REACT_APP_API_BASE_URL}`;
+    this.apiEndPoint = `${this.baseUrl}/${endpoint}`;
   }
 
   create = async ([document], { signal }) => customFetch(this.apiEndPoint, {
@@ -16,9 +17,21 @@ export default class Service {
     return data.documents;
   }
 
+  getOne = ({ _id }, { signal }) => customFetch(`${this.apiEndPoint}/${_id}`,
+    {
+      method: 'GET',
+      signal,
+    })
+
   delete = ([id], { signal }) => customFetch(`${this.apiEndPoint}/${id}`,
     {
       method: 'DELETE',
       signal,
     })
+
+  update= ([document], { signal }) => customFetch(`${this.apiEndPoint}/${document._id}`, {
+    method: 'PUT',
+    body: JSON.stringify(document),
+    signal,
+  })
 }

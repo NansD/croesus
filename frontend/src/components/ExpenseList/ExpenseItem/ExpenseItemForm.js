@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
 import { useAsync } from 'react-async';
+import { toast } from 'react-toastify';
 import ExpenseService from '../../../services/expense.service';
-
-import AVAILABLE_PAYERS from './AvailablePayers.json';
 import UsersSelector from './UsersSelector/UsersSelector';
 
-const ExpenseItemForm = ({ createExpense }) => {
-  const [payer, setPayer] = useState(AVAILABLE_PAYERS[1]);
+const ExpenseItemForm = ({ createExpense, participants }) => {
+  const [payer, setPayer] = useState();
   const [label, setLabel] = useState('');
   const [amount, setAmount] = useState(0);
   const [submittedAt, setDate] = useState(new Date());
   const [showForm, setShowForm] = useState(false);
   const [usersFor, setUsersFor] = useState([]);
 
+  useEffect(() => setPayer(participants && participants[0]), [participants]);
+
   function resetFields() {
-    setPayer(AVAILABLE_PAYERS[1]);
+    setPayer(participants[0]);
     setLabel('');
     setAmount(0);
     setShowForm(false);
@@ -31,9 +31,13 @@ const ExpenseItemForm = ({ createExpense }) => {
     };
   }
 
+  function orderByDateDesc(a, b) {
+    return new Date(b.submittedAt) - new Date(a.submittedAt);
+  }
+
   function notifyCreationSuccess(res) {
     toast.success(`Dépense pour ${label} créée !`);
-    createExpense(res.document);
+    createExpense(res.document.expenses.sort(orderByDateDesc)[0]);
     resetFields();
   }
 
@@ -47,8 +51,12 @@ const ExpenseItemForm = ({ createExpense }) => {
     onReject: notifyCreationFailure,
   });
 
+  function canSubmit() {
+    return (!payer || !label || !amount);
+  }
+
   function handleCreate() {
-    if (!payer || !label || !amount) {
+    if (canSubmit()) {
       return toast.error(
         `Des informations sur la dépense sont manquantes payeur: ${payer}, motif: ${label}, montant: ${amount}`,
       );
@@ -93,20 +101,6 @@ const ExpenseItemForm = ({ createExpense }) => {
               </p>
             </div>
           </div>
-          <div className="select field" style={{ width: '100%' }}>
-            <select
-              style={{ width: '100%' }}
-              aria-label="payer"
-              placeholder="payer"
-              onChange={(e) => setPayer(e.target.value)}
-              value={payer}
-              required
-            >
-              {AVAILABLE_PAYERS.map((p) => (
-                <option key={p}>{p}</option>
-              ))}
-            </select>
-          </div>
           <div className="field">
             <input
               className="input"
@@ -117,14 +111,16 @@ const ExpenseItemForm = ({ createExpense }) => {
             />
           </div>
           <UsersSelector
-            users={AVAILABLE_PAYERS.map((u) => ({ name: u, checked: true }))}
+            users={participants}
             notifyChange={notifyChange}
+            payer={payer}
+            setPayer={setPayer}
           />
         </div>
 
         <footer
           className="card-footer"
-          style={{ justifyContent: 'space-between', borderTop: '0' }}
+          style={{ justifyContent: 'space-between', borderTop: '0', flexWrap: 'wrap' }}
         >
           <button
             type="button"
@@ -139,6 +135,7 @@ const ExpenseItemForm = ({ createExpense }) => {
           <button
             className="button is-success"
             type="submit"
+            disabled={canSubmit()}
             onClick={handleCreate}
           >
             <span className="icon is-small">

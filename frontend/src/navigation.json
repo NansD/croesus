@@ -1,0 +1,7 @@
+{
+  "LOGIN": "/login",
+  "EXPENSES": "/groups/:groupId/expenses",
+  "BALANCE": "/balance",
+  "SIGNUP": "/signup",
+  "GROUPS": "/groups"
+}
