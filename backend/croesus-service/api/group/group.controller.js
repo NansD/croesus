@@ -56,6 +56,23 @@ class GroupController extends Controller {
       return this.respond.with.error.common.db(callback);
     }
   }
+
+  async delete(event, context, callback) {
+    const { user } = event;
+    const userGroups = event.user.groups.map((g) => String(g));
+    const favoriteGroup = String(user.favoriteGroup);
+    try {
+      if (userGroups.includes(event.pathParameters.id)) {
+        UserController.removeGroupFromUser(event, user, event.pathParameters.id);
+      }
+      if (favoriteGroup === event.pathParameters.id) {
+        UserController.updateFavoriteGroup(event);
+      }
+      await super.delete(event, context, callback);
+    } catch (error) {
+      this.respond.with.error.common.db(callback);
+    }
+  }
 }
 
 module.exports = new GroupController();

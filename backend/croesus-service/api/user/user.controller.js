@@ -37,6 +37,36 @@ function enrichBody(event, userFound) {
   event.body = body;
 }
 
+/**
+ * Removes duplicates in groups
+ * and checks if all groups sent actually exist
+ *
+ * @param {*} event
+ * @param {*} user
+ * @param {*} callback
+ */
+async function checkGroupsValidity(event, user, callback) {
+  if (event.body.groups) {
+    const groupsIds = event.body.groups.map((g) => {
+      if (typeof g === 'string') {
+        return g;
+      }
+      return String(g._id);
+    });
+    event.body.groups = [...new Set(groupsIds)];
+  }
+  const userGroupsIds = user.groups.map((g) => g._id || g);
+  const eventGroupsIds = event.body.groups.map((g) => g._id || g);
+
+  const newGroupsIds = userGroupsIds.filter((id) => !eventGroupsIds.includes(id));
+  if (newGroupsIds.length) {
+    newGroupsIds.map((id) => {
+      return GroupController.checkIfDocumentExistsInDb('_id', id, callback);
+    });
+    await Promise.all(newGroupsIds);
+  }
+}
+
 class UserController extends Controller {
   constructor() {
     super(collections.USERS, model);
@@ -80,7 +110,7 @@ class UserController extends Controller {
     }
   }
 
-  update(event, context, callback) {
+  async update(event, context, callback) {
     const pathParameterId = String(event.pathParameters.id);
     const bodyId = String(event.body._id);
     const userId = String(event.user._id);
@@ -88,6 +118,8 @@ class UserController extends Controller {
       return this.respond.with.error.common.invalidData(event.body, callback);
     }
     delete event.body.password;
+    await checkGroupsValidity(event, event.user, callback);
+    console.log('event.body.groups :', event.body.groups);
     return super.update(event, context, callback);
   }
 
@@ -152,6 +184,29 @@ class UserController extends Controller {
       return b.submittedAt - a.submittedAt;
     });
     this.respond.with.success({ document: populatedUser.toObject() }, callback);
+  }
+
+  async removeGroupFromUser(event, user, groupId) {
+    const newUser = await this.Model.findByIdAndUpdate(
+      user._id,
+      {
+        ...user,
+        groups: user.groups.filter((g) => g._id !== groupId),
+      },
+      { new: true }
+    );
+    event.user = newUser.toObject();
+  }
+
+  async updateFavoriteGroup(event) {
+    event.user = await this.Model.findByIdAndUpdate(
+      event.user._id,
+      {
+        ...event.user,
+        favoriteGroup: event.user.groups[0],
+      },
+      { new: true }
+    );
   }
 }
 
