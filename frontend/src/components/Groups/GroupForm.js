@@ -6,7 +6,7 @@ import GroupService from '../../services/group.service';
 import ParticipantForm from './ParticipantForm';
 
 export default function GroupForm({ onChange, group, toggle }) {
-  const [name, setName, resetName, bindName] = useInput((group && group.name) || '');
+  const [name, , resetName, bindName] = useInput((group && group.name) || '');
   const [participants, setParticipants] = useState((group && group.participants) || []);
   const [showForm, setShowForm] = useState(!!group);
 

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/authentication';
-import NAVIGATION from '../../navigation.json';
-import UnauthenticatedNavBar from './UnauthenticatedNavBar';
 import AuthenticatedNavBar from './AuthenticatedNavBar';
+import UnauthenticatedNavBar from './UnauthenticatedNavBar';
 
 export default function NavBar({ isAuthenticated }) {
   const [showMenu, setShowMenu] = useState(false);
