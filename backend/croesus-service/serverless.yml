@@ -122,7 +122,7 @@ functions:
     description: Update group information.
     events:
       - http:
-          path: groups/{id}
+          path: groups/{groupId}
           method: put
           # cors: true
   groupDeletion:
@@ -131,7 +131,7 @@ functions:
     description: Delete group based on its id.
     events:
       - http:
-          path: groups/{id}
+          path: groups/{groupId}
           method: delete
           # cors: true
   listGroups:
@@ -149,7 +149,7 @@ functions:
     description: Get group based on its id.
     events:
       - http:
-          path: groups/{id}
+          path: groups/{groupId}
           method: get
           # cors: true
   computeDebts:

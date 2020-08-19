@@ -46,7 +46,7 @@ class GroupController extends Controller {
   async getOne(event, context, callback) {
     let document;
     try {
-      document = await this.checkIfDocumentExistsInDb('_id', event.pathParameters.id, callback);
+      document = await this.checkIfDocumentExistsInDb('_id', event.pathParameters.groupId, callback);
       document.expenses = document.expenses.sort((a, b) => {
         return b.submittedAt - a.submittedAt;
       });
@@ -62,13 +62,13 @@ class GroupController extends Controller {
     const userGroups = event.user.groups.map((g) => String(g));
     const favoriteGroup = String(user.favoriteGroup);
     try {
-      if (userGroups.includes(event.pathParameters.id)) {
-        UserController.removeGroupFromUser(event, user, event.pathParameters.id);
+      if (userGroups.includes(event.pathParameters.groupId)) {
+        UserController.removeGroupFromUser(event, user, event.pathParameters.groupId);
       }
-      if (favoriteGroup === event.pathParameters.id) {
+      if (favoriteGroup === event.pathParameters.groupId) {
         UserController.updateFavoriteGroup(event);
       }
-      await super.delete(event, context, callback);
+      await super.delete(event, context, callback, event.pathParameters.groupId);
     } catch (error) {
       this.respond.with.error.common.db(callback);
     }

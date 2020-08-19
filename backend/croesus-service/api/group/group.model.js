@@ -13,6 +13,7 @@ module.exports = new Schema({
   },
   expenses: {
     type: [ExpenseModel],
+    default: [],
   },
   submittedAt: {
     type: Date,

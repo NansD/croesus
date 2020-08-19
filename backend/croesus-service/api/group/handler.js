@@ -4,8 +4,8 @@ const UserController = require('../user/user.controller');
 const ExpenseController = require('./../expense/expense.controller');
 const parseJson = require('./../../../common/parseJson');
 
-const getGroup = (args, key) =>
-  GroupController.enrichEventWithDocumentClosure('_id', args[0].pathParameters[key], 'group').bind(
+const getGroup = (args) =>
+  GroupController.enrichEventWithDocumentClosure('_id', args[0].pathParameters.groupId, 'group').bind(
     GroupController,
     ...args
   );
@@ -24,7 +24,7 @@ module.exports.update = (...args) => {
     [...args],
     parseJson(...args),
     UserController.authenticateJWT.bind(UserController, ...args),
-    getGroup(args, 'id'),
+    getGroup(args).bind(GroupController, ...args),
     GroupController.update.bind(GroupController, ...args)
   );
 };
@@ -52,6 +52,7 @@ module.exports.delete = (...args) => {
     [...args],
     parseJson(...args),
     UserController.authenticateJWT.bind(UserController, ...args),
+    getGroup(args).bind(GroupController, ...args),
     GroupController.delete.bind(GroupController, ...args)
   );
 };
@@ -61,7 +62,7 @@ module.exports.computeDebts = (...args) => {
     [...args],
     parseJson(...args),
     UserController.authenticateJWT.bind(UserController, ...args),
-    getGroup(args, 'groupId').bind(GroupController, ...args),
+    getGroup(args).bind(GroupController, ...args),
     ExpenseController.computeDebts.bind(ExpenseController, ...args)
   );
 };

@@ -42,7 +42,7 @@ function UsersSelector({
           style={{ width: '100%' }}
           aria-label="payer"
           placeholder="payer"
-          onChange={(e) => setPayer(e.target.value)}
+          onChange={(e) => setPayer(users.find((p) => p.name === e.target.value))}
           value={payer}
           required
         >
