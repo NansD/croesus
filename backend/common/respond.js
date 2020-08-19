@@ -61,7 +61,7 @@ module.exports = function respond() {
               },
               statusCode: 400,
               body: JSON.stringify({
-                message: `Incorrect request, ${getDocumentToPrint(document)} didn't pass ${
+                message: `Incorrect request, ${getDocumentToPrint(getDocumentToPrint(document))} didn't pass ${
                   this.collectionName
                 } validation`,
               }),

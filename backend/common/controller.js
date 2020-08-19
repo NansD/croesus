@@ -77,8 +77,8 @@ module.exports = class Controller {
     return this.respond.with.success.getOne(document, callback);
   }
 
-  async delete(event, context, callback) {
-    const document = await this.checkIfDocumentExistsInDb('_id', event.pathParameters.id, callback);
+  async delete(event, context, callback, id = event.pathParameters.id) {
+    const document = await this.checkIfDocumentExistsInDb('_id', id, callback);
     try {
       await document.delete();
     } catch (error) {

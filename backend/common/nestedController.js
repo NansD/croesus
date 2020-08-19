@@ -4,7 +4,7 @@ const relationships = require('./relationships.json');
 // eslint-disable-next-line max-params
 function addChildToParent(parent, key, child, callback) {
   if (Array.isArray(parent[key])) {
-    parent[key].push(child);
+    parent[key] = [...parent[key], child];
     return parent;
   }
   return this.respond.with.error.invalidData(parent, callback);
@@ -22,12 +22,11 @@ module.exports = class NestedController {
   // eslint-disable-next-line max-params
   async create(event, context, callback, Model, parent, key) {
     const requestBody = event.body;
-
     const document = new Model(addChildToParent(parent, key, requestBody, callback));
-
     await this.validate(document, callback);
 
     try {
+      console.log('document :', document);
       const res = await Model.findByIdAndUpdate(document._id, document, { new: true });
       console.log('res :', res);
       return this.respond.with.success.creation(res, callback);
@@ -38,9 +37,11 @@ module.exports = class NestedController {
   }
 
   async validate(instance, callback) {
+    console.log('instance.toObject() :', instance.toObject());
     try {
       await instance.validate();
     } catch (error) {
+      console.log('VALIDATE ERROR', error);
       this.respond.with.error.common.invalidData(instance, callback);
     }
   }
