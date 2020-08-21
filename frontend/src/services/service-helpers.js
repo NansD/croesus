@@ -19,10 +19,16 @@ async function customFetch(url, options, useToken = true) {
     ? {
       headers: {
         Authorization: `Bearer ${getToken()}`,
+        'Content-Type': 'application/json',
       },
       ...options,
     }
-    : options;
+    : {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...options,
+    };
   const data = await fetch(url, newOptions);
 
   if (options && options.method === 'DELETE' && data.ok) {
