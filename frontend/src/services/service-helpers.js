@@ -6,11 +6,19 @@ function failIfNotOK(data, response) {
   }
 }
 
+function getToken() {
+  const token = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.token));
+  if (!token || token === 'undefined') {
+    throw new Error('Session expirée, veuillez vous reconnecter');
+  }
+  return token;
+}
+
 async function customFetch(url, options, useToken = true) {
   const newOptions = useToken
     ? {
       headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.token))}`,
+        Authorization: `Bearer ${getToken()}`,
       },
       ...options,
     }
