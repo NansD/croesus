@@ -1,7 +1,7 @@
 const functionAndObject = require('./functionAndObject');
 
 const headers = {
-  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+  'Access-Control-Allow-Origin': 'http://croesus-client.s3-website.eu-west-3.amazonaws.com', // Required for CORS support to work
   'Content-Type': 'application/json',
 };
 
