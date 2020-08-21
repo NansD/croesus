@@ -19,6 +19,7 @@ module.exports = function respond() {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                'Access-Control-Allow-Credentials': true,
               },
               statusCode: 500,
               body: JSON.stringify({
@@ -32,6 +33,7 @@ module.exports = function respond() {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                'Access-Control-Allow-Credentials': true,
               },
               statusCode: 500,
               body: JSON.stringify({
@@ -47,6 +49,7 @@ module.exports = function respond() {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                'Access-Control-Allow-Credentials': true,
               },
               statusCode: 500,
               body: JSON.stringify({
@@ -58,6 +61,7 @@ module.exports = function respond() {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                'Access-Control-Allow-Credentials': true,
               },
               statusCode: 400,
               body: JSON.stringify({
@@ -71,6 +75,7 @@ module.exports = function respond() {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                'Access-Control-Allow-Credentials': true,
               },
               statusCode: 404,
               body: JSON.stringify({
@@ -83,6 +88,7 @@ module.exports = function respond() {
           return callback(null, {
             headers: {
               'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+              'Access-Control-Allow-Credentials': true,
             },
             statusCode: 401,
             body: JSON.stringify({
@@ -96,6 +102,7 @@ module.exports = function respond() {
           return callback(null, {
             headers: {
               'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+              'Access-Control-Allow-Credentials': true,
             },
             statusCode: 200,
             body: JSON.stringify(body),
@@ -106,6 +113,7 @@ module.exports = function respond() {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                'Access-Control-Allow-Credentials': true,
               },
               statusCode: 200,
               body: JSON.stringify({
@@ -118,6 +126,7 @@ module.exports = function respond() {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                'Access-Control-Allow-Credentials': true,
               },
               statusCode: 200,
               body: JSON.stringify({
@@ -130,6 +139,7 @@ module.exports = function respond() {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                'Access-Control-Allow-Credentials': true,
               },
               statusCode: 200,
               body: JSON.stringify({
@@ -142,6 +152,7 @@ module.exports = function respond() {
             return callback(null, {
               headers: {
                 'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+                'Access-Control-Allow-Credentials': true,
               },
               statusCode: 204,
             });
