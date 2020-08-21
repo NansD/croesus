@@ -12,6 +12,12 @@ class UserService extends Service {
     signal,
   }, false);
 
+  create = async ([document], { signal }) => customFetch(this.apiEndPoint, {
+    method: 'POST',
+    body: JSON.stringify(document),
+    signal,
+  }, false);
+
   getSelf = async (args, { signal }) => customFetch(`${this.apiEndPoint}/getSelf`, {
     method: 'GET',
     signal,
