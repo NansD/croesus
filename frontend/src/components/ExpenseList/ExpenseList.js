@@ -8,7 +8,7 @@ import Loading from '../Loading/Loading';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 
-function ExpenseList() {
+export default function ExpenseList() {
   const [user] = useUserState();
   const [group, setGroup] = useState();
   const participants = (group && group.participants) || [];
@@ -45,24 +45,27 @@ function ExpenseList() {
   }
 
   return (
-    <div>
-      <h2 className="title is-4">
-        { group && group.name }
-      </h2>
-      <div>
-        { group && group.participants && group.participants.map((p) => p.name).join(', ')}
+    <>
+      <div className="hero has-background-white mb-5">
+        <div className="hero-body">
+          <h3 className="title is-3">
+            { group && group.name }
+          </h3>
+          <h4 className="subtitle is-4">
+            Participants :
+            { group && group.participants && group.participants.map((p) => <div>{p.name}</div>)}
+          </h4>
+        </div>
       </div>
       <ExpenseItemForm createExpense={createExpense} participants={participants} />
       {group && group.expenses
-        && group.expenses.map((expense) => (
-          <ExpenseItem
-            key={expense._id}
-            expense={expense}
-            deleteExpense={deleteExpense}
-          />
-        ))}
-    </div>
+      && group.expenses.map((expense) => (
+        <ExpenseItem
+          key={expense._id}
+          expense={expense}
+          deleteExpense={deleteExpense}
+        />
+      ))}
+    </>
   );
 }
-
-export default ExpenseList;

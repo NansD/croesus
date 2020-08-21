@@ -12,7 +12,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-toastify": "^6.0.5",
-    "use-persisted-state": "^0.3.0",
+    "use-local-storage-state": "^4.0.0",
     "uuid": "^8.3.0"
   },
   "scripts": {

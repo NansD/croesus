@@ -14,7 +14,7 @@ export default function Groups() {
   const [localUser, setLocalUser] = useUserState(authenticatedUser);
   const [groups, setGroups] = useState([]);
   const [user, setUser] = useUserState();
-  const [favoriteGroup, setFavoriteGroup] = useState(localUser.favoriteGroup);
+  const [favoriteGroup, setFavoriteGroup] = useState(localUser && localUser.favoriteGroup);
 
   function notifyError(error) {
     console.log('error :', error);
@@ -27,7 +27,7 @@ export default function Groups() {
   }
 
   function saveUserGroups(data) {
-    setGroups(data.document.groups);
+    setGroups(data.document.groups.filter(Boolean));
     setLocalUser(data.document);
     setFavoriteGroup(data.document.favoriteGroup);
   }

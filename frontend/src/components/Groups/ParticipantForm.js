@@ -12,29 +12,33 @@ export default function ParticipantForm({ participant, addParticipant, removePar
     resetName();
     resetCustomRate();
   }
-  function notifyAddParticipant() {
-    addParticipant({
-      _id: uuidv4(), ...participant, name, customRate,
-    });
-    if (!participant) {
-      resetFields();
-    }
-  }
-  function notifyRemoveParticipant() {
-    removeParticipant(participant._id);
-  }
   function disabled() {
     if (!name) {
       return true;
     }
     return (
       participant
-      && name === participant.name
-      && customRate === participant.customRate
+        && name === participant.name
+        && customRate === participant.customRate
     );
   }
+  function notifyAddParticipant(e) {
+    e.preventDefault();
+    if (!disabled()) {
+      addParticipant({
+        _id: uuidv4(), ...participant, name, customRate,
+      });
+      if (!participant) {
+        resetFields();
+      }
+    }
+  }
+  function notifyRemoveParticipant() {
+    removeParticipant(participant._id);
+  }
+
   return (
-    <div className="field">
+    <form className="field" onSubmit={(e) => notifyAddParticipant(e)}>
       <div className="field">
         <input className="input" type="text" placeholder="Nom" {...bindName} />
       </div>
@@ -50,7 +54,7 @@ export default function ParticipantForm({ participant, addParticipant, removePar
         </button>
         )}
         {!disabled() && (
-        <button className="button is-small is-success" type="button" onClick={notifyAddParticipant}>
+        <button className="button is-small is-success" type="submit">
           <span className="icon is-small">
             <i className="fa fa-check" />
           </span>
@@ -58,6 +62,6 @@ export default function ParticipantForm({ participant, addParticipant, removePar
         </button>
         )}
       </div>
-    </div>
+    </form>
   );
 }

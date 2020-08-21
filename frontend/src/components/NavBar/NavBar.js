@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../contexts/authentication';
+import NAVIGATION from '../../navigation.json';
 import AuthenticatedNavBar from './AuthenticatedNavBar';
 import UnauthenticatedNavBar from './UnauthenticatedNavBar';
 
 export default function NavBar({ isAuthenticated }) {
   const [showMenu, setShowMenu] = useState(false);
   const { logOut } = useAuth();
+  const history = useHistory();
 
   function disconnect() {
     logOut();
     setShowMenu(false);
+    history.push(NAVIGATION.LOGIN);
   }
 
   return (
