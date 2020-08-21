@@ -55,7 +55,8 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
     return (!payer || !label || !amount);
   }
 
-  function handleCreate() {
+  function handleCreate(e) {
+    e.preventDefault();
     if (canSubmit()) {
       return toast.error(
         `Des informations sur la dépense sont manquantes payeur: ${payer}, motif: ${label}, montant: ${amount}`,
@@ -73,7 +74,7 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
   }
 
   return showForm ? (
-    <div className="card mb-5">
+    <form className="card mb-5" onSubmit={(e) => handleCreate(e)}>
       <div className="card-content">
         <div className="field">
           <div className="field">
@@ -136,7 +137,6 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
             className="button is-success"
             type="submit"
             disabled={canSubmit()}
-            onClick={handleCreate}
           >
             <span className="icon is-small">
               <i className="fa fa-check" />
@@ -145,7 +145,7 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
           </button>
         </footer>
       </div>
-    </div>
+    </form>
   ) : (
     <button
       type="button"

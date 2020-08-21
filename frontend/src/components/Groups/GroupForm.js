@@ -26,6 +26,7 @@ export default function GroupForm({ onChange, group, toggle }) {
 
   function notifyCreationFailure() {
     notifyChange();
+    toast.error('Erreur lors de la création du groupe');
   }
 
   function notifyUpdateSuccess(g) {
