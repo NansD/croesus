@@ -2,7 +2,6 @@ const functionAndObject = require('./functionAndObject');
 
 const headers = {
   'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-  'Access-Control-Allow-Credentials': true,
   'Content-Type': 'application/json',
 };
 
