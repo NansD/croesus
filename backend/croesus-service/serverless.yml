@@ -60,7 +60,7 @@ functions:
       - http:
           path: users
           method: post
-          # cors: true
+          cors: true
   userUpdate:
     handler: api/user/handler.update
     memorySize: 128
@@ -69,7 +69,7 @@ functions:
       - http:
           path: users/{id}
           method: put
-          # cors: true
+          cors: true
   userDeletion:
     handler: api/user/handler.delete
     memorySize: 128
@@ -78,7 +78,7 @@ functions:
       - http:
           path: users/{id}
           method: delete
-          # cors: true
+          cors: true
   listUsers:
     handler: api/user/handler.list
     memorySize: 128
@@ -87,7 +87,7 @@ functions:
       - http:
           path: users
           method: get
-          # cors: true
+          cors: true
   getSelfUsers:
     handler: api/user/handler.getSelf
     memorySize: 128
@@ -96,7 +96,7 @@ functions:
       - http:
           path: users/getSelf
           method: get
-          # cors: true
+          cors: true
   loginUser:
     handler: api/user/handler.login
     memorySize: 128
@@ -105,7 +105,7 @@ functions:
       - http:
           path: users/login
           method: post
-          # cors: true
+          cors: true
   # group
   groupSubmission:
     handler: api/group/handler.submit
@@ -115,7 +115,7 @@ functions:
       - http:
           path: groups
           method: post
-          # cors: true
+          cors: true
   groupUpdate:
     handler: api/group/handler.update
     memorySize: 128
@@ -124,7 +124,7 @@ functions:
       - http:
           path: groups/{groupId}
           method: put
-          # cors: true
+          cors: true
   groupDeletion:
     handler: api/group/handler.delete
     memorySize: 128
@@ -133,7 +133,7 @@ functions:
       - http:
           path: groups/{groupId}
           method: delete
-          # cors: true
+          cors: true
   listGroups:
     handler: api/group/handler.list
     memorySize: 128
@@ -142,7 +142,7 @@ functions:
       - http:
           path: groups
           method: get
-          # cors: true
+          cors: true
   getOneGroup:
     handler: api/group/handler.getOne
     memorySize: 128
@@ -151,7 +151,7 @@ functions:
       - http:
           path: groups/{groupId}
           method: get
-          # cors: true
+          cors: true
   computeDebts:
     handler: api/group/handler.computeDebts
     memorySize: 128
@@ -160,7 +160,7 @@ functions:
       - http:
           path: groups/{groupId}/computeDebts
           method: get
-          # cors: true
+          cors: true
   # expense
   expenseSubmission:
     handler: api/expense/handler.submit
@@ -170,7 +170,7 @@ functions:
       - http:
           path: /groups/{groupId}/expenses
           method: post
-          # cors: true
+          cors: true
   expenseUpdate:
     handler: api/expense/handler.update
     memorySize: 128
@@ -179,7 +179,7 @@ functions:
       - http:
           path: /groups/{groupId}/expenses/{id}
           method: put
-          # cors: true
+          cors: true
   expenseDeletion:
     handler: api/expense/handler.delete
     memorySize: 128
@@ -188,7 +188,7 @@ functions:
       - http:
           path: /groups/{groupId}/expenses/{id}
           method: delete
-          # cors: true
+          cors: true
   listExpenses:
     handler: api/expense/handler.list
     memorySize: 128
@@ -197,7 +197,7 @@ functions:
       - http:
           path: /groups/{groupId}/expenses
           method: get
-          # cors: true
+          cors: true
 plugins:
   # - serverless-domain-manager
   - serverless-offline

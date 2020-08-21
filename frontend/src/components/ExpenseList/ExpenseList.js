@@ -53,7 +53,8 @@ export default function ExpenseList() {
           </h3>
           <h4 className="subtitle is-4">
             Participants :
-            { group && group.participants && group.participants.map((p) => <div>{p.name}</div>)}
+            { group
+            && group.participants && group.participants.map((p) => <div key={p._id}>{p.name}</div>)}
           </h4>
         </div>
       </div>
