@@ -15,7 +15,7 @@ function Balance() {
 
   const { data, pending: loading } = useAsync({
     promiseFn: GroupService.getComputedDebts,
-    _id: user.favoriteGroup,
+    _id: user && user.favoriteGroup,
     onReject: notifyGetAllError,
   });
 
