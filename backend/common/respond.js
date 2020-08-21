@@ -1,5 +1,11 @@
 const functionAndObject = require('./functionAndObject');
 
+const headers = {
+  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+  'Access-Control-Allow-Credentials': true,
+  'Content-Type': 'application/json',
+};
+
 function getDocumentToPrint(document) {
   if (!document) {
     return '';
@@ -17,10 +23,7 @@ module.exports = function respond() {
         creation: {
           db: (document, callback) => {
             return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-                'Access-Control-Allow-Credentials': true,
-              },
+              headers,
               statusCode: 500,
               body: JSON.stringify({
                 message: `Error while submitting in collection ${this.collectionName} ${JSON.stringify(document)}`,
@@ -31,10 +34,7 @@ module.exports = function respond() {
         update: {
           db: (document, callback) => {
             return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-                'Access-Control-Allow-Credentials': true,
-              },
+              headers,
               statusCode: 500,
               body: JSON.stringify({
                 message: `Error while updating document ${JSON.stringify(document)} in collection ${
@@ -47,10 +47,7 @@ module.exports = function respond() {
         common: {
           db: (callback) => {
             return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-                'Access-Control-Allow-Credentials': true,
-              },
+              headers,
               statusCode: 500,
               body: JSON.stringify({
                 message: `Error while performing action in collection ${this.collectionName}`,
@@ -59,10 +56,7 @@ module.exports = function respond() {
           },
           invalidData: (document, callback) => {
             return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-                'Access-Control-Allow-Credentials': true,
-              },
+              headers,
               statusCode: 400,
               body: JSON.stringify({
                 message: `Incorrect request, ${getDocumentToPrint(getDocumentToPrint(document))} didn't pass ${
@@ -73,10 +67,7 @@ module.exports = function respond() {
           },
           notFound: (key, callback) => {
             return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-                'Access-Control-Allow-Credentials': true,
-              },
+              headers,
               statusCode: 404,
               body: JSON.stringify({
                 message: `Couldn't find any document matching ${key} in collection ${this.collectionName}`,
@@ -86,10 +77,7 @@ module.exports = function respond() {
         },
         unauthorized: (callback) => {
           return callback(null, {
-            headers: {
-              'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-              'Access-Control-Allow-Credentials': true,
-            },
+            headers,
             statusCode: 401,
             body: JSON.stringify({
               message: `Unauthorized. Are you logged in ?`,
@@ -100,10 +88,7 @@ module.exports = function respond() {
       success: functionAndObject(
         (body, callback) => {
           return callback(null, {
-            headers: {
-              'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-              'Access-Control-Allow-Credentials': true,
-            },
+            headers,
             statusCode: 200,
             body: JSON.stringify(body),
           });
@@ -111,10 +96,7 @@ module.exports = function respond() {
         {
           creation: (document, callback) => {
             return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-                'Access-Control-Allow-Credentials': true,
-              },
+              headers,
               statusCode: 200,
               body: JSON.stringify({
                 message: `Successfully submitted in collection ${this.collectionName}`,
@@ -124,10 +106,7 @@ module.exports = function respond() {
           },
           update: (document, callback) => {
             return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-                'Access-Control-Allow-Credentials': true,
-              },
+              headers,
               statusCode: 200,
               body: JSON.stringify({
                 message: `Successfully updated document in collection ${this.collectionName}`,
@@ -137,10 +116,7 @@ module.exports = function respond() {
           },
           getOne: (document, callback) => {
             return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-                'Access-Control-Allow-Credentials': true,
-              },
+              headers,
               statusCode: 200,
               body: JSON.stringify({
                 message: `Successfully fetched document in collection ${this.collectionName}`,
@@ -150,10 +126,7 @@ module.exports = function respond() {
           },
           deletion: (callback) => {
             return callback(null, {
-              headers: {
-                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-                'Access-Control-Allow-Credentials': true,
-              },
+              headers,
               statusCode: 204,
             });
           },
