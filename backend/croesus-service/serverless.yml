@@ -54,7 +54,8 @@ functions:
   # user
   userSubmission:
     handler: api/user/handler.submit
-    memorySize: 128
+    memorySize: 256
+    timeout: 45
     description: Submit user information.
     events:
       - http:
