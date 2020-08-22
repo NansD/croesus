@@ -55,7 +55,6 @@ functions:
   userSubmission:
     handler: api/user/handler.submit
     memorySize: 256
-    timeout: 45
     description: Submit user information.
     events:
       - http:
@@ -74,7 +73,7 @@ functions:
             cacheControl: 'max-age=600, s-maxage=600, proxy-revalidate'
   userUpdate:
     handler: api/user/handler.update
-    memorySize: 128
+    memorySize: 256
     description: Update user information.
     events:
       - http:
@@ -83,7 +82,7 @@ functions:
           cors: true
   userDeletion:
     handler: api/user/handler.delete
-    memorySize: 128
+    memorySize: 256
     description: Delete user based on its id.
     events:
       - http:
@@ -92,7 +91,7 @@ functions:
           cors: true
   listUsers:
     handler: api/user/handler.list
-    memorySize: 128
+    memorySize: 256
     description: Get all users
     events:
       - http:
@@ -101,7 +100,7 @@ functions:
           cors: true
   getSelfUsers:
     handler: api/user/handler.getSelf
-    memorySize: 128
+    memorySize: 256
     description: Get self
     events:
       - http:
@@ -110,7 +109,7 @@ functions:
           cors: true
   loginUser:
     handler: api/user/handler.login
-    memorySize: 128
+    memorySize: 256
     description: Authenticate user
     events:
       - http:
@@ -120,7 +119,7 @@ functions:
   # group
   groupSubmission:
     handler: api/group/handler.submit
-    memorySize: 128
+    memorySize: 256
     description: Submit group information.
     events:
       - http:
@@ -129,7 +128,7 @@ functions:
           cors: true
   groupUpdate:
     handler: api/group/handler.update
-    memorySize: 128
+    memorySize: 256
     description: Update group information.
     events:
       - http:
@@ -138,7 +137,7 @@ functions:
           cors: true
   groupDeletion:
     handler: api/group/handler.delete
-    memorySize: 128
+    memorySize: 256
     description: Delete group based on its id.
     events:
       - http:
@@ -147,7 +146,7 @@ functions:
           cors: true
   listGroups:
     handler: api/group/handler.list
-    memorySize: 128
+    memorySize: 256
     description: Get all groups
     events:
       - http:
@@ -156,7 +155,7 @@ functions:
           cors: true
   getOneGroup:
     handler: api/group/handler.getOne
-    memorySize: 128
+    memorySize: 256
     description: Get group based on its id.
     events:
       - http:
@@ -165,7 +164,7 @@ functions:
           cors: true
   computeDebts:
     handler: api/group/handler.computeDebts
-    memorySize: 128
+    memorySize: 256
     description: Compute expenses
     events:
       - http:
@@ -175,7 +174,7 @@ functions:
   # expense
   expenseSubmission:
     handler: api/expense/handler.submit
-    memorySize: 128
+    memorySize: 256
     description: Submit expense information.
     events:
       - http:
@@ -184,7 +183,7 @@ functions:
           cors: true
   expenseUpdate:
     handler: api/expense/handler.update
-    memorySize: 128
+    memorySize: 256
     description: Update expense information.
     events:
       - http:
@@ -193,7 +192,7 @@ functions:
           cors: true
   expenseDeletion:
     handler: api/expense/handler.delete
-    memorySize: 128
+    memorySize: 256
     description: Delete expense based on its id.
     events:
       - http:
@@ -202,7 +201,7 @@ functions:
           cors: true
   listExpenses:
     handler: api/expense/handler.list
-    memorySize: 128
+    memorySize: 256
     description: Get all expenses
     events:
       - http:
