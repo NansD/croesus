@@ -73,6 +73,7 @@ class UserController extends Controller {
   }
 
   async checkForUniqueness(registeringUser, callback) {
+    console.debug('registeringUser', registeringUser);
     const user = await this.Model.findOne({ email: registeringUser.email.toLowerCase() });
     if (user) {
       return callback(null, {
@@ -98,6 +99,7 @@ class UserController extends Controller {
     const requestBody = event.body;
 
     this.checkRequiredData(requestBody, callback);
+    console.debug('body :', requestBody);
     await this.checkForUniqueness(requestBody, callback);
     const newUser = new this.Model(requestBody);
     try {
@@ -129,13 +131,13 @@ class UserController extends Controller {
     const { email, password } = requestBody;
 
     if (!email || !password) {
-      return this.respond.with.error.common.invalidData(callback);
+      return this.respond.with.error.common.invalidData(event.body, callback);
     }
 
     const userInCollection = await this.checkIfDocumentExistsInDb('email', email.toLowerCase(), callback);
 
     if (!bcrypt.compareSync(password, userInCollection.password)) {
-      return this.respond.with.error.common.invalidData(callback);
+      return this.respond.with.error.common.invalidData(event.body, callback);
     }
 
     const token = sign(
