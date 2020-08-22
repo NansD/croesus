@@ -73,7 +73,6 @@ class UserController extends Controller {
   }
 
   async checkForUniqueness(registeringUser, callback) {
-    console.debug('registeringUser', registeringUser);
     const user = await this.Model.findOne({ email: registeringUser.email.toLowerCase() });
     if (user) {
       return callback(null, {
@@ -99,7 +98,6 @@ class UserController extends Controller {
     const requestBody = event.body;
 
     this.checkRequiredData(requestBody, callback);
-    console.debug('body :', requestBody);
     await this.checkForUniqueness(requestBody, callback);
     const newUser = new this.Model(requestBody);
     try {
@@ -193,7 +191,7 @@ class UserController extends Controller {
       user._id,
       {
         ...user,
-        groups: user.groups.filter((g) => g && g._id !== groupId),
+        groups: user.groups.filter((g) => g && String(g._id) !== groupId),
       },
       { new: true }
     );

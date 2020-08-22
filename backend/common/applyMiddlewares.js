@@ -1,4 +1,4 @@
-const Database = require('./database');
+const database = require('./database');
 const parseJson = require('./parseJson');
 
 async function applyMiddlewares(parameters, ...middlewares) {
@@ -18,9 +18,9 @@ async function applyMiddlewares(parameters, ...middlewares) {
  * @param {Array} parameters
  * @param {Function} middlewares
  */
-module.exports.applyMiddlewaresWithDatabase = function applyMiddlewaresWithDatabase(parameters, ...middlewares) {
+module.exports.applyMiddlewaresWithDatabase = async function applyMiddlewaresWithDatabase(parameters, ...middlewares) {
   // eslint-disable-next-line no-unused-vars
-  const db = Database.connectToDatabase();
+  await database.connectToDatabase();
   const newMiddlewares = [parseJson(...parameters), ...middlewares];
   return applyMiddlewares(parameters, ...newMiddlewares);
 };
