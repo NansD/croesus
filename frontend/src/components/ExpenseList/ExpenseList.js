@@ -7,7 +7,6 @@ import NAVIGATION from '../../navigation.json';
 import ExpenseService from '../../services/expense.service';
 import GroupService from '../../services/group.service';
 import Loading from '../Loading/Loading';
-import PullToRefresh from '../PullToRefresh/PullToRefresh';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 
@@ -51,7 +50,7 @@ export default function ExpenseList() {
     console.log('error :', error);
   }
 
-  const { isPending: loading, reload } = useAsync({
+  const { isPending: loading } = useAsync({
     promiseFn: GroupService.getOne,
     _id: user && user.favoriteGroup,
     onReject: notifyGetAllError,
@@ -66,17 +65,14 @@ export default function ExpenseList() {
     setExpenses([e, ...group.expenses]);
   };
 
-  if (!group && loading) {
+  if (loading) {
     return (
       <Loading />
     );
   }
 
   return (
-    <PullToRefresh onRefresh={() => reload()}>
-      {loading && (
-        <Loading />
-      )}
+    <>
       <div className="hero has-background-white mb-5">
         <div className="hero-body">
           <h3 className="title is-3">
@@ -98,6 +94,6 @@ export default function ExpenseList() {
           deleteExpense={deleteExpense}
         />
       ))}
-    </PullToRefresh>
+    </>
   );
 }
