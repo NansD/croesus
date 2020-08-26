@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import ClipboardService from '../../services/others/clipboard.service';
 
 export default function CopyGroupIdButton({ groupId }) {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -10,16 +11,16 @@ export default function CopyGroupIdButton({ groupId }) {
     setShowDropDown(!showDropDown);
   }
 
-  function copyInputToClipBoard(ref) {
+  async function copyInputToClipBoard(ref) {
     ref.current.focus();
     ref.current.select();
-    document.execCommand('copy');
+    await ClipboardService.copy(ref.current.value);
     toast.success('Copié !');
     setShowDropDown(false);
   }
 
   function copyCodeToClipboard() {
-    copyInputToClipBoard(codeInputRef);
+    return copyInputToClipBoard(codeInputRef);
   }
   return (
     <div className={`${showDropDown && 'is-active'} dropdown is-up`}>
@@ -33,7 +34,7 @@ export default function CopyGroupIdButton({ groupId }) {
         <div className="dropdown-content">
           <div className="dropdown-item is-flex">
             <button type="button" className="button" onClick={copyCodeToClipboard}>
-              <i className="icon fa fa-copy" aria-hidden="true" aria-label="share" />
+              <i className="icon fa fa-clone" aria-hidden="true" aria-label="share" />
             </button>
 
             <input readOnly type="text" className="input" ref={codeInputRef} value={groupId} />

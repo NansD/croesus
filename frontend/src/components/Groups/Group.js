@@ -15,14 +15,14 @@ export default function Group({
     toast.success('Groupe supprimé');
   }
 
-  function notifyDeleFailure(error) {
+  function notifyDeleteFailure(error) {
     toast.error(`Erreur lors de la suppression : ${error}`);
   }
 
   const { run } = useAsync({
     deferFn: GroupService.delete,
     onResolve: notifyDeleteSuccess,
-    onReject: notifyDeleFailure,
+    onReject: notifyDeleteFailure,
   });
 
   function handleDelete() {

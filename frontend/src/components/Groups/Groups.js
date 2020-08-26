@@ -47,6 +47,7 @@ export default function Groups() {
 
   const { run: updateUser } = useAsync({
     deferFn: UserService.update,
+    onResolve: (data) => setLocalUser(data.document),
     onReject: notifyFavoriteGroupFailure,
   });
 
