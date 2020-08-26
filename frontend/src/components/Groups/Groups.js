@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/authentication';
 import useUserState from '../../hooks/useUserState';
 import UserService from '../../services/user.service';
 import Loading from '../Loading/Loading';
+import PullToRefresh from '../PullToRefresh/PullToRefresh';
 import Group from './Group';
 import GroupCodeInput from './GroupCodeInput';
 import GroupForm from './GroupForm';
@@ -47,6 +48,7 @@ export default function Groups() {
 
   const { run: updateUser } = useAsync({
     deferFn: UserService.update,
+    onResolve: (data) => setLocalUser(data.document),
     onReject: notifyFavoriteGroupFailure,
   });
 
@@ -56,14 +58,15 @@ export default function Groups() {
     setLocalUser({ ...localUser, favoriteGroup: g._id });
   }
 
-  if (loading) {
+  if (!groups.length && loading) {
     return (
       <Loading />
     );
   }
 
   return (
-    <>
+    <PullToRefresh onRefresh={() => reload()}>
+      {loading && <Loading />}
       <GroupCodeInput reload={() => reload()} />
       <GroupForm onChange={(g) => setGroups([g, ...groups])} />
       { groups
@@ -77,6 +80,6 @@ export default function Groups() {
           reload={() => reload()}
         />
       ))}
-    </>
+    </PullToRefresh>
   );
 }

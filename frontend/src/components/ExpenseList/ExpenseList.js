@@ -1,21 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAsync } from 'react-async';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useUserState from '../../hooks/useUserState';
+import NAVIGATION from '../../navigation.json';
 import ExpenseService from '../../services/expense.service';
 import GroupService from '../../services/group.service';
 import Loading from '../Loading/Loading';
+import PullToRefresh from '../PullToRefresh/PullToRefresh';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
+
+function checkUserGroups(user, history) {
+  if (!user) {
+    return;
+  }
+  if (user && (!user.groups.length || !user.favoriteGroup)) {
+    history.push(NAVIGATION.GROUPS);
+    toast.info(
+      <>
+        <p>
+          Vous n&apos;avez pas encore de groupe. Voici la page qui permet d&apos;en créer un!
+        </p>
+        <p>
+          Pour commencer, cliquez sur &quot;Créer un groupe&quot;.
+        </p>
+      </>,
+      { toastId: user._id },
+    );
+  }
+}
 
 export default function ExpenseList() {
   const [user] = useUserState();
   const [group, setGroup] = useState();
+  const history = useHistory();
   const participants = (group && group.participants) || [];
 
   const setExpenses = (expenses) => {
     setGroup({ ...group, expenses });
   };
+
+  useEffect(() => {
+    checkUserGroups(user, history);
+  }, [user, history]);
 
   ExpenseService.setGroup(user && user.favoriteGroup);
   function notifyGetAllError(error) {
@@ -23,7 +51,7 @@ export default function ExpenseList() {
     console.log('error :', error);
   }
 
-  const { isPending: loading } = useAsync({
+  const { isPending: loading, reload } = useAsync({
     promiseFn: GroupService.getOne,
     _id: user && user.favoriteGroup,
     onReject: notifyGetAllError,
@@ -38,14 +66,17 @@ export default function ExpenseList() {
     setExpenses([e, ...group.expenses]);
   };
 
-  if (loading) {
+  if (!group && loading) {
     return (
       <Loading />
     );
   }
 
   return (
-    <>
+    <PullToRefresh onRefresh={() => reload()}>
+      {loading && (
+        <Loading />
+      )}
       <div className="hero has-background-white mb-5">
         <div className="hero-body">
           <h3 className="title is-3">
@@ -67,6 +98,6 @@ export default function ExpenseList() {
           deleteExpense={deleteExpense}
         />
       ))}
-    </>
+    </PullToRefresh>
   );
 }
