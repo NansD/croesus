@@ -10,10 +10,10 @@
     "react": "^16.13.1",
     "react-async": "^10.0.1",
     "react-dom": "^16.13.1",
-    "react-pull-to-refresh": "^1.1.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-toastify": "^6.0.5",
+    "rmc-pull-to-refresh": "^1.0.13",
     "use-local-storage-state": "^4.0.0",
     "uuid": "^8.3.0"
   },
