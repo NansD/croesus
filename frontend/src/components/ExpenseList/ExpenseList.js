@@ -1,21 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAsync } from 'react-async';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useUserState from '../../hooks/useUserState';
+import NAVIGATION from '../../navigation.json';
 import ExpenseService from '../../services/expense.service';
 import GroupService from '../../services/group.service';
 import Loading from '../Loading/Loading';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 
+function checkUserGroups(user, history) {
+  if (!user) {
+    return;
+  }
+  if (user && (!user.groups.length || !user.favoriteGroup)) {
+    history.push(NAVIGATION.GROUPS);
+    toast.info(
+      <>
+        <p>
+          Vous n'avez pas encore de groupe. Voici la page qui permet d'en créer un !
+        </p>
+        <p>
+          Pour commencer, cliquez sur "Créer un groupe".
+        </p>
+      </>,
+      { toastId: user._id },
+    );
+  }
+}
+
 export default function ExpenseList() {
   const [user] = useUserState();
   const [group, setGroup] = useState();
+  const history = useHistory();
   const participants = (group && group.participants) || [];
 
   const setExpenses = (expenses) => {
     setGroup({ ...group, expenses });
   };
+
+  useEffect(() => {
+    checkUserGroups(user, history);
+  }, [user]);
 
   ExpenseService.setGroup(user && user.favoriteGroup);
   function notifyGetAllError(error) {

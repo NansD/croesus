@@ -44,13 +44,18 @@ export default function GroupCodeInput({ reload }) {
   }
   return (
     <div className="card mb-6">
+      <div className="card-header">
+        <h1 className="card-header-title">
+          Rejoindre un groupe
+        </h1>
+      </div>
       <div className="card-content">
-        <label className="label" htmlFor="groupCode">
+        <h3 className="label">
           Code de partage
-        </label>
+        </h3>
         <div className="field has-addons">
           <div className="control">
-            <button className="button is-primary" type="button" onClick={(e) => pasteInInput(e)}>
+            <button className="button is-primary" type="button" onClick={pasteInInput}>
               <i className="fa fa-paste icon" aria-hidden="true" />
             </button>
           </div>
