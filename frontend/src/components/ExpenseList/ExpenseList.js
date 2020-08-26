@@ -43,7 +43,7 @@ export default function ExpenseList() {
 
   useEffect(() => {
     checkUserGroups(user, history);
-  }, [user]);
+  }, [user, history]);
 
   ExpenseService.setGroup(user && user.favoriteGroup);
   function notifyGetAllError(error) {
