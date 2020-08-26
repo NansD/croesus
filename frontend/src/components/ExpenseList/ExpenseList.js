@@ -20,7 +20,7 @@ function checkUserGroups(user, history) {
     toast.info(
       <>
         <p>
-          Vous n'avez pas encore de groupe. Voici la page qui permet d&apos;en créer un!
+          Vous n&apos;avez pas encore de groupe. Voici la page qui permet d&apos;en créer un!
         </p>
         <p>
           Pour commencer, cliquez sur &quot;Créer un groupe&quot;.
