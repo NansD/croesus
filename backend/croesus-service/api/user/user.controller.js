@@ -191,7 +191,7 @@ class UserController extends Controller {
       user._id,
       {
         ...user,
-        groups: user.groups.filter((g) => g && g._id !== groupId),
+        groups: user.groups.filter((g) => g && String(g._id) !== groupId),
       },
       { new: true }
     );

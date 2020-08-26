@@ -1,4 +1,6 @@
 const Database = require('./database');
+const parseJson = require('./middlewares/parseJson');
+const setAWSContext = require('./middlewares/setAWSContext');
 
 module.exports.applyMiddlewares = async function applyMiddlewares(parameters, ...middlewares) {
   for (const m of middlewares) {
@@ -19,5 +21,6 @@ function applyMiddlewaresClosure(parameters, ...middlewares) {
 }
 
 module.exports.applyMiddlewaresWithDatabase = function applyMiddlewaresWithDatabase(parameters, ...middlewares) {
-  return Database.performDatabaseAction(applyMiddlewaresClosure(parameters, ...middlewares));
+  const newMiddlewares = [parseJson(...parameters), setAWSContext(...parameters), ...middlewares];
+  return Database.performDatabaseAction(applyMiddlewaresClosure(parameters, ...newMiddlewares));
 };
