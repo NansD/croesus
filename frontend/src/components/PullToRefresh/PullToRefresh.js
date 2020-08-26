@@ -1,15 +1,20 @@
 import React from 'react';
-import ReactPullToRefresh from 'react-pull-to-refresh';
+import PullToRefresh from 'rmc-pull-to-refresh';
 import useIsMobile from '../../hooks/useIsMobile';
 
-export default function PullToRefresh(props) {
+export default function CustomPullToRefresh(props) {
   const { children, ...rest } = props;
   const isMobile = useIsMobile();
   if (isMobile) {
     return (
-      <ReactPullToRefresh {...rest}>
+      <PullToRefresh
+        indicator={{
+          activate: true, deactivate: true, release: true, finish: true,
+        }}
+        {...rest}
+      >
         {(children)}
-      </ReactPullToRefresh>
+      </PullToRefresh>
     );
   }
   return (children);
