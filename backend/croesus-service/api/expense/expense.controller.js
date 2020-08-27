@@ -82,6 +82,7 @@ class ExpenseController extends NestedController {
 
       body: JSON.stringify({
         debtsToPool: grouped,
+        group: event.group,
       }),
     });
   }

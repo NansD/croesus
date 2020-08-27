@@ -6,6 +6,7 @@ import useUserState from '../../hooks/useUserState';
 import NAVIGATION from '../../navigation.json';
 import ExpenseService from '../../services/expense.service';
 import GroupService from '../../services/group.service';
+import GroupPresentation from '../GroupPresentation/GroupPresentation';
 import Loading from '../Loading/Loading';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
@@ -73,18 +74,7 @@ export default function ExpenseList() {
 
   return (
     <>
-      <div className="hero has-background-white mb-5">
-        <div className="hero-body">
-          <h3 className="title is-3">
-            { group && group.name }
-          </h3>
-          <h4 className="subtitle is-4">
-            Participants :
-            { group
-            && group.participants && group.participants.map((p) => <div key={p._id}>{p.name}</div>)}
-          </h4>
-        </div>
-      </div>
+      <GroupPresentation group={group} />
       <ExpenseItemForm createExpense={createExpense} participants={participants} />
       {group && group.expenses
       && group.expenses.map((expense) => (
