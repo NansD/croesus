@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Balance from './components/Balance/Balance';
+import Credits from './components/Credits/Credits';
 import CoreAppErrorBoundary from './components/ErrorBoundary/CoreAppErrorBoundary';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import ExpenseList from './components/ExpenseList/ExpenseList';
@@ -71,6 +72,9 @@ function App() {
                       </Route>
                       <Route path={NAVIGATION.SIGNUP}>
                         <SignUp />
+                      </Route>
+                      <Route path={NAVIGATION.CREDITS}>
+                        <Credits />
                       </Route>
                       <PrivateRoute exact path={NAVIGATION.EXPENSES}>
                         <ExpenseList />
