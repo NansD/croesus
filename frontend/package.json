@@ -13,6 +13,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-toastify": "^6.0.5",
+    "react-typist": "^2.0.5",
+    "react-typist-loop": "0.0.5",
     "rmc-pull-to-refresh": "^1.0.13",
     "use-local-storage-state": "^4.0.0",
     "uuid": "^8.3.0"

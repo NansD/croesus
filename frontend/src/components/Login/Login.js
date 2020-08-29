@@ -51,6 +51,11 @@ export default function Login() {
   return (
     <div className="container">
       <div className="card mb-5">
+        <div className="card-header-title">
+          <h1 className="title">
+            Identification
+          </h1>
+        </div>
         <div className="card-content">
           <div className="field">
             <p className="control has-icons-left has-icons-right">

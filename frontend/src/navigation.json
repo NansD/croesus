@@ -1,7 +1,9 @@
 {
+  "HOME": "/",
   "LOGIN": "/login",
   "EXPENSES": "/expenses",
   "BALANCE": "/balance",
   "SIGNUP": "/signup",
+  "GROUPS": "/groups",
   "CREDITS": "/credits"
 }
