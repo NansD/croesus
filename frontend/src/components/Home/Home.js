@@ -34,7 +34,8 @@ export default function Home() {
           </div>
           <p>
             Partagez vos dépenses de façon facile et équitable.&nbsp;
-            Inscrivez-vous, créez un groupe, partagez-le aux personnes concernées, et commencez à collaborer !
+            Inscrivez-vous, créez un groupe, partagez-le aux personnes concernées,&nbsp;
+            et commencez à collaborer !
           </p>
         </div>
       </div>
