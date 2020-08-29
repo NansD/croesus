@@ -75,7 +75,7 @@ export default function Login() {
             Pas encore inscrit ?
           </Link>
           <button disabled={isPending} className={`${isPending ? 'is-loading' : ''} button is-primary`} type="submit" onClick={() => login(email, password)}>
-            Login
+            Connexion
           </button>
         </footer>
       </div>
