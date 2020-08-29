@@ -6,33 +6,7 @@ const Controller = require('../../../common/controller');
 const collections = require('../../../common/collections.json');
 
 const model = require('./user.model');
-
-function validateHeaderFormat(header) {
-  return !!(
-    header &&
-    header.Authorization &&
-    header.Authorization.length &&
-    header.Authorization[0] &&
-    header.Authorization[0].split
-  );
-}
-
-function enrichBody(event, userFound) {
-  const { body } = event;
-  const method = event.httpMethod;
-
-  if (method === 'POST') {
-    body.createdBy = String(userFound._id);
-  }
-
-  if (method === 'DELETE') {
-    body.deletedBy = String(userFound._id);
-  }
-
-  body.lastUpdatedBy = String(userFound._id);
-  event.user = userFound.toObject();
-  event.body = body;
-}
+const { enrichBody, validateHeaderFormat } = require('./user.utils');
 
 /**
  * Removes duplicates in groups
