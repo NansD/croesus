@@ -68,7 +68,7 @@ function App() {
                 <>
                   <section className="mx-5 my-3 columns is-centered is-narrow">
                     <div className="column">
-                      <Route exact path={NAVIGATION.Home}>
+                      <Route exact path={NAVIGATION.HOME}>
                         <Home />
                       </Route>
                       <Route exact path={NAVIGATION.LOGIN}>
