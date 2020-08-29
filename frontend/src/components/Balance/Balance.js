@@ -3,6 +3,7 @@ import { useAsync } from 'react-async';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/authentication';
 import GroupService from '../../services/group.service';
+import GroupPresentation from '../GroupPresentation/GroupPresentation';
 import Loading from '../Loading/Loading';
 
 function Balance() {
@@ -56,11 +57,14 @@ function Balance() {
   });
 
   return (
-    <table className="table is-fullwidth card">
-      <tbody>
-        {lines.map((l) => l)}
-      </tbody>
-    </table>
+    <>
+      <GroupPresentation group={data.group} />
+      <table className="table is-fullwidth card">
+        <tbody>
+          {lines.map((l) => l)}
+        </tbody>
+      </table>
+    </>
   );
 }
 
