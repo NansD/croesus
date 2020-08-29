@@ -19,7 +19,6 @@ function validateHeaderFormat(header) {
 
 function enrichBody(event, userFound) {
   const { body } = event;
-
   const method = event.httpMethod;
 
   if (method === 'POST') {
@@ -31,9 +30,7 @@ function enrichBody(event, userFound) {
   }
 
   body.lastUpdatedBy = String(userFound._id);
-
   event.user = userFound.toObject();
-
   event.body = body;
 }
 
