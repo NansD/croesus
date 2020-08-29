@@ -1,6 +1,6 @@
 {
   "LOGIN": "/login",
-  "EXPENSES": "/groups/:groupId/expenses",
+  "EXPENSES": "/expenses",
   "BALANCE": "/balance",
   "SIGNUP": "/signup",
   "GROUPS": "/groups"

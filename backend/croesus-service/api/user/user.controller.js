@@ -6,36 +6,7 @@ const Controller = require('../../../common/controller');
 const collections = require('../../../common/collections.json');
 
 const model = require('./user.model');
-
-function validateHeaderFormat(header) {
-  return !!(
-    header &&
-    header.Authorization &&
-    header.Authorization.length &&
-    header.Authorization[0] &&
-    header.Authorization[0].split
-  );
-}
-
-function enrichBody(event, userFound) {
-  const { body } = event;
-
-  const method = event.httpMethod;
-
-  if (method === 'POST') {
-    body.createdBy = String(userFound._id);
-  }
-
-  if (method === 'DELETE') {
-    body.deletedBy = String(userFound._id);
-  }
-
-  body.lastUpdatedBy = String(userFound._id);
-
-  event.user = userFound.toObject();
-
-  event.body = body;
-}
+const { enrichBody, validateHeaderFormat } = require('./user.utils');
 
 /**
  * Removes duplicates in groups
@@ -196,6 +167,33 @@ class UserController extends Controller {
       { new: true }
     );
     event.user = newUser.toObject();
+  }
+
+  async removeGroupFromUsers(event, callback, groupId) {
+    try {
+      const users = await this.Model.find({ groups: { $elemMatch: { $eq: groupId } } });
+      console.log('users :', users);
+      const promises = users
+        .map((u) => u.toObject())
+        .map(async (user) => {
+          const updatedUser = await this.Model.findByIdAndUpdate(
+            user._id,
+            {
+              ...user,
+              groups: user.groups.filter((g) => g && String(g._id) !== groupId),
+            },
+            { new: true }
+          );
+          if (updatedUser._id === event.user._id) {
+            console.log('updatedUser :', updatedUser);
+            event.user = updatedUser.toObject();
+          }
+        });
+      await Promise.all(promises);
+    } catch (error) {
+      console.log('error :', error);
+      this.respond.with.error.common.db(callback);
+    }
   }
 
   async updateFavoriteGroup(event) {
