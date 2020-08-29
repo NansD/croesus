@@ -26,10 +26,12 @@ export default function NavBar({ isAuthenticated }) {
         </button>
 
         <Link to={NAVIGATION.HOME}>
-          <h1 className="title navbar-item">
-            Croesus &nbsp;
-            <i className="fa fa-money has-text-success" />
-          </h1>
+          <div className="navbar-item">
+            <img className="app-logo mr-2" src="./logo-only.png" alt="Croesus icon" />
+            <h1 className="title app-logo">
+              Croesus
+            </h1>
+          </div>
         </Link>
       </div>
       {!isAuthenticated && (
