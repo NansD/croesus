@@ -63,7 +63,7 @@ class GroupController extends Controller {
     const favoriteGroup = String(user.favoriteGroup);
     try {
       if (userGroups.includes(event.pathParameters.groupId)) {
-        UserController.removeGroupFromUser(event, user, event.pathParameters.groupId);
+        UserController.removeGroupFromUsers(event, callback, event.pathParameters.groupId);
       }
       if (favoriteGroup === event.pathParameters.groupId) {
         UserController.updateFavoriteGroup(event);

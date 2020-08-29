@@ -198,6 +198,33 @@ class UserController extends Controller {
     event.user = newUser.toObject();
   }
 
+  async removeGroupFromUsers(event, callback, groupId) {
+    try {
+      const users = await this.Model.find({ groups: { $elemMatch: { $eq: groupId } } });
+      console.log('users :', users);
+      const promises = users
+        .map((u) => u.toObject())
+        .map(async (user) => {
+          const updatedUser = await this.Model.findByIdAndUpdate(
+            user._id,
+            {
+              ...user,
+              groups: user.groups.filter((g) => g && String(g._id) !== groupId),
+            },
+            { new: true }
+          );
+          if (updatedUser._id === event.user._id) {
+            console.log('updatedUser :', updatedUser);
+            event.user = updatedUser.toObject();
+          }
+        });
+      await Promise.all(promises);
+    } catch (error) {
+      console.log('error :', error);
+      this.respond.with.error.common.db(callback);
+    }
+  }
+
   async updateFavoriteGroup(event) {
     event.user = await this.Model.findByIdAndUpdate(
       event.user._id,

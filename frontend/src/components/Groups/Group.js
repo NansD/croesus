@@ -16,6 +16,7 @@ export default function Group({
   }
 
   function notifyDeleteFailure(error) {
+    reload();
     toast.error(`Erreur lors de la suppression : ${error}`);
   }
 
