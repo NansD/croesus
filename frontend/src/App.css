@@ -94,3 +94,13 @@
     transform: rotate(360deg);
   }
 }
+
+.dev-to {
+  width: 2em;
+  height: 2em;
+  margin-bottom: -5px;
+}
+
+.app-logo {
+  display: inline-block;
+}

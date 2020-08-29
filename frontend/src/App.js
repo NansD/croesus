@@ -5,10 +5,12 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Balance from './components/Balance/Balance';
+import Credits from './components/Credits/Credits';
 import CoreAppErrorBoundary from './components/ErrorBoundary/CoreAppErrorBoundary';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import ExpenseList from './components/ExpenseList/ExpenseList';
 import Groups from './components/Groups/Groups';
+import Home from './components/Home/Home';
 import LiLinkRoute from './components/LiLinkRoute/LiLinkRoute';
 import Login from './components/Login/Login';
 import NavBar from './components/NavBar/NavBar';
@@ -66,11 +68,17 @@ function App() {
                 <>
                   <section className="mx-5 my-3 columns is-centered is-narrow">
                     <div className="column">
+                      <Route exact path={NAVIGATION.HOME}>
+                        <Home />
+                      </Route>
                       <Route exact path={NAVIGATION.LOGIN}>
                         <Login />
                       </Route>
                       <Route path={NAVIGATION.SIGNUP}>
                         <SignUp />
+                      </Route>
+                      <Route path={NAVIGATION.CREDITS}>
+                        <Credits />
                       </Route>
                       <PrivateRoute exact path={NAVIGATION.EXPENSES}>
                         <ExpenseList />

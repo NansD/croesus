@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../../contexts/authentication';
 import NAVIGATION from '../../navigation.json';
 import AuthenticatedNavBar from './AuthenticatedNavBar';
@@ -25,10 +25,14 @@ export default function NavBar({ isAuthenticated }) {
           <span aria-hidden="true" />
         </button>
 
-        <h1 className="title navbar-item">
-          Croesus &nbsp;
-          <i className="fa fa-money has-text-success" />
-        </h1>
+        <Link to={NAVIGATION.HOME}>
+          <div className="navbar-item">
+            <img className="app-logo mr-2" src="./logo-only.png" alt="Croesus icon" />
+            <h1 className="title app-logo">
+              Croesus
+            </h1>
+          </div>
+        </Link>
       </div>
       {!isAuthenticated && (
       <h2 className="subtitle navbar-item mb-0">

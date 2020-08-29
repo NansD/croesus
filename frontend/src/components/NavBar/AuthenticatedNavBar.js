@@ -18,6 +18,10 @@ export default function AuthenticatedNavBar({ setShowMenu, disconnect }) {
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
+            <Link to={NAVIGATION.CREDITS} onClick={() => setShowMenu(false)} className="button navbar-item is-light">
+              <i className="icon fa fa-hand-peace-o" aria-hidden="true" />
+              <span>Crédits</span>
+            </Link>
             <Link to={NAVIGATION.LOGIN} onClick={disconnect} className="button is-primary navbar-item">
               <strong>Se déconnecter</strong>
             </Link>
