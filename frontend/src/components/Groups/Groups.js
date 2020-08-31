@@ -13,8 +13,12 @@ export default function Groups() {
   const { user: authenticatedUser } = useAuth();
   const [localUser, setLocalUser] = useUserState(authenticatedUser);
   const [groups, setGroups] = useState([]);
-  const [user, setUser] = useUserState();
   const [favoriteGroup, setFavoriteGroup] = useState(localUser && localUser.favoriteGroup);
+
+  function updateGroups(newGroups) {
+    setGroups(newGroups);
+    setLocalUser({ ...localUser, groups: newGroups });
+  }
 
   function notifyError(error) {
     console.log('error :', error);
@@ -27,15 +31,13 @@ export default function Groups() {
   }
 
   function saveUserGroups(data) {
-    setGroups(data.document.groups.filter(Boolean));
-    setLocalUser(data.document);
+    updateGroups(data.document.groups);
     setFavoriteGroup(data.document.favoriteGroup);
   }
 
   function deleteGroup(deletedGroup) {
-    setGroups(groups.filter((group) => group._id !== deletedGroup._id));
     const newGroups = groups.filter((group) => group._id !== deletedGroup._id);
-    setUser({ ...user, groups: newGroups });
+    updateGroups(newGroups);
   }
 
   const { isPending: loading, reload } = useAsync({
@@ -54,7 +56,6 @@ export default function Groups() {
   function updateActiveGroup(g) {
     setFavoriteGroup(g._id);
     updateUser({ ...localUser, favoriteGroup: g._id });
-    setLocalUser({ ...localUser, favoriteGroup: g._id });
   }
 
   if (loading) {
@@ -66,7 +67,7 @@ export default function Groups() {
   return (
     <>
       <GroupCodeInput reload={() => reload()} />
-      <GroupForm onChange={(g) => setGroups([g, ...groups])} />
+      <GroupForm onChange={(g) => updateGroups([g, ...groups])} />
       { groups
       && groups.map((g) => (
         <Group
