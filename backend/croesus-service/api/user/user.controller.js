@@ -90,7 +90,6 @@ class UserController extends Controller {
     }
     delete event.body.password;
     await checkGroupsValidity(event, event.user, callback);
-    console.log('event.body.groups :', event.body.groups);
     return super.update(event, context, callback);
   }
 
