@@ -1,9 +1,8 @@
 const UserController = require('./user.controller.js');
 const { applyMiddlewaresWithDatabase } = require('./../../../common/applyMiddlewares');
-const parseJson = require('./../../../common/middlewares/parseJson');
 
 module.exports.submit = (...args) => {
-  applyMiddlewaresWithDatabase([...args], parseJson(...args), UserController.create.bind(UserController, ...args));
+  applyMiddlewaresWithDatabase([...args], UserController.create.bind(UserController, ...args));
 };
 
 module.exports.update = (...args) => {

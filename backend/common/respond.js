@@ -1,9 +1,6 @@
 const functionAndObject = require('./functionAndObject');
 
-const headers = {
-  'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-  'Content-Type': 'application/json',
-};
+const headers = require('./headers.json');
 
 function getDocumentToPrint(document) {
   if (!document) {
