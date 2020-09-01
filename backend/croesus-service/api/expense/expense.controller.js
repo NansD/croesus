@@ -42,6 +42,7 @@ class ExpenseController extends NestedController {
   }
 
   async create(event, context, callback) {
+    this.group = event.group;
     const requestBody = event.body;
 
     if (!requestBody.usersFor || !Array.isArray(requestBody.usersFor)) {
@@ -51,7 +52,7 @@ class ExpenseController extends NestedController {
       // if I paid, I generated negative debt towards me
       // if someone else paid I owe them
       const amount =
-        user.name === requestBody.payer
+        user.name === requestBody.payer.name
           ? -(requestBody.amount / requestBody.usersFor.length)
           : requestBody.amount / requestBody.usersFor.length;
       return {
@@ -62,6 +63,15 @@ class ExpenseController extends NestedController {
     });
     const newRequest = { ...event, body: { ...requestBody, generatedDebt } };
     await super.create(newRequest, context, callback, GroupController.Model, event.group, 'expenses');
+  }
+
+  async validate(group, callback, expense) {
+    const userNames = expense.usersFor.map((u) => u.name);
+    const areUsersForParticipants = userNames.every((name) => group.participants.map((p) => p.name).includes(name));
+    if (!areUsersForParticipants) {
+      this.respond.with.error.expenses.invalidUsersFor(expense, callback);
+    }
+    super.validate(group, callback);
   }
 
   list(event, context, callback) {

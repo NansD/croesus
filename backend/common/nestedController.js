@@ -23,7 +23,7 @@ module.exports = class NestedController {
   async create(event, context, callback, Model, parent, key) {
     const requestBody = event.body;
     const document = new Model(addChildToParent(parent, key, requestBody, callback));
-    await this.validate(document, callback);
+    await this.validate(document, callback, requestBody);
 
     try {
       console.log('document :', document);
@@ -37,7 +37,6 @@ module.exports = class NestedController {
   }
 
   async validate(instance, callback) {
-    console.log('instance.toObject() :', instance.toObject());
     try {
       await instance.validate();
     } catch (error) {

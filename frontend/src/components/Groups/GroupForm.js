@@ -25,7 +25,6 @@ export default function GroupForm({ onChange, group, toggle }) {
   }
 
   function notifyCreationFailure() {
-    notifyChange();
     toast.error('Erreur lors de la création du groupe');
   }
 
@@ -81,6 +80,7 @@ export default function GroupForm({ onChange, group, toggle }) {
   function removeParticipant(_id) {
     setParticipants(participants.filter((p) => p._id !== _id));
   }
+  const participantsNames = participants.map((part) => part.name);
 
   return showForm ? (
     <div className="card mb-5">
@@ -102,9 +102,13 @@ export default function GroupForm({ onChange, group, toggle }) {
           </div>
           <div className="field">
             <h2 className="title is-5"> Participants : </h2>
-            <ParticipantForm addParticipant={addParticipant} />
+            <ParticipantForm
+              participantsNames={participantsNames}
+              addParticipant={addParticipant}
+            />
             {participants.map((p) => (
               <ParticipantForm
+                participantsNames={participantsNames}
                 addParticipant={updateParticipant}
                 key={p._id}
                 participant={p}
