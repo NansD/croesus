@@ -80,6 +80,7 @@ export default function GroupForm({ onChange, group, toggle }) {
   function removeParticipant(_id) {
     setParticipants(participants.filter((p) => p._id !== _id));
   }
+  const participantsNames = participants.map((part) => part.name);
 
   return showForm ? (
     <div className="card mb-5">
@@ -101,10 +102,13 @@ export default function GroupForm({ onChange, group, toggle }) {
           </div>
           <div className="field">
             <h2 className="title is-5"> Participants : </h2>
-            <ParticipantForm participantsNames={participants.map((part) => part.name)} addParticipant={addParticipant} />
+            <ParticipantForm
+              participantsNames={participantsNames}
+              addParticipant={addParticipant}
+            />
             {participants.map((p) => (
               <ParticipantForm
-                participantsNames={participants.map((part) => part.name)}
+                participantsNames={participantsNames}
                 addParticipant={updateParticipant}
                 key={p._id}
                 participant={p}
