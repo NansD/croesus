@@ -11,7 +11,14 @@ const ModalProvider = ({ children }) => {
   } = useModal();
   return (
     <Provider value={{
-      showModal, setShowModal, modalContent, setModalContent, title, setTitle, callback, setCallback,
+      showModal,
+      setShowModal,
+      modalContent,
+      setModalContent,
+      title,
+      setTitle,
+      callback,
+      setCallback,
     }}
     >
       <Modal />
