@@ -51,7 +51,7 @@ class ExpenseController extends NestedController {
       // if I paid, I generated negative debt towards me
       // if someone else paid I owe them
       const amount =
-        user.name === requestBody.payer
+        user.name === requestBody.payer.name
           ? -(requestBody.amount / requestBody.usersFor.length)
           : requestBody.amount / requestBody.usersFor.length;
       return {
