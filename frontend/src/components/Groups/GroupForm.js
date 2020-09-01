@@ -25,7 +25,6 @@ export default function GroupForm({ onChange, group, toggle }) {
   }
 
   function notifyCreationFailure() {
-    notifyChange();
     toast.error('Erreur lors de la création du groupe');
   }
 
@@ -102,9 +101,10 @@ export default function GroupForm({ onChange, group, toggle }) {
           </div>
           <div className="field">
             <h2 className="title is-5"> Participants : </h2>
-            <ParticipantForm addParticipant={addParticipant} />
+            <ParticipantForm participantsNames={participants.map((part) => part.name)} addParticipant={addParticipant} />
             {participants.map((p) => (
               <ParticipantForm
+                participantsNames={participants.map((part) => part.name)}
                 addParticipant={updateParticipant}
                 key={p._id}
                 participant={p}

@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import useInput from '../../hooks/useInput';
 
-export default function ParticipantForm({ participant, addParticipant, removeParticipant }) {
+export default function ParticipantForm({
+  participantsNames,
+  participant,
+  addParticipant,
+  removeParticipant,
+}) {
   const [name, , resetName, bindName] = useInput(participant
     && participant.name);
   const [customRate, , resetCustomRate, bindCustomRate] = useInput(participant
     && participant.customRate);
+  const [nameError, setNameError] = useState();
+
+  function flushNameError() {
+    if (nameError) setNameError();
+  }
+
+  function setError(error) {
+    if (!nameError) setNameError(error);
+  }
 
   function resetFields() {
     resetName();
@@ -16,6 +30,12 @@ export default function ParticipantForm({ participant, addParticipant, removePar
     if (!name) {
       return true;
     }
+    const duplicate = participantsNames && participantsNames.find((pn) => pn === name);
+    if (duplicate && !participant) {
+      setError('Les noms des participants doivent être uniques');
+      return true;
+    }
+    flushNameError();
     return (
       participant
         && name === participant.name
@@ -41,6 +61,7 @@ export default function ParticipantForm({ participant, addParticipant, removePar
     <form className="field" onSubmit={(e) => notifyAddParticipant(e)}>
       <div className="field">
         <input className="input" type="text" placeholder="Nom" {...bindName} />
+        {nameError && (<p className="help is-danger">{nameError}</p>)}
       </div>
       <div className="field">
         <input className="input" type="number" placeholder="Ratio" {...bindCustomRate} />
