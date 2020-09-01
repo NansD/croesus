@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAsync } from 'react-async';
 import { toast } from 'react-toastify';
+import useConfirmDeleteModal from '../../hooks/modal/useConfirmDeleteModal';
 import GroupService from '../../services/group.service';
 import CopyGroupIdButton from './CopyGroupIdButton';
 import GroupForm from './GroupForm';
@@ -9,6 +10,7 @@ export default function Group({
   group, deleteGroup, active, setActiveGroup, reload,
 }) {
   const [edit, setEdit] = useState(false);
+  const { setShowModal, setCallback } = useConfirmDeleteModal();
 
   function notifyDeleteSuccess() {
     deleteGroup(group);
@@ -26,8 +28,13 @@ export default function Group({
     onReject: notifyDeleteFailure,
   });
 
-  function handleDelete() {
-    run(group._id);
+  function handleDelete(modalAction) {
+    return modalAction && run(group._id);
+  }
+
+  function showConfirmModal() {
+    setCallback(handleDelete);
+    setShowModal(true, group.name, `Le groupe ${group.name} ainsi que toutes les dépenses qu'il contient seront supprimés. Vos amis qui y participent perdront aussi l'accès à ce groupe.`);
   }
 
   function updateGroup() {
@@ -65,7 +72,7 @@ export default function Group({
           <CopyGroupIdButton groupId={group._id} />
         </div>
         <div style={{ display: 'flex' }}>
-          <button className="button is-full-width is-danger is-light" type="button" onClick={handleDelete}>
+          <button className="button is-full-width is-danger is-light" type="button" onClick={showConfirmModal}>
             <i className="fa fa-trash" aria-label="delete" />
           </button>
           {!edit && (
