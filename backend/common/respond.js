@@ -71,6 +71,19 @@ module.exports = function respond() {
             });
           },
         },
+        expenses: {
+          invalidUsersFor: (document, callback) => {
+            return callback(null, {
+              headers,
+              statusCode: 401,
+              body: JSON.stringify({
+                message: `Invalid users in expense ${getDocumentToPrint(document)} in collection ${
+                  this.collectionName
+                }. Users must be participants of the group.`,
+              }),
+            });
+          },
+        },
         unauthorized: (callback) => {
           return callback(null, {
             headers,
