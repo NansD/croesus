@@ -19,6 +19,6 @@ export default function useConfirmDeleteModal() {
     } else {
       setModalContent(`Confirmez-vous la suppression de ${name} ?`);
     }
-  }, [name]);
+  }, [name, setModalContent, customMessage]);
   return { setShowModal: newSetShowModal, setCallback };
 }

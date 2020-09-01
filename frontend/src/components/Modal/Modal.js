@@ -11,20 +11,16 @@ export default function Modal() {
   }
 
   function closeModal() {
-    console.log('closeModal');
-    console.log('callback :', callback);
     callback(false);
     setShowModal(false);
   }
 
   function confirm() {
-    console.log('confirm');
     callback(true);
     setShowModal(false);
   }
 
   function handleKeyPress(event) {
-    console.log('event :', event);
     if (['Esc', 'Escape'].includes(event.key)) {
       closeModal();
     }
