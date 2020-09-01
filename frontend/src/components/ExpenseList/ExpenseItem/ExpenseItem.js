@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useAsync } from 'react-async';
 import { toast } from 'react-toastify';
+import useConfirmDeleteModal from '../../../hooks/modal/useConfirmDeleteModal';
 import ExpenseService from '../../../services/expense.service';
 import UsersSelector from './UsersSelector/UsersSelector';
 
 const ExpenseItem = ({ expense, deleteExpense }) => {
   const [showDetail, setShowDetail] = useState(false);
+  const { setShowModal, setCallback } = useConfirmDeleteModal();
 
   function notifyDeleteSuccess() {
     deleteExpense(expense._id);
@@ -22,12 +24,17 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
     onReject: notifyDeleteFailure,
   });
 
-  function handleDelete() {
-    run(expense._id);
+  function handleDelete(action) {
+    return action && run(expense._id);
   }
 
   function toggleShowDetail() {
     setShowDetail(!showDetail);
+  }
+
+  function showConfirmModal() {
+    setCallback(handleDelete);
+    setShowModal(true, expense.label);
   }
 
   return (
@@ -73,7 +80,7 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
           )}
 
         <footer className="card-footer" style={{ justifyContent: 'flex-end', borderTop: '0' }}>
-          <button className="button is-full-width is-danger is-light" type="button" onClick={handleDelete}>
+          <button className="button is-full-width is-danger is-light" type="button" onClick={showConfirmModal}>
             <i className="fa fa-trash" aria-label="delete" />
           </button>
         </footer>
