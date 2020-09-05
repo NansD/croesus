@@ -48,8 +48,6 @@ function getUserRates(participants, usersFor) {
   for (const rate of userRates.values()) {
     totalRate += rate;
   }
-  console.debug('totalRate :', totalRate);
-  console.debug('userRates :', userRates);
   return { userRates, totalRate };
 }
 
