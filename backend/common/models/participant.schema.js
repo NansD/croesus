@@ -7,5 +7,6 @@ module.exports = new Schema({
   },
   customRate: {
     type: Number,
+    default: 1,
   },
 });

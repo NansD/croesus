@@ -10,9 +10,12 @@ export default function ParticipantForm({
 }) {
   const [name, , resetName, bindName] = useInput(participant
     && participant.name);
-  const [customRate, , resetCustomRate, bindCustomRate] = useInput(participant
-    && participant.customRate);
+  const defaultCustomRate = participant
+    ? participant.customRate : 1;
+  const [customRate, , resetCustomRate, bindCustomRate] = useInput(defaultCustomRate);
   const [nameError, setNameError] = useState();
+
+  const _id = (participant && participant._id) || uuidv4();
 
   function flushNameError() {
     if (nameError) setNameError();
@@ -46,7 +49,7 @@ export default function ParticipantForm({
     e.preventDefault();
     if (!disabled()) {
       addParticipant({
-        _id: uuidv4(), ...participant, name, customRate,
+        _id, ...participant, name, customRate,
       });
       if (!participant) {
         resetFields();
@@ -60,11 +63,17 @@ export default function ParticipantForm({
   return (
     <form className="field" onSubmit={(e) => notifyAddParticipant(e)}>
       <div className="field">
-        <input className="input" type="text" placeholder="Nom" {...bindName} />
-        {nameError && (<p className="help is-danger">{nameError}</p>)}
+        <label className="label" htmlFor={`name-${_id}`}>
+          Nom
+          <input className="input" id={`name-${_id}`} type="text" placeholder="Jean Dupont" {...bindName} />
+          {nameError && (<p className="help is-danger">{nameError}</p>)}
+        </label>
       </div>
       <div className="field">
-        <input className="input" type="number" placeholder="Ratio" {...bindCustomRate} />
+        <label className="label" htmlFor={`rate-${_id}`}>
+          Ratio
+          <input className="input" id={`rate-${_id}`} type="number" placeholder="1" {...bindCustomRate} />
+        </label>
       </div>
       <div className={disabled() || participant ? 'mb-6' : ''} style={{ display: 'flex', justifyContent: 'space-between' }}>
         {participant && (

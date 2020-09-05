@@ -7,11 +7,13 @@ export default function GroupPresentation({ group }) {
         <h3 className="title is-3">
           { group && group.name }
         </h3>
-        <h4 className="subtitle is-4">
+        <h4>
           Participants :
-          { group
-      && group.participants && group.participants.map((p) => <div key={p._id}>{p.name}</div>)}
         </h4>
+        <ul>
+          { group
+      && group.participants && group.participants.map((p) => <li key={p._id}>{p.name}</li>)}
+        </ul>
       </div>
     </div>
   );
