@@ -62,6 +62,7 @@ function Balance() {
     <>
       <GroupPresentation group={data.group} />
 
+      {nextShouldPay && (
       <div className="card message is-dark">
         <div className="card-content message-header">
           <p>Qui devrait payer ensuite ?</p>
@@ -72,29 +73,47 @@ function Balance() {
           devrait payer la prochaine fois afin de réduire les écarts de dette.
         </div>
       </div>
-      <table className="table is-fullwidth card mb-6">
-        <tbody>
-          {lines.map((l) => l)}
-        </tbody>
-      </table>
-      <div className="card message is-dark">
-        <div className="card-content message-header">
-          <p>Comment lire ce tableau ?</p>
-        </div>
-        <div className="message-body">
-          Un chiffre négatif signifie que vous
-          {' '}
-          <strong>devez</strong>
-          {' '}
-          un montant d&apos;argent.
-          <br />
-          Un chiffre positif signifie que les autres participants
-          {' '}
-          <strong>vous doivent</strong>
-          {' '}
-          de l&apos;argent.
-        </div>
-      </div>
+      )}
+      {lines && lines.length ? (
+        <>
+          <table className="table is-fullwidth card mb-6">
+            <tbody>
+              {lines.map((l) => l)}
+            </tbody>
+          </table>
+          <div className="card message is-dark">
+            <div className="card-content message-header">
+              <p>Comment lire ce tableau ?</p>
+            </div>
+            <div className="message-body">
+              Un chiffre négatif signifie que vous
+              {' '}
+              <strong>devez</strong>
+              {' '}
+              un montant d&apos;argent.
+              <br />
+              Un chiffre positif signifie que les autres participants
+              {' '}
+              <strong>vous doivent</strong>
+              {' '}
+              de l&apos;argent.
+            </div>
+          </div>
+        </>
+
+      )
+        : (
+          <div className="card message is-warning">
+            <div className="message-header">
+              <p>Pas de dépenses pour ce groupe</p>
+            </div>
+            <div className="message-body">
+              <p>
+                Votre groupe ne contient pas encore de dépenses. Rendez-vous dans l&apos;onglet &quot;dépenses&quot; pour en créer!
+              </p>
+            </div>
+          </div>
+        )}
     </>
   );
 }
