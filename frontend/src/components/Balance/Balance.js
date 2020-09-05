@@ -109,7 +109,8 @@ function Balance() {
             </div>
             <div className="message-body">
               <p>
-                Votre groupe ne contient pas encore de dépenses. Rendez-vous dans l&apos;onglet &quot;dépenses&quot; pour en créer!
+                Votre groupe ne contient pas encore de dépenses.
+                Rendez-vous dans l&apos;onglet &quot;dépenses&quot; pour en créer!
               </p>
             </div>
           </div>
