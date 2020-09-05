@@ -30,6 +30,8 @@ function Balance() {
 
   const keys = Object.keys(debtsToPool);
   const debts = keys.map((k) => ({ name: k, totalDebt: debtsToPool[k].totalDebt }));
+  const lowestAmount = Math.min(...debts.map((d) => d.totalDebt));
+  const nextShouldPay = debts.find((debt) => debt.totalDebt === lowestAmount);
   const lines = debts.map((line) => {
     if (line.totalDebt > 0) {
       return (
@@ -59,11 +61,40 @@ function Balance() {
   return (
     <>
       <GroupPresentation group={data.group} />
-      <table className="table is-fullwidth card">
+
+      <div className="card message is-dark">
+        <div className="card-content message-header">
+          <p>Qui devrait payer ensuite ?</p>
+        </div>
+        <div className="message-body">
+          <h4 className="title is-4 is-inline">{nextShouldPay.name}</h4>
+          {' '}
+          devrait payer la prochaine fois afin de réduire les écarts de dette.
+        </div>
+      </div>
+      <table className="table is-fullwidth card mb-6">
         <tbody>
           {lines.map((l) => l)}
         </tbody>
       </table>
+      <div className="card message is-dark">
+        <div className="card-content message-header">
+          <p>Comment lire ce tableau ?</p>
+        </div>
+        <div className="message-body">
+          Un chiffre négatif signifie que vous
+          {' '}
+          <strong>devez</strong>
+          {' '}
+          un montant d&apos;argent.
+          <br />
+          Un chiffre positif signifie que les autres participants
+          {' '}
+          <strong>vous doivent</strong>
+          {' '}
+          de l&apos;argent.
+        </div>
+      </div>
     </>
   );
 }
