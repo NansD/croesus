@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/authentication';
 import NAVIGATION from '../../navigation.json';
 
 export default function Home() {
-  const usages = ['vos amis.', 'votre colloc.', 'votre partenaire.'];
+  const usages = ['vos amis.', 'votre coloc.', 'votre partenaire.'];
   const usagesTypings = (
     <TypistLoop interval={1000}>
       {usages.map((text) => (
