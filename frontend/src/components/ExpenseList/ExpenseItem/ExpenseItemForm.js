@@ -92,6 +92,7 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
                 <input
                   className="input"
                   type="number"
+                  step="any"
                   placeholder="Montant"
                   onChange={(e) => setAmount(e.target.value)}
                   required

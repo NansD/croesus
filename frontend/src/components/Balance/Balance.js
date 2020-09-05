@@ -29,8 +29,11 @@ function Balance() {
   }
 
   const keys = Object.keys(debtsToPool);
-  const debts = keys.map((k) => ({ name: k, totalDebt: debtsToPool[k].totalDebt }));
-  const lowestAmount = Math.min(...debts.map((d) => d.totalDebt));
+  const debts = keys.map((k) => ({
+    name: k,
+    totalDebt: Math.round(debtsToPool[k].totalDebt * 100) / 100,
+  }));
+  const lowestAmount = Math.max(...debts.map((d) => d.totalDebt));
   const nextShouldPay = debts.find((debt) => debt.totalDebt === lowestAmount);
   const lines = debts.map((line) => {
     if (line.totalDebt > 0) {
@@ -86,13 +89,21 @@ function Balance() {
               <p>Comment lire ce tableau ?</p>
             </div>
             <div className="message-body">
-              Un chiffre négatif signifie que vous
+              Un chiffre
+              {' '}
+              <span className="has-text-success">positif</span>
+              {' '}
+              signifie que vous
               {' '}
               <strong>devez</strong>
               {' '}
               un montant d&apos;argent.
               <br />
-              Un chiffre positif signifie que les autres participants
+              Un chiffre
+              {' '}
+              <span className="has-text-danger">négatif</span>
+              {' '}
+              signifie que les autres participants
               {' '}
               <strong>vous doivent</strong>
               {' '}
