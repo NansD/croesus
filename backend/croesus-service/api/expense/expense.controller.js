@@ -39,9 +39,9 @@ async function computeDebtToCentralPool(expenses) {
 function getUserRates(participants, usersFor) {
   const userRates = new Map(
     usersFor.map((u) => {
-      const participant = participants.find((p) => p.name === u.name);
+      const participant = participants.find((p) => p.name === u.name && u.checked === true);
       const userRate = participant && participant.customRate;
-      return [u.name, Number(userRate) || 1];
+      return [u.name, Number(userRate) || 0];
     })
   );
   let totalRate = 0;
