@@ -26,7 +26,7 @@ export default function CopyGroupIdButton({ groupId }) {
     <div className={`${showDropDown && 'is-active'} dropdown is-up`}>
       <div className="dropdown-trigger">
         <button type="button" className="button is-primary" aria-haspopup="true" aria-controls="dropdown-menu" onClick={toggleShowInvitationCode}>
-          <i className="fa fa-share icon" aria-label="share" />
+          <i className="fa fa-share-alt icon" aria-label="share" />
           {/* <span> Inviter à rejoindre le groupe </span> */}
         </button>
       </div>

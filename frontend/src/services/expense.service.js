@@ -17,6 +17,7 @@ class ExpenseService extends Service {
     const value = getValueFromLocalStorage(LOCAL_STORAGE_KEYS.user);
     const id = groupId
       || (value && value.favoriteGroup);
+    this.groupId = id;
     this.apiEndPoint = `${this.baseUrl}/groups/${id}/expenses`;
   }
 }
