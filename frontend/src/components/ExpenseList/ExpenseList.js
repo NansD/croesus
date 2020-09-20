@@ -6,7 +6,7 @@ import useUserState from '../../hooks/useUserState';
 import NAVIGATION from '../../navigation.json';
 import ExpenseService from '../../services/expense.service';
 import GroupService from '../../services/group.service';
-import GroupPresentation from '../GroupPresentation/GroupPresentation';
+import GroupCarousel from '../GroupCarousel/GroupCarousel';
 import Loading from '../Loading/Loading';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
@@ -74,7 +74,7 @@ export default function ExpenseList() {
 
   return (
     <>
-      <GroupPresentation group={group} />
+      <GroupCarousel groups={user.groups} activeGroupId={group && group._id} />
       <ExpenseItemForm createExpense={createExpense} participants={participants} />
       {group && group.expenses
       && group.expenses.map((expense) => (
