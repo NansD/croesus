@@ -66,6 +66,7 @@ export default function Group({
           {group.name}
         </h2>
         <button
+          type="button"
           className="card-header-icon button is-link is-full-height is-inverted"
           aria-label="more options"
           onClick={goToExpenses(group._id)}
