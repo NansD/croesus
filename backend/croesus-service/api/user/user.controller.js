@@ -103,6 +103,7 @@ class UserController extends Controller {
     }
 
     const userInCollection = await this.checkIfDocumentExistsInDb('email', email.toLowerCase(), callback);
+    const user = await this.Model.findById(userInCollection._id).populate('groups', { model: GroupController.Model });
 
     if (!bcrypt.compareSync(password, userInCollection.password)) {
       return this.respond.with.error.common.invalidData(requestBody, callback);
@@ -119,7 +120,7 @@ class UserController extends Controller {
         issuer: jwtConfiguration.ISSUER,
       }
     );
-    return this.respond.with.success({ jwt: token, user: userInCollection }, callback);
+    return this.respond.with.success({ jwt: token, user }, callback);
   }
 
   getJWT(header, callback) {
