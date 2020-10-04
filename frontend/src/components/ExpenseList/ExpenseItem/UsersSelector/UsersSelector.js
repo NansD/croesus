@@ -43,7 +43,8 @@ function UsersSelector({
           aria-label="payer"
           placeholder="payer"
           onChange={(e) => setPayer(users.find((p) => p.name === e.target.value))}
-          value={payer}
+          value={payer && payer.name}
+          disabled={disabled}
           required
         >
           {users.map((p) => (

@@ -99,13 +99,13 @@ class UserController extends Controller {
     const { email, password } = requestBody;
 
     if (!email || !password) {
-      return this.respond.with.error.common.invalidData(callback);
+      return this.respond.with.error.common.invalidData(requestBody, callback);
     }
 
     const userInCollection = await this.checkIfDocumentExistsInDb('email', email.toLowerCase(), callback);
 
     if (!bcrypt.compareSync(password, userInCollection.password)) {
-      return this.respond.with.error.common.invalidData(callback);
+      return this.respond.with.error.common.invalidData(requestBody, callback);
     }
 
     const token = sign(

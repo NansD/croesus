@@ -6,7 +6,7 @@ export default function useInput(initialValue) {
   return [
     value,
     setValue,
-    () => setValue(''),
+    () => setValue(initialValue),
     {
       value: value || '',
       onChange: (event) => {

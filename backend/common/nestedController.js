@@ -23,12 +23,10 @@ module.exports = class NestedController {
   async create(event, context, callback, Model, parent, key) {
     const requestBody = event.body;
     const document = new Model(addChildToParent(parent, key, requestBody, callback));
-    await this.validate(document, callback);
+    await this.validate(document, callback, requestBody);
 
     try {
-      console.log('document :', document);
       const res = await Model.findByIdAndUpdate(document._id, document, { new: true });
-      console.log('res :', res);
       return this.respond.with.success.creation(res, callback);
     } catch (error) {
       console.error(error);
@@ -37,7 +35,6 @@ module.exports = class NestedController {
   }
 
   async validate(instance, callback) {
-    console.log('instance.toObject() :', instance.toObject());
     try {
       await instance.validate();
     } catch (error) {
@@ -47,28 +44,26 @@ module.exports = class NestedController {
   }
 
   async delete(event, context, callback, parent) {
-    await this.checkIfDocumentExistsInParent(event.pathParameters.id, parent, callback);
+    const subDocument = await this.checkIfDocumentExistsInParent(event.pathParameters.id, parent, callback);
     const newParent = new this.ParentModel(this.deleteInParent(event.pathParameters.id, parent, callback));
-    await this.validate(newParent, callback);
+    await this.validate(newParent, callback, subDocument);
     try {
-      const savedParent = await this.ParentModel.findByIdAndUpdate(newParent._id, newParent, { new: true });
-      console.log('savedParent :', savedParent);
+      await this.ParentModel.findByIdAndUpdate(newParent._id, newParent, { new: true });
       return this.respond.with.success.deletion(callback);
     } catch (error) {
-      console.log('error :', error);
       console.error('Error while deleting document', JSON.stringify(error));
       return this.respond.with.error.common.db(callback);
     }
   }
 
   async update(event, context, callback, parent) {
-    await this.checkIfDocumentExistsInParent(event.pathParameters.id, parent, callback);
+    const subDocument = await this.checkIfDocumentExistsInParent(event.pathParameters.id, parent, callback);
     const newSubDocument = event.body;
     this.checkIds(event, newSubDocument, callback);
     const newParent = new this.ParentModel(
       this.updateInParent(event.pathParameters.id, newSubDocument, parent, callback)
     );
-    await this.validate(newParent, callback);
+    await this.validate(newParent, callback, subDocument);
     try {
       const savedParent = await this.ParentModel.findByIdAndUpdate(newParent._id, newParent, { new: true });
       return this.respond.with.success.update(savedParent, callback);
@@ -92,7 +87,6 @@ module.exports = class NestedController {
         this.respond.with.error.common.invalidData({ id, parent }, callback);
         throw new Error('Invalid relationship', this.relationship);
     }
-    console.log('document :', document);
     if (!document) {
       this.respond.with.error.common.notFound(id, callback);
     }

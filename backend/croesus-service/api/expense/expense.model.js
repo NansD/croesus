@@ -1,6 +1,19 @@
 const { Schema } = require('mongoose');
 const ParticipantSchema = require('../../../common/models/participant.schema');
 
+function validateUsersFor(usersFor) {
+  const baseChecks = Array.isArray(usersFor) && usersFor.length > 0;
+  if (!baseChecks) {
+    return false;
+  }
+  const usersNames = usersFor.map((u) => u.name);
+  const hasDuplicates = Array.from(new Set(usersNames)).length < usersFor.length;
+  if (hasDuplicates) {
+    return false;
+  }
+  return true;
+}
+
 module.exports = new Schema({
   label: {
     type: String,
@@ -22,7 +35,7 @@ module.exports = new Schema({
         checked: Boolean,
       },
     ],
-    validate: (v) => Array.isArray(v) && v.length > 0,
+    validate: validateUsersFor,
   },
   generatedDebt: {
     type: [

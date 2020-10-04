@@ -36,32 +36,78 @@ async function computeDebtToCentralPool(expenses) {
   return grouped;
 }
 
+function getUserRates(participants, usersFor) {
+  const userRates = new Map(
+    usersFor.map((u) => {
+      const participant = participants.find((p) => p.name === u.name && u.checked === true);
+      const userRate = participant && participant.customRate;
+      return [u.name, Number(userRate) || 0];
+    })
+  );
+  let totalRate = 0;
+  for (const rate of userRates.values()) {
+    totalRate += rate;
+  }
+  return { userRates, totalRate };
+}
+
+// eslint-disable-next-line max-params
+function computeGeneratedDebts(users, payer, amount, userRates, totalRate) {
+  // first, calculate what others owe to the payer
+  const generatedDebt = users.map((user) => {
+    const userAmount = (amount * userRates.get(user.name)) / totalRate;
+    return {
+      name: user.name,
+      amount: user.name === payer.name ? 'TO_COMPUTE' : userAmount,
+      to: payer,
+    };
+  });
+
+  // Second, set the payer's negative debt accordingly to the sum of amount that is owed to him
+  // find the debt related to the payer
+  const payerDebt = generatedDebt.find((debt) => {
+    return debt.amount === 'TO_COMPUTE';
+  });
+  payerDebt.amount = generatedDebt.reduce((payerDebtAmount, debt) => {
+    if (debt.name !== payer.name) {
+      return payerDebtAmount - Number(debt.amount);
+    }
+    return payerDebtAmount;
+  }, 0);
+  return generatedDebt;
+}
+
 class ExpenseController extends NestedController {
   constructor() {
     super(collections.EXPENSES, GroupController.Model, relationships.ONE_TO_MANY, 'expenses');
   }
 
   async create(event, context, callback) {
+    this.group = event.group;
     const requestBody = event.body;
 
     if (!requestBody.usersFor || !Array.isArray(requestBody.usersFor)) {
       this.respond.with.error.common.invalidData(event.body, callback);
     }
-    const generatedDebt = requestBody.usersFor.map((user) => {
-      // if I paid, I generated negative debt towards me
-      // if someone else paid I owe them
-      const amount =
-        user.name === requestBody.payer
-          ? -(requestBody.amount / requestBody.usersFor.length)
-          : requestBody.amount / requestBody.usersFor.length;
-      return {
-        name: user.name,
-        amount,
-        to: requestBody.payer,
-      };
-    });
+    const { userRates, totalRate } = getUserRates(event.group.participants, requestBody.usersFor);
+    const generatedDebt = computeGeneratedDebts(
+      requestBody.usersFor,
+      requestBody.payer,
+      requestBody.amount,
+      userRates,
+      totalRate
+    );
     const newRequest = { ...event, body: { ...requestBody, generatedDebt } };
     await super.create(newRequest, context, callback, GroupController.Model, event.group, 'expenses');
+  }
+
+  async validate(group, callback, expense) {
+    const userNames = expense.usersFor.map((u) => u.name);
+    const areUsersForParticipants = userNames.every((name) => group.participants.map((p) => p.name).includes(name));
+    if (!areUsersForParticipants) {
+      this.respond.with.error.expenses.invalidUsersFor(expense, callback);
+    }
+    super.validate(group, callback);
   }
 
   list(event, context, callback) {
