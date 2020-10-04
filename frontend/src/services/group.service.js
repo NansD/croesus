@@ -6,7 +6,10 @@ class GroupService extends Service {
     super('groups');
   }
 
-  getComputedDebts = ({ _id }, { signal }) => customFetch(`${this.apiEndPoint}/${_id}/computeDebts/`, { signal })
+  getComputedDebts = (firstArg, { signal }) => {
+    const { _id } = this.chooseArgument(firstArg);
+    return customFetch(`${this.apiEndPoint}/${_id}/computeDebts/`, { signal });
+  }
 }
 
 export default new GroupService();
