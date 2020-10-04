@@ -104,3 +104,13 @@
 .app-logo {
   display: inline-block;
 }
+
+#active-group {
+  border: 1px solid #CACACA;
+}
+
+.group-carousel {
+  display: flex;
+  flex-direction: row;
+  overflow: scroll;
+}

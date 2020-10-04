@@ -51,12 +51,21 @@ export default function ExpenseList() {
     console.log('error :', error);
   }
 
-  const { isPending: loading } = useAsync({
+  const { isPending: loading0 } = useAsync({
     promiseFn: GroupService.getOne,
     _id: ExpenseService.groupId || (user && user.favoriteGroup),
     onReject: notifyGetAllError,
     onResolve: (r) => setGroup(r.document),
   });
+
+  // because taking {reload} from previous useAsync keeps old arguments
+  const { run, isPending: loading1 } = useAsync({
+    deferFn: GroupService.getOne,
+    onReject: notifyGetAllError,
+    onResolve: (r) => setGroup(r.document),
+  });
+
+  const loading = loading0 || loading1;
 
   const deleteExpense = (id) => {
     setExpenses(group.expenses.filter((e) => e._id !== id));
@@ -74,7 +83,10 @@ export default function ExpenseList() {
 
   return (
     <>
-      <GroupCarousel groups={user.groups} activeGroupId={group && group._id} />
+      <GroupCarousel groups={user.groups} activeGroupId={group && group._id} reload={run} />
+      <h1 className="title">
+        {group && group.name}
+      </h1>
       <ExpenseItemForm createExpense={createExpense} participants={participants} />
       {group && group.expenses
       && group.expenses.map((expense) => (

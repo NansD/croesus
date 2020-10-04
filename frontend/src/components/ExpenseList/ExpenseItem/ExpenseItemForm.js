@@ -45,14 +45,14 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
     toast.error(`Erreur de création de la dépense: ${error}`);
   }
 
-  const { run } = useAsync({
+  const { run, loading: creatingExpense } = useAsync({
     deferFn: ExpenseService.create,
     onResolve: notifyCreationSuccess,
     onReject: notifyCreationFailure,
   });
 
   function canSubmit() {
-    return (!payer || !label || !amount);
+    return (!payer || !label || !amount || creatingExpense);
   }
 
   function handleCreate(e) {
