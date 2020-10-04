@@ -1,20 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import ExpenseService from '../../services/expense.service';
 
-export default function GroupPresentation({ group }) {
+export default React.forwardRef(({
+  group, isActive, reload,
+}, ref) => {
+  useEffect(() => {
+    if (isActive && ref && ref.current) {
+      ref.current.scrollIntoView(false, { behavior: 'smooth' });
+    }
+  }, [ref, isActive]);
+  function setActiveGroup() {
+    ExpenseService.setGroup(group._id);
+    reload({ _id: group._id });
+  }
+  // TODO: handle keyboard here
+  function handleKeyPress() {}
   return (
-    <div className="hero has-background-white mb-5">
+    <div
+      onClick={setActiveGroup}
+      id={isActive ? 'active-group' : ''}
+      ref={ref}
+      className="hero has-background-white mx-5"
+      style={{ minWidth: '40vw', cursor: 'pointer' }}
+      onKeyPress={(e) => handleKeyPress(e)}
+      role="button"
+      tabIndex={0}
+    >
       <div className="hero-body">
-        <h3 className="title is-3">
+        <h5 className="title is-5">
           { group && group.name }
-        </h3>
-        <h4>
+        </h5>
+        <h6 className="subtitle is-6">
           Participants :
-        </h4>
-        <ul>
           { group
-      && group.participants && group.participants.map((p) => <li key={p._id}>{p.name}</li>)}
-        </ul>
+          && group.participants && group.participants.map((p) => <div key={p._id}>{p.name}</div>)}
+        </h6>
       </div>
     </div>
   );
-}
+});
