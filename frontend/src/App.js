@@ -68,7 +68,7 @@ function App() {
               <CoreAppErrorBoundary>
                 <Switch>
                   <>
-                    <section className="mx-5 my-3 columns is-centered is-narrow">
+                    <section className="mx-1 my-3 columns is-centered is-narrow">
                       <div className="column">
                         <Route exact path={NAVIGATION.HOME}>
                           <Home />
