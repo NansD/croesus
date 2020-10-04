@@ -45,7 +45,7 @@ export default function ExpenseList() {
     checkUserGroups(user, history);
   }, [user, history]);
 
-  ExpenseService.setGroup(user && user.favoriteGroup);
+  if (!ExpenseService.groupId) ExpenseService.setGroup(user && user.favoriteGroup);
   function notifyGetAllError(error) {
     toast.error(`Erreur d'obtention des dépenses: ${error}`);
     console.log('error :', error);
@@ -53,7 +53,7 @@ export default function ExpenseList() {
 
   const { isPending: loading } = useAsync({
     promiseFn: GroupService.getOne,
-    _id: user && user.favoriteGroup,
+    _id: ExpenseService.groupId || (user && user.favoriteGroup),
     onReject: notifyGetAllError,
     onResolve: (r) => setGroup(r.document),
   });

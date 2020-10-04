@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useAsync } from 'react-async';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useConfirmDeleteModal from '../../hooks/modal/useConfirmDeleteModal';
+import NAVIGATION from '../../navigation.json';
+import ExpenseService from '../../services/expense.service';
 import GroupService from '../../services/group.service';
 import CopyGroupIdButton from './CopyGroupIdButton';
 import GroupForm from './GroupForm';
@@ -9,6 +12,7 @@ import GroupForm from './GroupForm';
 export default function Group({
   group, deleteGroup, active, setActiveGroup, reload,
 }) {
+  const history = useHistory();
   const [edit, setEdit] = useState(false);
   const { setShowModal, setCallback } = useConfirmDeleteModal();
 
@@ -48,12 +52,30 @@ export default function Group({
     );
   }
 
+  function goToExpenses(groupId) {
+    return function navigateToExpense() {
+      ExpenseService.setGroup(groupId);
+      history.push(NAVIGATION.EXPENSES);
+    };
+  }
+
   return (
     <div className="card mb-5 animated">
-      <div className="card-content">
-        <h2 className="title is-5">
+      <div className="card-header">
+        <h2 className="card-header-title is-5">
           {group.name}
         </h2>
+        <button
+          type="button"
+          className="card-header-icon button is-link is-full-height is-inverted"
+          aria-label="more options"
+          onClick={goToExpenses(group._id)}
+        >
+          <span>Voir les dépenses</span>
+          <i className="fa fa-share icon" aria-label="share" />
+        </button>
+      </div>
+      <div className="card-content">
         <ul>
           { group && group.participants && group.participants.map((p) => (
             <li key={p._id}>
