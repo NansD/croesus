@@ -73,6 +73,8 @@ export default function ParticipantForm({
         <label className="label" htmlFor={`rate-${_id}`}>
           Ratio
           <input className="input" id={`rate-${_id}`} type="number" placeholder="1" {...bindCustomRate} />
+          <p className="help">Nombre de parts du participant</p>
+
         </label>
       </div>
       <div className={disabled() || participant ? 'mb-6' : ''} style={{ display: 'flex', justifyContent: 'space-between' }}>

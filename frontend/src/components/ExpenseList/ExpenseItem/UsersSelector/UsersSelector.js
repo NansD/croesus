@@ -37,7 +37,7 @@ function UsersSelector({
 
   return (
     <>
-      <div className="select field" style={{ width: '100%' }}>
+      <div className="select field" style={{ width: '100%', verticalAlign: 'inherit' }}>
         <select
           style={{ width: '100%' }}
           aria-label="payer"
@@ -46,11 +46,13 @@ function UsersSelector({
           value={payer && payer.name}
           disabled={disabled}
           required
+          className="control"
         >
           {users.map((p) => (
             <option key={p._id}>{p.name}</option>
           ))}
         </select>
+        <p className="help">Nom de la personne qui a payé pour cette dépense.</p>
       </div>
       {usersFor.map((u) => (
         <div className="field" key={u.name}>
