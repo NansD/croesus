@@ -32,7 +32,7 @@ function App() {
 
   const setToken = (token, newUser) => {
     setAuthToken(token);
-    setUser(newUser);
+    setUser({ ...newUser, tokenStartTime: new Date().getTime() });
   };
 
   const logOut = () => {
