@@ -52,8 +52,8 @@ function Balance() {
           <td>
             {line.name}
           </td>
-          <td className="has-text-success">
-            +
+          <td className="has-text-danger">
+            -
             {line.totalDebt}
           </td>
         </tr>
@@ -64,8 +64,9 @@ function Balance() {
         <td>
           {line.name}
         </td>
-        <td className="has-text-danger">
-          {line.totalDebt}
+        <td className="has-text-success">
+          +
+          {Math.abs(line.totalDebt)}
         </td>
       </tr>
     );
@@ -103,9 +104,9 @@ function Balance() {
               {' '}
               <span className="has-text-success">positif</span>
               {' '}
-              signifie que vous
+              signifie que l'on vous
               {' '}
-              <strong>devez</strong>
+              <strong>doit</strong>
               {' '}
               un montant d&apos;argent.
               <br />
@@ -113,9 +114,9 @@ function Balance() {
               {' '}
               <span className="has-text-danger">négatif</span>
               {' '}
-              signifie que les autres participants
+              signifie que vous
               {' '}
-              <strong>vous doivent</strong>
+              <strong>devez</strong>
               {' '}
               de l&apos;argent.
             </div>
