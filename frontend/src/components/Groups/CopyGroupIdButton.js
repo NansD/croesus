@@ -14,8 +14,12 @@ export default function CopyGroupIdButton({ groupId }) {
   async function copyInputToClipBoard(ref) {
     ref.current.focus();
     ref.current.select();
-    await ClipboardService.copy(ref.current.value);
-    toast.success('Copié !');
+    try {
+      await ClipboardService.copy(ref.current.value);
+      toast.success('Copié !');
+    } catch (error) {
+      toast.error(error.message, { autoClose: 5000 });
+    }
     setShowDropDown(false);
   }
 
