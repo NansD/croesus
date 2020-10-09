@@ -28,9 +28,13 @@ export default function GroupCodeInput({ reload }) {
   });
 
   async function pasteInInput() {
-    const text = await ClipboardService.read();
-    inputRef.current.value = text;
-    setCode(text);
+    try {
+      const text = await ClipboardService.read();
+      inputRef.current.value = text;
+      setCode(text);
+    } catch (error) {
+      toast.error(error.message, { autoClose: 5000 });
+    }
   }
 
   function submit() {

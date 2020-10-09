@@ -1,6 +1,8 @@
+import * as clipboard from 'clipboard-polyfill';
+
 class ClipboardService {
   constructor() {
-    this.clipboard = navigator.clipboard;
+    this.clipboard = clipboard;
   }
 
   async copy(text) {
@@ -8,7 +10,7 @@ class ClipboardService {
       return await this.clipboard.writeText(text);
     } catch (err) {
       console.error('Failed to copy: ', err);
-      return err;
+      throw new Error('Votre navigateur interdit Croesus de copier dans votre Presse-Papier. Vous pouvez tout de même copier manuellement.');
     }
   }
 
@@ -17,7 +19,7 @@ class ClipboardService {
       return await this.clipboard.readText();
     } catch (err) {
       console.error('Failed to read clipboard contents: ', err);
-      return err;
+      throw new Error('Votre navigateur interdit Croesus de lire dans votre Presse-Papier. Vous pouvez tout de même coller manuellement.');
     }
   }
 }
