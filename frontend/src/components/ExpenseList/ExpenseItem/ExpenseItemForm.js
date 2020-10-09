@@ -45,7 +45,7 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
     toast.error(`Erreur de création de la dépense: ${error}`);
   }
 
-  const { run, loading: creatingExpense } = useAsync({
+  const { run, isPending: creatingExpense } = useAsync({
     deferFn: ExpenseService.create,
     onResolve: notifyCreationSuccess,
     onReject: notifyCreationFailure,
