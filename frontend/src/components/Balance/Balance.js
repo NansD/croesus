@@ -104,7 +104,7 @@ function Balance() {
               {' '}
               <span className="has-text-success">positif</span>
               {' '}
-              signifie que l'on vous
+              signifie que l&apos;on vous
               {' '}
               <strong>doit</strong>
               {' '}
