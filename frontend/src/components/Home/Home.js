@@ -32,20 +32,20 @@ export default function Home() {
             Organisez vos dépenses avec&nbsp;
             {usagesTypings}
           </div>
-          <p>
+          <p className="content">
             Partagez vos dépenses de façon facile et équitable.&nbsp;
             Inscrivez-vous, créez un groupe, partagez-le aux personnes concernées,&nbsp;
             et commencez à collaborer !
           </p>
-        </div>
-        <div className="card-footer" style={{ justifyContent: 'flex-end', borderTop: '0' }}>
-          <div className="buttons">
-            <Link to={NAVIGATION.SIGNUP} className="button is-primary">
-              <strong>Créer un compte</strong>
-            </Link>
-            <Link to={NAVIGATION.LOGIN} className="button is-light">
-              Connexion
-            </Link>
+          <div className="card-footer" style={{ justifyContent: 'flex-end', borderTop: '0' }}>
+            <div className="buttons">
+              <Link to={NAVIGATION.SIGNUP} className="button is-primary">
+                <strong>Créer un compte</strong>
+              </Link>
+              <Link to={NAVIGATION.LOGIN} className="button is-light">
+                Connexion
+              </Link>
+            </div>
           </div>
         </div>
       </div>
