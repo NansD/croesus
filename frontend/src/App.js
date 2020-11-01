@@ -48,7 +48,7 @@ function App() {
       >
         <ModalProvider>
           <Router>
-            <div className="has-navbar-fixed-bottom has-background-white-ter is-full-height has-overflow-scroll">
+            <div className="has-navbar-fixed-bottom has-background-white-ter is-full-height">
               <header className="hero" style={{ backgroundColor: '#FFFFFF' }}>
                 <NavBar isAuthenticated={!!authToken} />
                 {authToken && (
@@ -68,7 +68,7 @@ function App() {
               <CoreAppErrorBoundary>
                 <Switch>
                   <>
-                    <section className="mx-1 pb-6 my-3 columns is-centered is-narrow">
+                    <section className="mx-1 pb-6 my-3 columns is-centered is-narrow has-overflow-y-scroll">
                       <div className="column">
                         <Route exact path={NAVIGATION.HOME}>
                           <Home />
