@@ -24,8 +24,8 @@
   border-top: 1px solid hsl(217, 71%, 53%);
 }
 
-.has-overflow-scroll {
-  overflow: scroll;
+.has-overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 .navbar.is-fixed-bottom.has-shadow {
@@ -107,10 +107,13 @@
 
 #active-group {
   border: 1px solid #CACACA;
+  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
 }
 
 .group-carousel {
   display: flex;
   flex-direction: row;
-  overflow: scroll;
+  overflow-x: scroll;
+  max-width: 95vw;
+  padding: 1em 0;
 }
