@@ -5,6 +5,7 @@ import useInput from '../../hooks/useInput';
 import useUserState from '../../hooks/useUserState';
 import ClipboardService from '../../services/others/clipboard.service';
 import userService from '../../services/user.service';
+import LOCAL_STORAGE_KEYS from '../../localStorageKeys.json';
 
 export default function GroupCodeInput({ reload }) {
   const [code, setCode, , bindCode] = useInput('');
@@ -12,7 +13,7 @@ export default function GroupCodeInput({ reload }) {
   const inputRef = useRef(null);
 
   function notifyUpdateSuccess(data) {
-    setUser(data.document);
+    setUser({ ...JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.user)), ...data.document });
     reload();
     toast.success('Groupe ajouté avec succès');
   }

@@ -11,11 +11,16 @@ import Loading from '../Loading/Loading';
 import ExpenseItem from './ExpenseItem/ExpenseItem';
 import ExpenseItemForm from './ExpenseItem/ExpenseItemForm';
 
+function pickUserFavoriteGroup(user) {
+  return user && (user.favoriteGroup
+                  || (user.groups[0] && user.groups[0]._id));
+}
+
 function checkUserGroups(user, history) {
   if (!user) {
     return;
   }
-  if (user && (!user.groups.length || !user.favoriteGroup)) {
+  if (user && (!user.groups.length || !pickUserFavoriteGroup(user))) {
     history.push(NAVIGATION.GROUPS);
     toast.info(
       <>
@@ -45,7 +50,7 @@ export default function ExpenseList() {
     checkUserGroups(user, history);
   }, [user, history]);
 
-  if (!ExpenseService.groupId) ExpenseService.setGroup(user && user.favoriteGroup);
+  if (!ExpenseService.groupId) ExpenseService.setGroup(pickUserFavoriteGroup(user));
   function notifyGetAllError(error) {
     toast.error(`Erreur d'obtention des dépenses: ${error}`);
     console.log('error :', error);

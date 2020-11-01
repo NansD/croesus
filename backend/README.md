@@ -14,3 +14,5 @@ npm run start --  --MONGODB_CONNECTION_STRING mongodb://127.0.0.1/croesus
 
 in production, the connection string looks like that :
 mongodb://croesus:<password>@croesus-shard-zz-yy.xxxxx.mongodb.net:27017,xxxxxxxxxxx,xxxxxxxxxxxx,xxxxxxx
+
+It seems that for updating env variables, we have to deploy manually and not via github actions ...

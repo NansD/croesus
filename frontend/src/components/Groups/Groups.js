@@ -9,15 +9,24 @@ import Group from './Group';
 import GroupCodeInput from './GroupCodeInput';
 import GroupForm from './GroupForm';
 
+function pickUserFavoriteGroup(user) {
+  return user && (user.favoriteGroup
+                  || (user.groups[0] && user.groups[0]._id));
+}
+
 export default function Groups() {
   const { user: authenticatedUser } = useAuth();
   const [localUser, setLocalUser] = useUserState(authenticatedUser);
   const [groups, setGroups] = useState([]);
-  const [favoriteGroup, setFavoriteGroup] = useState(localUser && localUser.favoriteGroup);
+  const [favoriteGroup, setFavoriteGroup] = useState(pickUserFavoriteGroup(localUser));
 
   function updateGroups(newGroups) {
     setGroups(newGroups);
-    setLocalUser({ ...localUser, groups: newGroups });
+    const newUser = { ...localUser, groups: newGroups };
+    if (!newUser.favoriteGroup) {
+      newUser.favoriteGroup = pickUserFavoriteGroup(newUser);
+    }
+    setLocalUser(newUser);
   }
 
   function notifyError(error) {
@@ -49,13 +58,17 @@ export default function Groups() {
 
   const { run: updateUser } = useAsync({
     deferFn: UserService.update,
-    onResolve: (data) => setLocalUser(data.document),
+    onResolve: (data) => setLocalUser({ ...localUser, ...data.document }),
     onReject: notifyFavoriteGroupFailure,
   });
 
   function updateActiveGroup(g) {
     setFavoriteGroup(g._id);
     updateUser({ ...localUser, favoriteGroup: g._id });
+  }
+
+  function onGroupFormChange(g) {
+    updateGroups([g, ...groups]);
   }
 
   if (loading) {
@@ -67,7 +80,7 @@ export default function Groups() {
   return (
     <>
       <GroupCodeInput reload={() => reload()} />
-      <GroupForm onChange={(g) => updateGroups([g, ...groups])} />
+      <GroupForm onChange={onGroupFormChange} />
       { groups
       && groups.map((g) => (
         <Group
