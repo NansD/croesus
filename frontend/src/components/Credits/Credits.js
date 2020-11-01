@@ -14,7 +14,7 @@ export default function Credits() {
         <article className="message is-primary pb-5">
           <p className="message-header is-primary title">Auteur</p>
           <p className="subtitle message-body">
-            Je m&apos;appelle Nans Dumortier, je suis ingénieur en développment web.
+            Je m&apos;appelle Nans Dumortier, je suis ingénieur en développement web.
           </p>
           <div className="message-body is-flex  has-background-white" style={{ justifyContent: 'space-between' }}>
             <SocialNetworkLink
