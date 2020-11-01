@@ -76,7 +76,7 @@ class UserController extends Controller {
       await newUser.save();
       return this.respond.with.success.creation(newUser, callback);
     } catch (err) {
-      console.error(err);
+      console.error('error while creating user', err);
       return this.respond.with.error.creation.db(newUser, callback);
     }
   }
