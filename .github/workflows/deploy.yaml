@@ -32,15 +32,3 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       working-directory: frontend
-    - name: serverless install
-      run: npm ci --only-production
-      working-directory: backend
-    - name: Install Serverless Framework
-      run: sudo npm install -g serverless
-      working-directory: backend
-    - name: Serverless AWS authentication
-      run: sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      working-directory: backend
-    - name: serverless deploy
-      run: npm run deploy --  --MONGODB_CONNECTION_STRING ${{ secrets.MONGODB_CONNECTION_STRING}}
-      working-directory: backend

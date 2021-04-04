@@ -1,0 +1,7 @@
+{
+  "name": "this is solely for heroku",
+  "scripts": {
+    "postinstall": "cd backend && npm i",
+    "start": "cd backend && npm start"
+  }
+}
