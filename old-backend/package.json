@@ -1,0 +1,29 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "croesus-service/api/expense.js",
+  "scripts": {
+    "start": "cd croesus-service && sls offline start --httpPort 3001",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "cd croesus-service && sls deploy",
+    "lint": "eslint --format codeframe .",
+    "prettier-check": "prettier -c --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
+    "prettify": "prettier --write --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
+    "postinstall": "cd croesus-service && npm i"
+  },
+  "keywords": [],
+  "author": "NansD",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.2.0",
+    "eslint-config-serverless": "0.0.5",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-node": "^11.1.0",
+    "git-list-updated": "^1.2.1",
+    "prettier": "^2.0.5"
+  },
+  "dependencies": {
+    "mongoose": "^5.9.25"
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+
+
+# package directories
+croesus-service/node_modules
+jspm_packages
+
+# Serverless directories
+croesus-service/.serverless
+
+croesus-service/.webpack

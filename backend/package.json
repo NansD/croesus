@@ -1,29 +1,39 @@
 {
-  "name": "backend",
+  "name": "croesus-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "croesus-service/api/expense.js",
-  "scripts": {
-    "start": "cd croesus-service && sls offline start --httpPort 3001",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "cd croesus-service && sls deploy",
-    "lint": "eslint --format codeframe .",
-    "prettier-check": "prettier -c --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
-    "prettify": "prettier --write --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
-    "postinstall": "cd croesus-service && npm i"
+  "main": "./src/",
+  "engines": {
+    "node": ">= 12.16.2",
+    "npm": ">= 6.14.4"
   },
-  "keywords": [],
+  "scripts": {
+    "start": "node ./src",
+    "start:local": "nodemon ./src",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "prettier": "prettier \"**/*.+(js|jsx|json|css|md)\"",
+    "prettier:fix": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
+  },
   "author": "NansD",
   "license": "ISC",
-  "devDependencies": {
-    "eslint": "^7.2.0",
-    "eslint-config-serverless": "0.0.5",
-    "eslint-plugin-import": "^2.21.2",
-    "eslint-plugin-node": "^11.1.0",
-    "git-list-updated": "^1.2.1",
-    "prettier": "^2.0.5"
-  },
   "dependencies": {
-    "mongoose": "^5.9.25"
+    "auto-bind": "^4.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.3",
+    "morgan": "^1.10.0",
+    "validator": "^13.5.2",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
   }
 }
