@@ -1,6 +1,5 @@
 const { Router } = require('express')
 const Controller = require('./controller')
-const GroupController = require('../group/controller')
 const router = new Router()
 
 router.get('/', Controller.getAll)
