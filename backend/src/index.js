@@ -35,5 +35,5 @@ app.use('*', (req, res) => {
   res.status(StatusCodes.NOT_FOUND).send('404 Not Found')
 })
 
-console.log('listening on port', process.env.APP_PORT)
-app.listen(process.env.APP_PORT)
+console.log('listening on port', process.env.PORT)
+app.listen(process.env.PORT)
