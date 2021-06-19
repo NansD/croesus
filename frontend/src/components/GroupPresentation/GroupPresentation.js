@@ -20,9 +20,9 @@ export default React.forwardRef(({
       onClick={setActiveGroup}
       id={isActive ? 'active-group' : ''}
       ref={ref}
-      className="hero has-background-white mx-3"
+      className="hero has-background-white mx-3 group-presentation__container"
       style={{
-        minWidth: '33%', cursor: 'pointer', boxSizing: 'content-box',
+        cursor: 'pointer', boxSizing: 'content-box',
       }}
       onKeyPress={() => handleKeyPress()}
       role="button"
@@ -32,13 +32,13 @@ export default React.forwardRef(({
         <h5 className="title is-5">
           { group && group.name }
         </h5>
-        <p className="content">
+        <div className="content">
           Participants:
           <ul style={{ marginTop: 0 }}>
             { group
           && group.participants && group.participants.map((p) => <li key={p._id}>{p.name}</li>)}
           </ul>
-        </p>
+        </div>
       </div>
     </div>
   );

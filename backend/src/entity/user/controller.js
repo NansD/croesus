@@ -5,6 +5,34 @@ const model = require('./user.model')
 const { StatusCodes } = require('http-status-codes')
 const bcrypt = require('bcryptjs')
 const { sign } = require('jsonwebtoken')
+
+/**
+ * Removes duplicates in groups
+ * and checks if all groups sent actually exist
+ *
+ * @param {*} body
+ * @param {*} user
+ */
+async function checkGroupsValidity(body, user) {
+  if (body.groups) {
+    const groupsIds = body.groups.map(g => {
+      if (typeof g === 'string') {
+        return g
+      }
+      return String(g._id)
+    })
+    body.groups = [...new Set(groupsIds)]
+  }
+  const userGroupsIds = user.groups.map(g => g._id || g)
+  const eventGroupsIds = body.groups.map(g => g._id || g)
+  const newGroupsIds = userGroupsIds.filter(id => !eventGroupsIds.includes(id))
+  if (newGroupsIds.length) {
+    newGroupsIds.map(id => {
+      return GroupController.checkIfDocumentExistsInDb('_id', id)
+    })
+    await Promise.all(newGroupsIds)
+  }
+}
 class UserController extends Controller {
   constructor() {
     super(collections.USERS, model)
@@ -41,7 +69,8 @@ class UserController extends Controller {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: process.env.JWT_EXPIRATION,
+        // this thing is annoying
+        // expiresIn: process.env.JWT_EXPIRATION,
         issuer: 'Croesus'
       }
     )
@@ -58,6 +87,13 @@ class UserController extends Controller {
       return b.submittedAt - a.submittedAt
     })
     return res.status(StatusCodes.OK).json({ document: self })
+  }
+
+  async update(req, res) {
+    console.log('req.body :', req.body)
+    const self = await this.Model.findById(req.context.user._id).populate('groups')
+    await checkGroupsValidity(req.body, self)
+    await super.update(req, res)
   }
 }
 

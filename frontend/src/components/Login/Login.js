@@ -50,7 +50,7 @@ export default function Login() {
 
   return (
     <div className="container">
-      <div className="card mb-5">
+      <form className="card mb-5">
         <div className="card-header-title">
           <h1 className="title">
             Identification
@@ -83,7 +83,7 @@ export default function Login() {
             Connexion
           </button>
         </footer>
-      </div>
+      </form>
     </div>
   );
 }

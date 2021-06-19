@@ -71,9 +71,13 @@ class Controller {
     const { id: elementId } = req.params
     const data = req.body
 
-    const [error, document] = await tryCatch(this.Model.findByIdAndUpdate)(elementId, data, {
-      new: true
-    })
+    let document, error
+
+    try {
+      document = await this.Model.findByIdAndUpdate(elementId, data, { new: true })
+    } catch (e) {
+      error = e
+    }
 
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST).json({ error, document })

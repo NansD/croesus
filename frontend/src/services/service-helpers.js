@@ -1,8 +1,8 @@
 import LOCAL_STORAGE_KEYS from '../localStorageKeys.json';
-import NAVIGATION from '../navigation.json';
+// import NAVIGATION from '../navigation.json';
 
 const JWTConfig = {
-  EXPIRES_IN: 604800,
+  EXPIRES_IN: 604800000,
 };
 
 function failIfNotOK(data, response) {
@@ -12,10 +12,9 @@ function failIfNotOK(data, response) {
 }
 
 function logOut() {
-  localStorage.clear();
-  setTimeout(() => {
-    window.location.href = NAVIGATION.LOGIN;
-  }, 3000);
+  // setTimeout(() => {
+  //   window.location.href = NAVIGATION.LOGIN;
+  // }, 3000);
   throw new Error('Session expirée, veuillez vous reconnecter');
 }
 

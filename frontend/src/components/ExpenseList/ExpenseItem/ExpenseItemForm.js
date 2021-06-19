@@ -126,7 +126,7 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
         >
           <button
             type="button"
-            className="button is-warning"
+            className="button my-2 is-warning"
             onClick={toggleShowForm}
           >
             <span className="icon is-small">
@@ -135,7 +135,7 @@ const ExpenseItemForm = ({ createExpense, participants }) => {
             <span> Annuler </span>
           </button>
           <button
-            className="button is-success"
+            className="button my-2 is-success"
             type="submit"
             disabled={canSubmit()}
           >

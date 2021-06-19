@@ -108,6 +108,7 @@
 #active-group {
   border: 1px solid #CACACA;
   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+  transform: scale(1.05)
 }
 
 .group-carousel {
@@ -115,5 +116,38 @@
   flex-direction: row;
   overflow-x: scroll;
   max-width: 95vw;
-  padding: 1em 0;
+  padding: 2em 0;
+}
+
+.group-presentation__container {
+  padding: 1rem;
+  transition: all 0.2s ease;
+  min-width: 150px;
+}
+.group-presentation__container:hover {
+  transform: scale(1.1) !important;
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1) !important;
+  }
+  100% {
+    transform: scale(1.1) !important;
+  }
+}
+
+.expense-item-enter {
+  opacity: 0;
+}
+.expense-item-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.expense-item-exit {
+  opacity: 1;
+}
+.expense-item-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
 }

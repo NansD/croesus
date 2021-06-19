@@ -38,10 +38,10 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
   }
 
   return (
-    <div className="card mb-5">
+    <div className="card mb-5 expense-item__container">
       <header className="card-header-title" style={{ justifyContent: 'space-between' }}>
         <div>
-          {expense.label}
+          <h2 className="title is-4">{expense.label}</h2>
         </div>
         <div>
           {expense.amount}

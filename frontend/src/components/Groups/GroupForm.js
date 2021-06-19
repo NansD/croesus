@@ -91,7 +91,7 @@ export default function GroupForm({ onChange, group, toggle }) {
       </div>
       <div className="card-content">
         <div className="field">
-          <div className="field">
+          <div className="field mb-5">
             <input
               className="input"
               type="text"
@@ -101,7 +101,7 @@ export default function GroupForm({ onChange, group, toggle }) {
             />
           </div>
           <div className="field">
-            <h2 className="title is-5"> Participants : </h2>
+            <h5 className="title is-5"> Participants : </h5>
             <ParticipantForm
               participantsNames={participantsNames}
               addParticipant={addParticipant}

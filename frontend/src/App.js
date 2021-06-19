@@ -48,14 +48,14 @@ function App() {
       >
         <ModalProvider>
           <Router>
-            <div className="has-navbar-fixed-bottom has-background-white-ter is-full-height">
-              <header className="hero" style={{ backgroundColor: '#FFFFFF' }}>
+            <div className="has-navbar-fixed-bottom has-background-white-ter" style={{ minHeight: '100%' }}>
+              <header className="hero" style={{ backgroundColor: '#FFFFFF', padding: '.5rem', paddingBottom: '0' }}>
                 <NavBar isAuthenticated={!!authToken} />
                 {authToken && (
                 <nav
                   className={isMobile
                     ? 'is-fixed-bottom tabs is-fullwidth navbar has-background-white has-shadow'
-                    : 'tabs is-fullwidth navbar has-background-white has-shadow'}
+                    : 'tabs is-centered navbar has-background-white has-shadow'}
                 >
                   <ul>
                     <LiLinkRoute to={NAVIGATION.EXPENSES} fontAwesomeClassName="fa-credit-card" label="Dépenses" />
@@ -69,7 +69,7 @@ function App() {
                 <Switch>
                   <>
                     <section className="mx-1 pb-6 my-3 columns is-centered is-narrow has-overflow-y-scroll">
-                      <div className="column">
+                      <div className="column is-two-thirds">
                         <Route exact path={NAVIGATION.HOME}>
                           <Home />
                         </Route>

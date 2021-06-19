@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 function UsersSelector({
   users, notifyChange, disabled, setPayer, payer,
 }) {
-  const usersCheckList = users.map((u) => ({ name: u.name, checked: true }));
+  const usersCheckList = users.map((u) => ({ name: u.name, checked: disabled ? u.checked : true }));
   const [usersFor, setUsersFor] = useState(usersCheckList);
 
   function emitChange() {

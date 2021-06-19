@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAsync } from 'react-async';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import useUserState from '../../hooks/useUserState';
 import NAVIGATION from '../../navigation.json';
 import ExpenseService from '../../services/expense.service';
@@ -93,14 +94,22 @@ export default function ExpenseList() {
         {group && group.name}
       </h1>
       <ExpenseItemForm createExpense={createExpense} participants={participants} />
-      {group && group.expenses
+      <TransitionGroup enter>
+        {group && group.expenses
       && group.expenses.map((expense) => (
-        <ExpenseItem
+        <CSSTransition
           key={expense._id}
-          expense={expense}
-          deleteExpense={deleteExpense}
-        />
+          timeout={500}
+          classNames="expense-item"
+        >
+          <ExpenseItem
+            key={expense._id}
+            expense={expense}
+            deleteExpense={deleteExpense}
+          />
+        </CSSTransition>
       ))}
+      </TransitionGroup>
     </>
   );
 }
