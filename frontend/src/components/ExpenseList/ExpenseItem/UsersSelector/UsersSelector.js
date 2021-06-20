@@ -37,23 +37,25 @@ function UsersSelector({
 
   return (
     <>
+      {!disabled && (
       <div className="select field" style={{ width: '100%', verticalAlign: 'inherit' }}>
         <select
           style={{ width: '100%' }}
           aria-label="payer"
           placeholder="payer"
           onChange={(e) => setPayer(users.find((p) => p.name === e.target.value))}
-          value={payer && payer.name}
+          value={payer?.name}
           disabled={disabled}
           required
           className="control"
         >
           {users.map((p) => (
-            <option key={p._id}>{p.name}</option>
+            <option key={p._id} value={p.name}>{p.name}</option>
           ))}
         </select>
         <p className="help">Nom de la personne qui a payé pour cette dépense.</p>
       </div>
+      )}
       {usersFor.map((u) => (
         <div className="field" key={u.name}>
           <label className="checkbox" htmlFor={u.name}>

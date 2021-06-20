@@ -63,7 +63,13 @@ const ExpenseItem = ({ expense, deleteExpense }) => {
         { showDetail
           ? (
             <div>
-              { expense.usersFor && <UsersSelector users={expense.usersFor} disabled />}
+              { expense.usersFor && (
+              <UsersSelector
+                users={expense.usersFor}
+                disabled
+                payer={expense.payer}
+              />
+              )}
               <button type="button" className="button is-full-width is-info is-light" onClick={toggleShowDetail}>
                 <i className="fa fa-caret-square-o-up" />
             &nbsp; Afficher moins
