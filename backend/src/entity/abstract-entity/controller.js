@@ -1,16 +1,14 @@
 const mongoose = require('../../database')
 const { StatusCodes } = require('http-status-codes')
 const autoBind = require('auto-bind')
-const tryCatch = asyncOperation => {
-  return async (...args) => {
-    let result, error
-    try {
-      result = await asyncOperation(...args)
-    } catch (errorThrown) {
-      error = errorThrown
-    }
-    return [result, error]
+const tryCatch = async promise => {
+  let result, error
+  try {
+    result = await promise
+  } catch (e) {
+    error = e
   }
+  return [error, result]
 }
 
 function orderByDateDesc(a, b) {
@@ -50,7 +48,7 @@ class Controller {
    * @param {Response} res - Express Response Object
    */
   async getAll(req, res) {
-    const [error, documents] = await tryCatch(this.Model.find)()
+    const [error, documents] = await tryCatch(this.Model.find())
 
     if (!documents && !error) {
       return res.status(StatusCodes.NOT_FOUND).json({ error, documents })
@@ -89,9 +87,10 @@ class Controller {
   async create(req, res) {
     const data = req.body
     const newDocument = new this.Model(data)
-    const [error, document] = await tryCatch(newDocument.save)()
+    const [error, document] = await tryCatch(newDocument.save())
 
     if (error || !document) {
+      console.log('error :', error)
       return res.status(StatusCodes.BAD_REQUEST).json({ error, document })
     }
 
@@ -101,7 +100,7 @@ class Controller {
   async delete(req, res) {
     const { id: elementId } = req.params
 
-    const [error, document] = await tryCatch(this.Model.findByIdAndRemove)(elementId)
+    const [error, document] = await tryCatch(this.Model.findByIdAndRemove(elementId))
 
     if (error) {
       return res.status(StatusCodes.BAD_REQUEST).json({ error, document })
