@@ -1,3 +1,6 @@
+const { version } = require('../package.json');
+
+console.log('version :', version);
 // This optional code is used to register a service worker.
 // register() is not called by default.
 

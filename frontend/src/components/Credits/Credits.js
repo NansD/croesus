@@ -1,5 +1,6 @@
 import React from 'react';
 import SocialNetworkLink from './SocialNetworkLink';
+import { version } from '../../../package.json';
 
 const social = {
   twitter: 'NansDumortier',
@@ -53,6 +54,16 @@ export default function Credits() {
               <a href="https://my.logomakr.com/">LogoMakr.com</a>
             </p>
           </div>
+        </article>
+        <article className="message pb-5">
+          <p className="message-header is-primary title">Version</p>
+          <p className="subtitle message-body">
+            Il s'agit de la version
+            {' '}
+            {version}
+            {' '}
+            de Croesus.
+          </p>
         </article>
       </div>
     </>
