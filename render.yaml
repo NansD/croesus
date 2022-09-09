@@ -4,6 +4,7 @@
 services:
   - type: web # valid values: https://render.com/docs/yaml-spec#type
     name: nansd-croesus-backend
+    region: frankfurt
     env: docker # valid values: https://render.com/docs/yaml-spec#environment
     dockerfilePath: Dockerfile.render
     plan: free # optional; defaults to starter
