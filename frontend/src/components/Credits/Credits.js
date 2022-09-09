@@ -58,7 +58,7 @@ export default function Credits() {
         <article className="message pb-5">
           <p className="message-header is-primary title">Version</p>
           <p className="subtitle message-body">
-            Il s'agit de la version
+            Il s&apos;agit de la version
             {' '}
             {version}
             {' '}
