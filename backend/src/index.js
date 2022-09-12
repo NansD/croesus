@@ -36,4 +36,5 @@ app.use('*', (req, res) => {
 })
 
 console.log('listening on port', process.env.PORT)
+console.log(`Ready to receive requests from ${process.env.CLIENT_URL}`)
 app.listen(process.env.PORT)
