@@ -39,7 +39,6 @@ class UserController extends Controller {
   }
 
   async login(req, res) {
-    console.debug('login')
     const requestBody = req.body
 
     const { email, password } = requestBody
@@ -90,7 +89,6 @@ class UserController extends Controller {
   }
 
   async update(req, res) {
-    console.log('req.body :', req.body)
     const self = await this.Model.findById(req.context.user._id).populate('groups')
     await checkGroupsValidity(req.body, self)
     await super.update(req, res)
